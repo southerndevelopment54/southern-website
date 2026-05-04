@@ -14,8 +14,8 @@ export default function VacanciesPage() {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [districts, setDistricts] = useState<{ id: number; districtName: string }[]>([]);
   const [guardTypes, setGuardTypes] = useState<{ id: number; typeName: string }[]>([]);
-  const [districtId, setDistrictId] = useState<string>("");
-  const [guardTypeId, setGuardTypeId] = useState<string>("");
+  const [districtId, setDistrictId] = useState<string>("all");
+  const [guardTypeId, setGuardTypeId] = useState<string>("all");
 
   useEffect(() => {
     api.get("/vacancies/districts").then((res) => setDistricts(res.data));
@@ -24,8 +24,8 @@ export default function VacanciesPage() {
 
   useEffect(() => {
     const params = new URLSearchParams();
-    if (districtId) params.append("districtId", districtId);
-    if (guardTypeId) params.append("guardTypeId", guardTypeId);
+    if (districtId && districtId !== "all") params.append("districtId", districtId);
+    if (guardTypeId && guardTypeId !== "all") params.append("guardTypeId", guardTypeId);
     api.get(`/vacancies?${params.toString()}`).then((res) => {
       setVacancies(res.data.content || res.data);
     });
@@ -35,14 +35,14 @@ export default function VacanciesPage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow max-w-6xl mx-auto px-4 py-12 w-full">
-        <h1 className="text-3xl font-bold mb-8">職位空缺</h1>
+        <h1 className="text-3xl font-bold mb-8">Job Vacancies</h1>
         <div className="flex flex-col sm:flex-row gap-4 mb-8">
           <Select value={districtId} onValueChange={setDistrictId}>
             <SelectTrigger className="w-full sm:w-[250px]">
-              <SelectValue placeholder="按地區篩選" />
+              <SelectValue placeholder="Filter by district" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">全部地區</SelectItem>
+              <SelectItem value="all">All Districts</SelectItem>
               {districts.map((d) => (
                 <SelectItem key={d.id} value={String(d.id)}>
                   {d.districtName}
@@ -52,10 +52,10 @@ export default function VacanciesPage() {
           </Select>
           <Select value={guardTypeId} onValueChange={setGuardTypeId}>
             <SelectTrigger className="w-full sm:w-[250px]">
-              <SelectValue placeholder="按職位類型篩選" />
+              <SelectValue placeholder="Filter by guard type" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="">全部類型</SelectItem>
+              <SelectItem value="all">All Types</SelectItem>
               {guardTypes.map((g) => (
                 <SelectItem key={g.id} value={String(g.id)}>
                   {g.typeName}
@@ -71,7 +71,7 @@ export default function VacanciesPage() {
               <CardHeader>
                 <div className="flex justify-between items-start">
                   <CardTitle className="text-lg">{v.guardType.typeName}</CardTitle>
-                  {v.isFeatured && <Badge>精選</Badge>}
+                  {v.isFeatured && <Badge>Featured</Badge>}
                 </div>
                 <p className="text-sm text-muted-foreground">
                   {v.district.districtName} &middot; {v.locationDescription}
@@ -79,17 +79,17 @@ export default function VacanciesPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm mb-2">
-                  薪金: ${v.salaryMin?.toLocaleString()} - ${v.salaryMax?.toLocaleString()} / {v.salaryPeriod === 'monthly' ? '每月' : v.salaryPeriod}
+                  Salary: ${v.salaryMin?.toLocaleString()} - ${v.salaryMax?.toLocaleString()} / {v.salaryPeriod === 'monthly' ? 'monthly' : v.salaryPeriod}
                 </p>
                 <p className="text-sm text-muted-foreground line-clamp-2">{v.description}</p>
                 <Link href={`/vacancies/${v.id}`} className="text-primary text-sm font-medium mt-4 inline-block">
-                  查看詳情及申請
+                  View Details & Apply
                 </Link>
               </CardContent>
             </Card>
           ))}
           {vacancies.length === 0 && (
-            <p className="text-muted-foreground col-span-2 text-center py-10">暫無職位空缺。</p>
+            <p className="text-muted-foreground col-span-2 text-center py-10">No vacancies available.</p>
           )}
         </div>
       </main>

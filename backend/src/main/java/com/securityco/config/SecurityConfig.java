@@ -39,6 +39,7 @@ public class SecurityConfig {
                         .requestMatchers("/api/vacancies/**").permitAll()
                         .requestMatchers("/api/education-levels").permitAll()
                         .requestMatchers("/api/submissions").permitAll()
+                        .requestMatchers("/api/contact").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/api/admin/**").authenticated()
                         .anyRequest().authenticated()

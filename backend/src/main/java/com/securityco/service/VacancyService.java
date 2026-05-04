@@ -33,7 +33,6 @@ public class VacancyService {
 
     @Transactional(readOnly = true)
     public Page<VacancyResponse> listActiveVacancies(Integer districtId, Integer guardTypeId, Pageable pageable) {
-        deactivateExpiredVacancies();
         Specification<Vacancy> spec = (root, query, cb) -> {
             var predicates = cb.and(cb.equal(root.get("isActive"), true));
             if (districtId != null) {
@@ -62,7 +61,6 @@ public class VacancyService {
 
     @Transactional(readOnly = true)
     public Page<VacancyResponse> listAllVacancies(Pageable pageable) {
-        deactivateExpiredVacancies();
         return vacancyRepository.findAll(pageable).map(this::toResponse);
     }
 
@@ -110,17 +108,6 @@ public class VacancyService {
         }
     }
 
-    private void deactivateExpiredVacancies() {
-        vacancyRepository.findAll().stream()
-                .filter(v -> Boolean.TRUE.equals(v.getIsActive())
-                        && v.getExpiresAt() != null
-                        && v.getExpiresAt().isBefore(LocalDate.now()))
-                .forEach(v -> {
-                    v.setIsActive(false);
-                    vacancyRepository.save(v);
-                });
-    }
-
     private void mapRequestToEntity(VacancyRequest request, Vacancy vacancy) {
         SecurityGuardType guardType = guardTypeRepository.findById(request.getGuardTypeId())
                 .orElseThrow(() -> new EntityNotFoundException("Guard type not found"));
@@ -141,7 +128,7 @@ public class VacancyService {
         vacancy.setContactPhone(request.getContactPhone());
         vacancy.setContactEmail(request.getContactEmail());
         vacancy.setIsFeatured(request.getIsFeatured());
-        vacancy.setImageKey(request.getImageKey());
+        vacancy.setImageKey(request.getImageKey() != null && !request.getImageKey().isBlank() ? request.getImageKey() : null);
         vacancy.setExpiresAt(request.getExpiresAt());
         vacancy.setUpdatedAt(java.time.LocalDateTime.now());
     }
@@ -178,7 +165,7 @@ public class VacancyService {
         dDto.setRegion(vacancy.getDistrict().getRegion());
         response.setDistrict(dDto);
 
-        if (vacancy.getImageKey() != null) {
+        if (vacancy.getImageKey() != null && !vacancy.getImageKey().isBlank()) {
             response.setImageUrl(minioService.getPresignedUrl(vacancy.getImageKey()));
         }
 

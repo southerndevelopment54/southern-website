@@ -3,14 +3,14 @@ import Footer from "@/components/public/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const services = [
-  { title: "住宅保安", desc: "住宅大廈及屋苑的保安工作。" },
-  { title: "商業保安", desc: "辦公大樓及商業處所的保安工作。" },
-  { title: "零售保安", desc: "商場及零售店鋪的保安工作。" },
-  { title: "活動保安", desc: "活動及宴會的人群管理及保安工作。" },
-  { title: "保鑣 / 私人保護", desc: "為貴賓客戶提供近身保護服務。" },
-  { title: "保安督導員", desc: "監督一隊保安人員。" },
-  { title: "控制室操作員", desc: "監控閉路電視及警報系統。" },
-  { title: "流動巡邏保安員", desc: "駕車巡邏多個地點。" },
+  { title: "Residential Security", desc: "Guard duty at residential buildings and estates." },
+  { title: "Commercial Security", desc: "Guard duty at office buildings and commercial premises." },
+  { title: "Retail Security", desc: "Guard duty at shopping malls and retail stores." },
+  { title: "Event Security", desc: "Crowd control and security at events and functions." },
+  { title: "Bodyguard / Personal Protection", desc: "Close protection services for VIP clients." },
+  { title: "Security Supervisor", desc: "Supervise a team of security guards." },
+  { title: "Control Room Operator", desc: "Monitor CCTV and alarm systems." },
+  { title: "Mobile Patrol Guard", desc: "Patrol multiple sites by vehicle." },
 ];
 
 export default function ServicesPage() {
@@ -18,7 +18,7 @@ export default function ServicesPage() {
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow max-w-6xl mx-auto px-4 py-12">
-        <h1 className="text-3xl font-bold mb-8 text-center">我們的服務</h1>
+        <h1 className="text-3xl font-bold mb-8 text-center">Our Services</h1>
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {services.map((s) => (
             <Card key={s.title}>

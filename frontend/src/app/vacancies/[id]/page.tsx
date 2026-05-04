@@ -36,64 +36,71 @@ export default function VacancyDetailPage() {
         vacancyId: Number(id),
         ...form,
       });
-      toast({ title: "申請已成功提交！" });
+      toast({ title: "Application submitted successfully!" });
       setForm({ firstName: "", lastName: "", phoneNumber: "", email: "", message: "" });
     } catch {
-      toast({ title: "提交失敗", description: "請再試一次。", variant: "destructive" });
+      toast({ title: "Submission failed", description: "Please try again.", variant: "destructive" });
     }
   };
 
-  if (!vacancy) return <div className="text-center py-20">載入中...</div>;
+  if (!vacancy) return <div className="text-center py-20">Loading...</div>;
 
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
       <main className="flex-grow max-w-4xl mx-auto px-4 py-12 w-full">
         <Link href="/vacancies" className="text-primary text-sm mb-4 inline-block">
-          &larr; 返回職位空缺
+          &larr; Back to vacancies
         </Link>
         <h1 className="text-3xl font-bold mb-2">{vacancy.guardType.typeName}</h1>
         <p className="text-muted-foreground mb-6">
           {vacancy.district.districtName} &middot; {vacancy.locationDescription}
         </p>
 
+        {vacancy.imageUrl && (
+          <img
+            src={vacancy.imageUrl}
+            alt={vacancy.guardType.typeName}
+            className="w-full h-64 object-cover rounded-lg mb-6"
+          />
+        )}
         <Card className="mb-8">
           <CardContent className="p-6 space-y-2">
-            <p><strong>開始日期:</strong> {vacancy.startDate}</p>
-            <p><strong>薪金:</strong> ${vacancy.salaryMin?.toLocaleString()} - ${vacancy.salaryMax?.toLocaleString()} / {vacancy.salaryPeriod === 'monthly' ? '每月' : vacancy.salaryPeriod}</p>
-            <p><strong>僱傭類型:</strong> {vacancy.employmentType === 'full-time' ? '全職' : vacancy.employmentType}</p>
-            <p><strong>工作時間:</strong> {vacancy.workingHours}</p>
-            <p><strong>入職要求:</strong> {vacancy.requirements}</p>
-            <p><strong>職位描述:</strong> {vacancy.description}</p>
-            <p><strong>聯絡:</strong> {vacancy.contactPhone} / {vacancy.contactEmail}</p>
+            <p><strong>Start Date:</strong> {vacancy.startDate}</p>
+            <p><strong>Salary:</strong> ${vacancy.salaryMin?.toLocaleString()} - ${vacancy.salaryMax?.toLocaleString()} / {vacancy.salaryPeriod === 'monthly' ? 'monthly' : vacancy.salaryPeriod}</p>
+            <p><strong>Employment Type:</strong> {vacancy.employmentType === 'full-time' ? 'Full-time' : vacancy.employmentType}</p>
+            <p><strong>Working Hours:</strong> {vacancy.workingHours}</p>
+            <p><strong>Requirements:</strong> {vacancy.requirements}</p>
+            <p><strong>Description:</strong> {vacancy.description}</p>
+            <p><strong>Contact:</strong> {vacancy.contactPhone} / {vacancy.contactEmail}</p>
           </CardContent>
         </Card>
 
-        <h2 className="text-2xl font-bold mb-4">申請此職位</h2>
+        <h2 className="text-2xl font-bold mb-4">Apply for this position</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="grid sm:grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="firstName">名字</Label>
+              <Label htmlFor="firstName">First Name</Label>
               <Input id="firstName" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} />
             </div>
             <div>
-              <Label htmlFor="lastName">姓氏</Label>
+              <Label htmlFor="lastName">Last Name</Label>
               <Input id="lastName" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
             </div>
           </div>
           <div>
-            <Label htmlFor="phone">電話號碼</Label>
+            <Label htmlFor="phone">Phone Number</Label>
             <Input id="phone" required value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
           </div>
           <div>
-            <Label htmlFor="email">電郵</Label>
+            <Label htmlFor="email">Email</Label>
             <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
           </div>
           <div>
-            <Label htmlFor="message">訊息</Label>
+            <Label htmlFor="message">Message</Label>
             <Textarea id="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
           </div>
-          <Button type="submit">提交申請</Button>
+          <Button type="submit">Submit Application</Button>
         </form>
       </main>
       <Footer />

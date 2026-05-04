@@ -30,4 +30,5 @@ export interface Vacancy {
   imageUrl: string;
   createdAt: string;
   expiresAt: string;
+  createdBy: number;
 }

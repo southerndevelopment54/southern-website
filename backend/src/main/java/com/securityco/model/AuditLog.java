@@ -3,6 +3,10 @@ package com.securityco.model;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.util.Map;
 
 import java.time.LocalDateTime;
 
@@ -32,10 +36,11 @@ public class AuditLog {
     @JoinColumn(name = "admin_user_id")
     private AdminUser adminUser;
 
-    @Column(columnDefinition = "JSONB")
-    private String details;
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(columnDefinition = "jsonb")
+    private Map<String, Object> details;
 
-    @Column(name = "ip_address", columnDefinition = "inet")
+    @Column(name = "ip_address", length = 45)
     private String ipAddress;
 
     @CreationTimestamp

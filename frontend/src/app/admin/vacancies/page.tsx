@@ -49,6 +49,8 @@ export default function AdminVacanciesPage() {
               <th className="text-left px-4 py-3 font-medium">類型</th>
               <th className="text-left px-4 py-3 font-medium">地區</th>
               <th className="text-left px-4 py-3 font-medium">地點</th>
+              <th className="text-left px-4 py-3 font-medium">到期日</th>
+              <th className="text-left px-4 py-3 font-medium">建立者</th>
               <th className="text-left px-4 py-3 font-medium">狀態</th>
               <th className="text-right px-4 py-3 font-medium">操作</th>
             </tr>
@@ -60,6 +62,8 @@ export default function AdminVacanciesPage() {
                 <td className="px-4 py-3">{v.guardType.typeName}</td>
                 <td className="px-4 py-3">{v.district.districtName}</td>
                 <td className="px-4 py-3">{v.locationDescription}</td>
+                <td className="px-4 py-3">{v.expiresAt}</td>
+                <td className="px-4 py-3">{v.createdBy || '-'}</td>
                 <td className="px-4 py-3">
                   {v.isActive ? <Badge>生效中</Badge> : <Badge variant="secondary">已停用</Badge>}
                 </td>
@@ -73,7 +77,7 @@ export default function AdminVacanciesPage() {
             ))}
             {vacancies.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-muted-foreground">
+                <td colSpan={8} className="px-4 py-6 text-center text-muted-foreground">
                   暫無職位空缺。
                 </td>
               </tr>

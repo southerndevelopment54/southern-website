@@ -55,7 +55,7 @@ public class ApplicantSubmission {
     @Column(length = 20)
     private String status;
 
-    @Column(name = "ip_address", columnDefinition = "inet")
+    @Column(name = "ip_address", length = 45)
     private String ipAddress;
 
     @CreationTimestamp
