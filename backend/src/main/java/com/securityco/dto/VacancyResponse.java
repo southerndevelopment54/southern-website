@@ -24,7 +24,9 @@ public class VacancyResponse {
     private String contactEmail;
     private Boolean isActive;
     private Boolean isFeatured;
+    private String imageKey;
     private String imageUrl;
+    private Integer createdBy;
     private LocalDateTime createdAt;
     private LocalDate expiresAt;
 

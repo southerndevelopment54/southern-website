@@ -4,6 +4,7 @@ import com.securityco.dto.LoginRequest;
 import com.securityco.dto.LoginResponse;
 import com.securityco.model.AdminUser;
 import com.securityco.repository.AdminUserRepository;
+import com.securityco.security.AdminUserDetails;
 import com.securityco.security.AdminUserDetailsService;
 import com.securityco.security.JwtService;
 import lombok.RequiredArgsConstructor;
@@ -37,5 +38,18 @@ public class AuthService {
         adminUserRepository.save(admin);
 
         return new LoginResponse(accessToken, refreshToken, 900);
+    }
+
+    public LoginResponse refresh(String refreshToken) {
+        String username = jwtService.extractUsername(refreshToken);
+        UserDetails userDetails = adminUserDetailsService.loadUserByUsername(username);
+
+        if (!jwtService.isTokenValid(refreshToken, userDetails)) {
+            throw new IllegalArgumentException("Invalid refresh token");
+        }
+
+        String newAccessToken = jwtService.generateAccessToken(userDetails);
+        String newRefreshToken = jwtService.generateRefreshToken(userDetails);
+        return new LoginResponse(newAccessToken, newRefreshToken, 900);
     }
 }

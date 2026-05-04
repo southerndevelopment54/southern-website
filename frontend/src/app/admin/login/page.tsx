@@ -19,10 +19,10 @@ export default function AdminLoginPage() {
     e.preventDefault();
     try {
       await login({ username, password });
-      toast({ title: "Login successful" });
+      toast({ title: "登入成功" });
       router.push("/admin/dashboard");
     } catch {
-      toast({ title: "Login failed", description: "Invalid credentials", variant: "destructive" });
+      toast({ title: "登入失敗", description: "帳號或密碼錯誤", variant: "destructive" });
     }
   };
 
@@ -30,19 +30,19 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center px-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Admin Login</CardTitle>
+          <CardTitle className="text-2xl text-center">後台登入</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">帳號</Label>
               <Input id="username" value={username} onChange={(e) => setUsername(e.target.value)} required />
             </div>
             <div>
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password">密碼</Label>
               <Input id="password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
             </div>
-            <Button type="submit" className="w-full">Sign In</Button>
+            <Button type="submit" className="w-full">登入</Button>
           </form>
         </CardContent>
       </Card>

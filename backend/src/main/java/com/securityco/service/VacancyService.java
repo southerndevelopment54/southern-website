@@ -8,11 +8,13 @@ import com.securityco.model.Vacancy;
 import com.securityco.repository.DistrictRepository;
 import com.securityco.repository.SecurityGuardTypeRepository;
 import com.securityco.repository.VacancyRepository;
+import com.securityco.security.AdminUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -68,6 +70,12 @@ public class VacancyService {
         mapRequestToEntity(request, vacancy);
         vacancy.setIsActive(true);
         vacancy.setCreatedAt(java.time.LocalDateTime.now());
+
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof AdminUserDetails user) {
+            vacancy.setCreatedBy(user.getId());
+        }
+
         return toResponse(vacancyRepository.save(vacancy));
     }
 
@@ -105,6 +113,7 @@ public class VacancyService {
         vacancy.setContactEmail(request.getContactEmail());
         vacancy.setIsFeatured(request.getIsFeatured());
         vacancy.setImageKey(request.getImageKey());
+        vacancy.setExpiresAt(request.getExpiresAt());
         vacancy.setUpdatedAt(java.time.LocalDateTime.now());
     }
 
@@ -124,6 +133,8 @@ public class VacancyService {
         response.setContactEmail(vacancy.getContactEmail());
         response.setIsActive(vacancy.getIsActive());
         response.setIsFeatured(vacancy.getIsFeatured());
+        response.setImageKey(vacancy.getImageKey());
+        response.setCreatedBy(vacancy.getCreatedBy());
         response.setCreatedAt(vacancy.getCreatedAt());
         response.setExpiresAt(vacancy.getExpiresAt());
 

@@ -1,9 +1,11 @@
 import axios from "axios";
+import { useAuthStore } from "@/store/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8080";
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
+const baseURL = API_URL ? `${API_URL}/api` : "/api";
 
 export const api = axios.create({
-  baseURL: `${API_URL}/api`,
+  baseURL,
   headers: {
     "Content-Type": "application/json",
   },
@@ -19,9 +21,16 @@ api.interceptors.request.use((config) => {
 
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      localStorage.removeItem("accessToken");
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const refreshed = await useAuthStore.getState().refresh();
+      if (refreshed) {
+        const token = localStorage.getItem("accessToken");
+        originalRequest.headers.Authorization = `Bearer ${token}`;
+        return api(originalRequest);
+      }
       window.location.href = "/admin/login";
     }
     return Promise.reject(error);

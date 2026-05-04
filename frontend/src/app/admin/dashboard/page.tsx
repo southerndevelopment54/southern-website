@@ -22,15 +22,15 @@ export default function AdminDashboardPage() {
   }, []);
 
   return (
-    <div className="p-6 max-w-7xl mx-auto">
+    <div>
       <div className="flex justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <h1 className="text-3xl font-bold">儀表板</h1>
         <div className="space-x-2">
           <Link href="/admin/vacancies">
-            <Button variant="outline">Manage Vacancies</Button>
+            <Button variant="outline">管理職位空缺</Button>
           </Link>
           <Link href="/admin/submissions">
-            <Button variant="outline">Manage Submissions</Button>
+            <Button variant="outline">管理申請紀錄</Button>
           </Link>
         </div>
       </div>
@@ -38,7 +38,7 @@ export default function AdminDashboardPage() {
       <div className="grid md:grid-cols-4 gap-6 mb-8">
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Vacancies</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">職位空缺總數</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats?.totalVacancies ?? 0}</div>
@@ -46,7 +46,7 @@ export default function AdminDashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium text-muted-foreground">Active Vacancies</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">生效中的空缺</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats?.activeVacancies ?? 0}</div>
@@ -54,7 +54,7 @@ export default function AdminDashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium text-muted-foreground">Total Submissions</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">申請總數</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats?.totalSubmissions ?? 0}</div>
@@ -62,7 +62,7 @@ export default function AdminDashboardPage() {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle className="text-sm font-medium text-muted-foreground">New This Week</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">本週新申請</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-3xl font-bold">{stats?.newSubmissionsThisWeek ?? 0}</div>
@@ -70,7 +70,7 @@ export default function AdminDashboardPage() {
         </Card>
       </div>
 
-      <h2 className="text-xl font-bold mb-4">Submissions by Status</h2>
+      <h2 className="text-xl font-bold mb-4">申請狀態分佈</h2>
       <div className="grid md:grid-cols-5 gap-4">
         {stats && Object.entries(stats.submissionsByStatus).map(([status, count]) => (
           <Card key={status}>

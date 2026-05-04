@@ -26,4 +26,5 @@ public class VacancyRequest {
     private String contactEmail;
     private Boolean isFeatured;
     private String imageKey;
+    private LocalDate expiresAt;
 }

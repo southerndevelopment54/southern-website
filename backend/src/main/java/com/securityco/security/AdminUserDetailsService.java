@@ -4,7 +4,6 @@ import com.securityco.model.AdminUser;
 import com.securityco.repository.AdminUserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -27,7 +26,8 @@ public class AdminUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("User is inactive: " + username);
         }
 
-        return new User(
+        return new AdminUserDetails(
+                admin.getId(),
                 admin.getUsername(),
                 admin.getPasswordHash(),
                 List.of(new SimpleGrantedAuthority("ROLE_ADMIN"))

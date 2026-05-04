@@ -26,6 +26,7 @@ export interface Vacancy {
   contactEmail: string;
   isActive: boolean;
   isFeatured: boolean;
+  imageKey: string;
   imageUrl: string;
   createdAt: string;
   expiresAt: string;

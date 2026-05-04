@@ -1,7 +1,9 @@
 package com.securityco.service;
 
 import com.securityco.config.MinioConfig;
+import io.minio.BucketExistsArgs;
 import io.minio.GetPresignedObjectUrlArgs;
+import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
@@ -22,6 +24,9 @@ public class MinioService {
 
     @SneakyThrows
     public String uploadFile(MultipartFile file, String folder) {
+        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioConfig.getBucketName()).build())) {
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(minioConfig.getBucketName()).build());
+        }
         String objectName = folder + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
         minioClient.putObject(
                 PutObjectArgs.builder()
