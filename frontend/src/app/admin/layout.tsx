@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import Link from "next/link";
@@ -11,15 +11,29 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { isAuthenticated, logout } = useAuthStore();
+  const { isAuthenticated, logout, hydrate } = useAuthStore();
   const router = useRouter();
   const pathname = usePathname();
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    if (!isAuthenticated && pathname !== "/admin/login") {
+    hydrate();
+    setChecking(false);
+  }, [hydrate]);
+
+  useEffect(() => {
+    if (!checking && !isAuthenticated && pathname !== "/admin/login") {
       router.push("/admin/login");
     }
-  }, [isAuthenticated, pathname, router]);
+  }, [isAuthenticated, pathname, router, checking]);
+
+  if (checking) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="text-muted-foreground">載入中...</div>
+      </div>
+    );
+  }
 
   if (!isAuthenticated && pathname !== "/admin/login") return null;
 

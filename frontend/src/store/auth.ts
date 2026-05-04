@@ -6,15 +6,30 @@ interface AuthState {
   token: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  hydrated: boolean;
   login: (data: LoginRequest) => Promise<void>;
   logout: () => void;
   refresh: () => Promise<boolean>;
+  hydrate: () => void;
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  token: typeof window !== "undefined" ? localStorage.getItem("accessToken") : null,
-  refreshToken: typeof window !== "undefined" ? localStorage.getItem("refreshToken") : null,
-  isAuthenticated: typeof window !== "undefined" ? !!localStorage.getItem("accessToken") : false,
+  token: null,
+  refreshToken: null,
+  isAuthenticated: false,
+  hydrated: false,
+
+  hydrate: () => {
+    if (typeof window === "undefined") return;
+    const token = localStorage.getItem("accessToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    set({
+      token,
+      refreshToken,
+      isAuthenticated: !!token,
+      hydrated: true,
+    });
+  },
 
   login: async (data: LoginRequest) => {
     const res = await api.post<LoginResponse>("/auth/login", data);

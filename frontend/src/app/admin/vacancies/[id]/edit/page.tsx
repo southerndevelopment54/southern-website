@@ -104,6 +104,19 @@ export default function EditVacancyPage() {
       toast({ title: "錯誤", description: "請填寫所有必填欄位（職位描述除外）", variant: "destructive" });
       return;
     }
+    const today = new Date().toISOString().split("T")[0];
+    if (form.startDate <= today) {
+      toast({ title: "錯誤", description: "開始日期必須晚於今天", variant: "destructive" });
+      return;
+    }
+    if (form.expiresAt <= today) {
+      toast({ title: "錯誤", description: "截止日期必須晚於今天", variant: "destructive" });
+      return;
+    }
+    if (form.expiresAt < form.startDate) {
+      toast({ title: "錯誤", description: "截止日期必須等於或晚於開始日期", variant: "destructive" });
+      return;
+    }
     try {
       await api.put(`/admin/vacancies/${id}`, {
         ...form,

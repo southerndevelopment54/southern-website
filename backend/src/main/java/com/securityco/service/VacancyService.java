@@ -33,6 +33,7 @@ public class VacancyService {
 
     @Transactional(readOnly = true)
     public Page<VacancyResponse> listActiveVacancies(Integer districtId, Integer guardTypeId, Pageable pageable) {
+        deactivateExpiredVacancies();
         Specification<Vacancy> spec = (root, query, cb) -> {
             var predicates = cb.and(cb.equal(root.get("isActive"), true));
             if (districtId != null) {
@@ -61,11 +62,13 @@ public class VacancyService {
 
     @Transactional(readOnly = true)
     public Page<VacancyResponse> listAllVacancies(Pageable pageable) {
+        deactivateExpiredVacancies();
         return vacancyRepository.findAll(pageable).map(this::toResponse);
     }
 
     @Transactional
     public VacancyResponse createVacancy(VacancyRequest request) {
+        validateDates(request);
         Vacancy vacancy = new Vacancy();
         mapRequestToEntity(request, vacancy);
         vacancy.setIsActive(true);
@@ -81,6 +84,7 @@ public class VacancyService {
 
     @Transactional
     public VacancyResponse updateVacancy(Integer id, VacancyRequest request) {
+        validateDates(request);
         Vacancy vacancy = vacancyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vacancy not found"));
         mapRequestToEntity(request, vacancy);
@@ -90,6 +94,31 @@ public class VacancyService {
     @Transactional
     public void deleteVacancy(Integer id) {
         vacancyRepository.deleteById(id);
+    }
+
+    private void validateDates(VacancyRequest request) {
+        LocalDate today = LocalDate.now();
+        if (request.getStartDate() != null && !request.getStartDate().isAfter(today)) {
+            throw new IllegalArgumentException("開始日期必須晚於今天");
+        }
+        if (request.getExpiresAt() != null && !request.getExpiresAt().isAfter(today)) {
+            throw new IllegalArgumentException("截止日期必須晚於今天");
+        }
+        if (request.getStartDate() != null && request.getExpiresAt() != null
+                && request.getExpiresAt().isBefore(request.getStartDate())) {
+            throw new IllegalArgumentException("截止日期必須等於或晚於開始日期");
+        }
+    }
+
+    private void deactivateExpiredVacancies() {
+        vacancyRepository.findAll().stream()
+                .filter(v -> Boolean.TRUE.equals(v.getIsActive())
+                        && v.getExpiresAt() != null
+                        && v.getExpiresAt().isBefore(LocalDate.now()))
+                .forEach(v -> {
+                    v.setIsActive(false);
+                    vacancyRepository.save(v);
+                });
     }
 
     private void mapRequestToEntity(VacancyRequest request, Vacancy vacancy) {
