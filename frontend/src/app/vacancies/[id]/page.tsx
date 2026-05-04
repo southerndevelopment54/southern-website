@@ -38,7 +38,7 @@ export default function VacancyDetailPage() {
       });
       toast({ title: "Application submitted successfully!" });
       setForm({ firstName: "", lastName: "", phoneNumber: "", email: "", message: "" });
-    } catch (err) {
+    } catch {
       toast({ title: "Submission failed", description: "Please try again.", variant: "destructive" });
     }
   };

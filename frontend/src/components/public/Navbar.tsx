@@ -2,69 +2,52 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Menu, X, Shield } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Menu, X } from "lucide-react";
+
+const navLinks = [
+  { href: "/", label: "首頁" },
+  { href: "#", label: "關於我們" },
+  { href: "#", label: "服務範圍" },
+  { href: "#", label: "職位空缺" },
+  { href: "#", label: "聯絡我們" },
+];
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  const navLinks = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/services", label: "Services" },
-    { href: "/vacancies", label: "Vacancies" },
-    { href: "/contact", label: "Contact" },
-  ];
-
   return (
-    <nav className="bg-slate-900 text-white">
+    <nav className="bg-purple text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          <div className="flex items-center space-x-2">
-            <Shield className="h-6 w-6" />
-            <Link href="/" className="text-xl font-bold">
-              Security Co
-            </Link>
-          </div>
-          <div className="hidden md:flex space-x-4">
+        <div className="flex items-center justify-between h-12">
+          <div className="hidden md:flex items-center space-x-1">
             {navLinks.map((link) => (
               <Link
-                key={link.href}
+                key={link.label}
                 href={link.href}
-                className="hover:text-slate-300 px-3 py-2 rounded-md text-sm font-medium"
+                className="px-4 py-2 text-sm font-medium hover:bg-white/10 rounded-md transition-colors"
               >
                 {link.label}
               </Link>
             ))}
-            <Link href="/admin/login">
-              <Button variant="outline" size="sm" className="text-white border-white hover:bg-white hover:text-slate-900">
-                Admin
-              </Button>
-            </Link>
           </div>
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            <button onClick={() => setIsOpen(!isOpen)} className="p-2">
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </button>
           </div>
         </div>
       </div>
       {isOpen && (
-        <div className="md:hidden px-2 pb-3 space-y-1">
+        <div className="md:hidden px-4 pb-3 space-y-1">
           {navLinks.map((link) => (
             <Link
-              key={link.href}
+              key={link.label}
               href={link.href}
-              className="block px-3 py-2 rounded-md text-base font-medium hover:bg-slate-800"
+              className="block px-4 py-2 text-sm font-medium hover:bg-white/10 rounded-md"
             >
               {link.label}
             </Link>
           ))}
-          <Link href="/admin/login" className="block px-3 py-2">
-            <Button variant="outline" size="sm" className="w-full text-white border-white">
-              Admin
-            </Button>
-          </Link>
         </div>
       )}
     </nav>

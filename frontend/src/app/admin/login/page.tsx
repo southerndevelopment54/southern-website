@@ -21,7 +21,7 @@ export default function AdminLoginPage() {
       await login({ username, password });
       toast({ title: "Login successful" });
       router.push("/admin/dashboard");
-    } catch (err) {
+    } catch {
       toast({ title: "Login failed", description: "Invalid credentials", variant: "destructive" });
     }
   };

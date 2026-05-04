@@ -1,0 +1,14 @@
+target/
+.git/
+.idea/
+*.md
+Dockerfile*
+.dockerignore
+src/test/
+.mvn/
+mvnw
+mvnw.cmd
+*.log
+.env
+.env.*
+.DS_Store
