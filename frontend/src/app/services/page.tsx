@@ -5,63 +5,62 @@ import { Shield, Users, Clock, Headphones, MapPin, Crosshair } from "lucide-reac
 const services = [
   {
     icon: Shield,
-    title: "Residential Security",
-    desc: "24/7 guard services for residential buildings and estates with access control, visitor management, and regular patrols to ensure resident safety.",
+    title: "住宅保安",
+    desc: "為住宅大廈及屋苑提供24/7保安服務，包括出入管理、訪客登記及定期巡邏，確保住客安全。",
   },
   {
     icon: Users,
-    title: "Commercial Security",
-    desc: "Professional security for office buildings, shopping malls, and commercial premises including access control, surveillance, and emergency response.",
+    title: "商業保安",
+    desc: "為辦公大樓、商場及商業物業提供專業保安服務，包括出入管理、監控及緊急應變。",
   },
   {
     icon: Shield,
-    title: "Retail Security",
-    desc: "Guard duty at shopping malls and retail stores with loss prevention, customer safety, and asset protection services.",
+    title: "零售保安",
+    desc: "為商場及零售店舖提供保安服務，包括防損、顧客安全及資產保護。",
   },
   {
     icon: Clock,
-    title: "Event Security",
-    desc: "Crowd control and security management for events, functions, and special occasions of any scale across Hong Kong.",
+    title: "活動保安",
+    desc: "為全港各類活動、宴會及特別場合提供人群管理及保安服務，不論規模大小。",
   },
   {
     icon: Crosshair,
-    title: "Bodyguard / Personal Protection",
-    desc: "Close protection services for VIP clients requiring personal security detail with highly trained executive protection officers.",
+    title: "保鏢 / 個人保護",
+    desc: "為需要個人安全保護的貴賓客戶提供近身保護服務，由高度訓練的行政保護人員執行。",
   },
   {
     icon: Headphones,
-    title: "Control Room Operator",
-    desc: "24/7 CCTV monitoring and alarm systems management from our central control room with rapid incident response.",
+    title: "控制室操作員",
+    desc: "在我們的中央控制室提供24/7閉路電視監控及警報系統管理，並作快速事故應變。",
   },
   {
     icon: MapPin,
-    title: "Mobile Patrol Guard",
-    desc: "Regular patrols across multiple sites by our mobile security teams providing flexible and cost-effective coverage.",
+    title: "流動巡邏保安",
+    desc: "由我們的流動保安隊伍在多個地點進行定期巡邏，提供靈活且具成本效益的覆蓋。",
   },
   {
     icon: Shield,
-    title: "Security Supervisor",
-    desc: "Experienced supervisors to oversee security operations, manage guard teams, and ensure compliance with protocols.",
+    title: "保安主管",
+    desc: "經驗豐富的保安主管負責監督保安運作、管理保安團隊及確保符合協議規定。",
   },
 ];
 
 export default function ServicesPage() {
   return (
     <PublicLayout>
-      <PageBanner title="Our Services" subtitle="Comprehensive security solutions for every need" />
+      <PageBanner title="我們的服務" subtitle="為各種需求提供全面的保安方案" />
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="text-center mb-12">
             <p className="text-sm font-medium mb-3 tracking-wide uppercase" style={{ color: "#51db3d" }}>
-              What We Offer
+              我們的服務
             </p>
             <h2 className="text-3xl md:text-4xl font-bold mb-4" style={{ color: "#1a2447" }}>
-              Professional Security Services
+              專業保安服務
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              We provide a full range of security services tailored to meet the unique 
-              requirements of residential, commercial, and retail clients across Hong Kong.
+              我們提供全面的保安服務，量身訂製以滿足住宅、商業及零售客戶的獨特需求。
             </p>
           </div>
 

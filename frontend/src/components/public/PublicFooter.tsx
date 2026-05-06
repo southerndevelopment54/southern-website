@@ -12,12 +12,11 @@ export default function PublicFooter() {
           {/* Company Info */}
           <div className="md:col-span-2">
             <h3 className="text-xl font-bold mb-4">
-              Southern Security Services
+              南方保安服務
             </h3>
             <p className="text-white/70 text-sm leading-relaxed mb-4">
-              Professional security services provider in Hong Kong. We deliver
-              trusted protection for residential, commercial, and retail
-              properties across all districts.
+              香港專業保安服務供應商，為住宅、商業及零售物業提供可靠的保安保障，
+              服務遍及全港各區。
             </p>
             <div className="space-y-2 text-sm">
               <div className="flex items-center gap-2 text-white/70">
@@ -34,21 +33,21 @@ export default function PublicFooter() {
               </div>
               <div className="flex items-center gap-2 text-white/70">
                 <Clock className="w-4 h-4" style={{ color: "#51db3d" }} />
-                <span>Mon - Sat 09:00 - 18:00</span>
+                <span>星期一至六 09:00 - 18:00</span>
               </div>
             </div>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">Quick Links</h4>
+            <h4 className="font-semibold mb-4 text-white">快速連結</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link
                   href="/"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Home
+                  首頁
                 </Link>
               </li>
               <li>
@@ -56,7 +55,7 @@ export default function PublicFooter() {
                   href="/about"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  About Us
+                  關於我們
                 </Link>
               </li>
               <li>
@@ -64,7 +63,7 @@ export default function PublicFooter() {
                   href="/services"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Services
+                  服務
                 </Link>
               </li>
               <li>
@@ -72,7 +71,7 @@ export default function PublicFooter() {
                   href="/vacancies"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Vacancies
+                  職位空缺
                 </Link>
               </li>
               <li>
@@ -80,7 +79,7 @@ export default function PublicFooter() {
                   href="/contact"
                   className="text-white/70 hover:text-white transition-colors"
                 >
-                  Contact
+                  聯絡我們
                 </Link>
               </li>
             </ul>
@@ -88,13 +87,13 @@ export default function PublicFooter() {
 
           {/* Services */}
           <div>
-            <h4 className="font-semibold mb-4 text-white">Our Services</h4>
+            <h4 className="font-semibold mb-4 text-white">我們的服務</h4>
             <ul className="space-y-2 text-sm text-white/70">
-              <li>Residential Security</li>
-              <li>Commercial Security</li>
-              <li>Event Security</li>
-              <li>Bodyguard Services</li>
-              <li>CCTV Monitoring</li>
+              <li>住宅保安</li>
+              <li>商業保安</li>
+              <li>活動保安</li>
+              <li>保鏢服務</li>
+              <li>閉路電視監控</li>
             </ul>
           </div>
         </div>
@@ -103,13 +102,13 @@ export default function PublicFooter() {
       {/* Bottom bar */}
       <div className="border-t border-white/10">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-4 flex flex-col md:flex-row justify-between items-center text-xs text-white/50">
-          <p>© 2026 Southern Security Services. All rights reserved.</p>
+          <p>© 2026 南方保安服務有限公司。保留所有權利。</p>
           <div className="flex gap-4 mt-2 md:mt-0">
             <span className="hover:text-white cursor-pointer transition-colors">
-              Privacy Policy
+              私隱政策
             </span>
             <span className="hover:text-white cursor-pointer transition-colors">
-              Terms of Service
+              服務條款
             </span>
           </div>
         </div>

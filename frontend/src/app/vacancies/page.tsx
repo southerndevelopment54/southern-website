@@ -34,17 +34,17 @@ export default function VacanciesPage() {
 
   return (
     <PublicLayout>
-      <PageBanner title="Job Vacancies" subtitle="Find your next career opportunity with us" />
+      <PageBanner title="職位空缺" subtitle="與我們一起尋找您的下一個事業機會" />
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <div className="flex flex-col sm:flex-row gap-4 mb-8">
             <Select value={districtId} onValueChange={setDistrictId}>
               <SelectTrigger className="w-full sm:w-[250px]">
-                <SelectValue placeholder="Filter by district" />
+                <SelectValue placeholder="按地區篩選" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Districts</SelectItem>
+                <SelectItem value="all">所有地區</SelectItem>
                 {districts.map((d) => (
                   <SelectItem key={d.id} value={String(d.id)}>
                     {d.districtName}
@@ -54,10 +54,10 @@ export default function VacanciesPage() {
             </Select>
             <Select value={guardTypeId} onValueChange={setGuardTypeId}>
               <SelectTrigger className="w-full sm:w-[250px]">
-                <SelectValue placeholder="Filter by guard type" />
+                <SelectValue placeholder="按職位類型篩選" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="all">所有類型</SelectItem>
                 {guardTypes.map((g) => (
                   <SelectItem key={g.id} value={String(g.id)}>
                     {g.typeName}
@@ -81,13 +81,13 @@ export default function VacanciesPage() {
                     </div>
                   ) : (
                     <div className="h-48 w-full flex items-center justify-center" style={{ backgroundColor: "#1a2447" }}>
-                      <span className="text-white/50 text-sm">No image</span>
+                      <span className="text-white/50 text-sm">暫無圖片</span>
                     </div>
                   )}
                   <CardContent className="p-5">
                     <div className="flex justify-between items-start mb-3">
                       <h3 className="font-bold text-lg" style={{ color: "#1a2447" }}>{v.guardType.typeName}</h3>
-                      {v.isFeatured && <Badge style={{ backgroundColor: "#51db3d" }}>Featured</Badge>}
+                      {v.isFeatured && <Badge style={{ backgroundColor: "#51db3d" }}>精選</Badge>}
                     </div>
                     <div className="space-y-2 text-sm text-gray-600">
                       <div className="flex items-center gap-2">
@@ -100,11 +100,11 @@ export default function VacanciesPage() {
                       </div>
                       <div className="flex items-center gap-2">
                         <Calendar className="h-4 w-4" style={{ color: "#51db3d" }} />
-                        <span>Start: {v.startDate}</span>
+                        <span>開始日期：{v.startDate}</span>
                       </div>
                     </div>
                     <div className="mt-4 flex items-center text-sm font-medium" style={{ color: "#1a2447" }}>
-                      View Details
+                      查看詳情
                       <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
                     </div>
                   </CardContent>
@@ -113,8 +113,8 @@ export default function VacanciesPage() {
             ))}
             {vacancies.length === 0 && (
               <div className="col-span-full text-center py-16">
-                <p className="text-gray-500 text-lg">No vacancies available at the moment.</p>
-                <p className="text-gray-400 text-sm mt-2">Please check back later for new opportunities.</p>
+                <p className="text-gray-500 text-lg">暫無職位空缺。</p>
+                <p className="text-gray-400 text-sm mt-2">請稍後再查看新的機會。</p>
               </div>
             )}
           </div>

@@ -20,28 +20,24 @@ export default function HomePage() {
                 className="text-sm font-medium mb-3 tracking-wide uppercase"
                 style={{ color: "#51db3d" }}
               >
-                About Our Company
+                關於我們的公司
               </p>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
-                Trusted Security Services in Hong Kong
+                香港值得信賴的保安服務
               </h2>
               <p className="text-white/70 leading-relaxed mb-6">
-                Southern Security Services has been providing professional
-                security solutions across Hong Kong for over a decade. Our team
-                of licensed security personnel ensures the safety of residential
-                complexes, commercial buildings, retail establishments, and
-                special events.
+                南方保安服務十多年來一直為全香港提供專業的保安方案。我們的持牌保安人員團隊
+                確保住宅大廈、商業樓宇、零售商戶及特別活動的安全。
               </p>
               <p className="text-white/70 leading-relaxed mb-8">
-                We pride ourselves on our rigorous training programs, modern
-                equipment, and commitment to excellence in every assignment.
+                我們以嚴謹的培訓計劃、現代化設備及對每項任務的卓越承諾而自豪。
               </p>
               <Link href="/about">
                 <Button
                   className="text-white font-semibold hover:opacity-90"
                   style={{ backgroundColor: "#51db3d" }}
                 >
-                  Learn More About Us
+                  了解更多關於我們
                 </Button>
               </Link>
             </div>
@@ -52,7 +48,7 @@ export default function HomePage() {
                   style={{ color: "#51db3d" }}
                 />
                 <h3 className="text-white font-bold text-2xl mb-1">500+</h3>
-                <p className="text-white/60 text-sm">Security Guards</p>
+                <p className="text-white/60 text-sm">保安員</p>
               </div>
               <div className="bg-white/10 p-6 rounded-lg text-center">
                 <Users
@@ -60,7 +56,7 @@ export default function HomePage() {
                   style={{ color: "#51db3d" }}
                 />
                 <h3 className="text-white font-bold text-2xl mb-1">200+</h3>
-                <p className="text-white/60 text-sm">Clients Served</p>
+                <p className="text-white/60 text-sm">服務客戶</p>
               </div>
               <div className="bg-white/10 p-6 rounded-lg text-center">
                 <MapPin
@@ -68,7 +64,7 @@ export default function HomePage() {
                   style={{ color: "#51db3d" }}
                 />
                 <h3 className="text-white font-bold text-2xl mb-1">18</h3>
-                <p className="text-white/60 text-sm">Districts Covered</p>
+                <p className="text-white/60 text-sm">覆蓋地區</p>
               </div>
               <div className="bg-white/10 p-6 rounded-lg text-center">
                 <Award
@@ -76,7 +72,7 @@ export default function HomePage() {
                   style={{ color: "#51db3d" }}
                 />
                 <h3 className="text-white font-bold text-2xl mb-1">15+</h3>
-                <p className="text-white/60 text-sm">Years Experience</p>
+                <p className="text-white/60 text-sm">年經驗</p>
               </div>
             </div>
           </div>
@@ -91,17 +87,16 @@ export default function HomePage() {
               className="text-sm font-medium mb-3 tracking-wide uppercase"
               style={{ color: "#51db3d" }}
             >
-              What We Offer
+              我們的服務
             </p>
             <h2
               className="text-3xl md:text-4xl font-bold mb-4"
               style={{ color: "#1a2447" }}
             >
-              Our Security Services
+              專業保安服務
             </h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Comprehensive security solutions tailored to meet the unique
-              needs of every client and environment.
+              全面的保安方案，量身訂製以滿足每位客戶及每個環境的獨特需求。
             </p>
           </div>
 
@@ -109,33 +104,33 @@ export default function HomePage() {
             {[
               {
                 icon: Shield,
-                title: "Residential Security",
-                desc: "24/7 guard services for residential buildings and estates with access control and patrols.",
+                title: "住宅保安",
+                desc: "為住宅大廈及屋苑提供24/7保安服務，包括出入管理及巡邏。",
               },
               {
                 icon: Users,
-                title: "Commercial Security",
-                desc: "Professional security for office buildings, shopping malls, and commercial premises.",
+                title: "商業保安",
+                desc: "為辦公大樓、商場及商業物業提供專業保安服務。",
               },
               {
                 icon: Clock,
-                title: "Event Security",
-                desc: "Crowd control and security management for events, functions, and special occasions.",
+                title: "活動保安",
+                desc: "為活動、宴會及特別場合提供人群管理及保安服務。",
               },
               {
                 icon: Shield,
-                title: "Bodyguard Services",
-                desc: "Close protection services for VIP clients requiring personal security detail.",
+                title: "保鏢服務",
+                desc: "為需要個人安全保護的貴賓客戶提供近身保護服務。",
               },
               {
                 icon: Headphones,
-                title: "Control Room Monitoring",
-                desc: "24/7 CCTV monitoring and alarm response from our central control room.",
+                title: "控制室監控",
+                desc: "在我們的中央控制室提供24/7閉路電視監控及警報應對。",
               },
               {
                 icon: MapPin,
-                title: "Mobile Patrol",
-                desc: "Regular patrols across multiple sites by our mobile security teams.",
+                title: "流動巡邏",
+                desc: "由我們的流動保安隊伍在多個地點進行定期巡邏。",
               },
             ].map((service, i) => (
               <div
@@ -168,7 +163,7 @@ export default function HomePage() {
                 className="font-semibold"
                 style={{ borderColor: "#1a2447", color: "#1a2447" }}
               >
-                View All Services
+                查看所有服務
               </Button>
             </Link>
           </div>
@@ -179,11 +174,10 @@ export default function HomePage() {
       <section style={{ backgroundColor: "#1a2447" }} className="py-16 md:py-20">
         <div className="max-w-7xl mx-auto px-4 md:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
-            Ready to Secure Your Property?
+            準備好保障您的物業了嗎？
           </h2>
           <p className="text-white/70 max-w-2xl mx-auto mb-8">
-            Contact us today for a free consultation and discover how our
-            security solutions can protect what matters most to you.
+            立即聯絡我們免費諮詢，了解我們的保安方案如何保護對您最重要的一切。
           </p>
           <div className="flex gap-4 justify-center">
             <Link href="/contact">
@@ -191,7 +185,7 @@ export default function HomePage() {
                 className="text-white font-semibold hover:opacity-90 px-8"
                 style={{ backgroundColor: "#51db3d" }}
               >
-                Contact Us
+                聯絡我們
               </Button>
             </Link>
             <Link href="/vacancies">
@@ -199,7 +193,7 @@ export default function HomePage() {
                 variant="outline"
                 className="text-white border-white hover:bg-white/10 px-8"
               >
-                View Vacancies
+                查看職位空缺
               </Button>
             </Link>
           </div>

@@ -6,8 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Security Co - Hong Kong Security Services",
-  description: "Professional security services in Hong Kong",
+  title: "南方保安服務 - 香港專業保安服務",
+  description: "香港專業保安服務供應商，提供住宅、商業及零售保安服務",
 };
 
 export default function RootLayout({
@@ -16,7 +16,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="zh-Hant">
       <body className={inter.className}>
         {children}
         <Toaster />

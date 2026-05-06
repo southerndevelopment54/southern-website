@@ -11,7 +11,7 @@ export default function MainHeader() {
         <div className="flex items-center">
           <Image
             src="/images/hero/southern_service_logo.png"
-            alt="Southern Security Services"
+            alt="南方保安服務"
             width={200}
             height={60}
             className="h-12 w-auto object-contain"
@@ -29,7 +29,7 @@ export default function MainHeader() {
               <Phone className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Phone</p>
+              <p className="text-xs text-gray-500">電話</p>
               <p className="font-semibold" style={{ color: "#1a2447" }}>
                 +852 2123 4567
               </p>
@@ -43,7 +43,7 @@ export default function MainHeader() {
               <Mail className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Email</p>
+              <p className="text-xs text-gray-500">電郵</p>
               <p className="font-semibold" style={{ color: "#1a2447" }}>
                 info@southernsec.com
               </p>
@@ -57,9 +57,9 @@ export default function MainHeader() {
               <Clock className="w-4 h-4 text-white" />
             </div>
             <div>
-              <p className="text-xs text-gray-500">Working Hours</p>
+              <p className="text-xs text-gray-500">辦公時間</p>
               <p className="font-semibold" style={{ color: "#1a2447" }}>
-                Mon - Sat 09:00 - 18:00
+                星期一至六 09:00 - 18:00
               </p>
             </div>
           </div>

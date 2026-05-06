@@ -6,21 +6,21 @@ import Link from "next/link";
 
 const slides = [
   {
-    description: "Professional Security Services",
-    title: "Protecting What Matters Most",
-    button: "Learn More",
+    description: "專業保安服務",
+    title: "守護您最珍視的一切",
+    button: "了解更多",
     link: "/about",
   },
   {
-    description: "Join Our Team",
-    title: "Exciting Career Opportunities",
-    button: "View Vacancies",
+    description: "加入我們的團隊",
+    title: "精彩的事業發展機會",
+    button: "查看職位空缺",
     link: "/vacancies",
   },
   {
-    description: "24/7 Support",
-    title: "Your Safety Is Our Priority",
-    button: "Contact Us",
+    description: "全天候支援",
+    title: "您的安全是我們的首要任務",
+    button: "聯絡我們",
     link: "/contact",
   },
 ];

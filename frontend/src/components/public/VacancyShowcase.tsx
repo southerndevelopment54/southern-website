@@ -30,11 +30,11 @@ export default function VacancyShowcase() {
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-end mb-8">
           <div>
-            <h2 className="text-3xl font-bold mb-2">Latest Vacancies</h2>
-            <p className="text-muted-foreground">Explore our current job openings.</p>
+            <h2 className="text-3xl font-bold mb-2">最新職位空缺</h2>
+            <p className="text-muted-foreground">探索我們目前的職位空缺。</p>
           </div>
           <Link href="/vacancies" className="text-primary font-medium flex items-center gap-1 hover:underline">
-            View all <ArrowRight className="h-4 w-4" />
+            查看全部 <ArrowRight className="h-4 w-4" />
           </Link>
         </div>
 
@@ -52,7 +52,7 @@ export default function VacancyShowcase() {
                   </div>
                 ) : (
                   <div className="h-40 w-full bg-slate-200 flex items-center justify-center">
-                    <span className="text-slate-400 text-sm">No image</span>
+                    <span className="text-slate-400 text-sm">暫無圖片</span>
                   </div>
                 )}
                 <CardContent className="p-4">

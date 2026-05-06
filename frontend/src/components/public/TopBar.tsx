@@ -23,8 +23,8 @@ export default function TopBar() {
           }}
         />
         <div className="flex gap-4 ml-4">
-          <span className="hover:underline cursor-pointer">FAQ</span>
-          <span className="hover:underline cursor-pointer">Support</span>
+          <span className="hover:underline cursor-pointer">常見問題</span>
+          <span className="hover:underline cursor-pointer">支援</span>
         </div>
       </div>
     </div>

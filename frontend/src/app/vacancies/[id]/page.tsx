@@ -36,10 +36,10 @@ export default function VacancyDetailPage() {
         vacancyId: Number(id),
         ...form,
       });
-      toast({ title: "Application submitted successfully!" });
+      toast({ title: "申請已成功提交！" });
       setForm({ firstName: "", lastName: "", phoneNumber: "", email: "", message: "" });
     } catch {
-      toast({ title: "Submission failed", description: "Please try again.", variant: "destructive" });
+      toast({ title: "提交失敗", description: "請稍後再試。", variant: "destructive" });
     }
   };
 
@@ -47,7 +47,7 @@ export default function VacancyDetailPage() {
     return (
       <PublicLayout>
         <div className="flex-grow flex items-center justify-center py-20">
-          <p className="text-gray-500 text-lg">Loading...</p>
+          <p className="text-gray-500 text-lg">載入中...</p>
         </div>
       </PublicLayout>
     );
@@ -61,7 +61,7 @@ export default function VacancyDetailPage() {
         <div className="max-w-7xl mx-auto px-4 md:px-8">
           <Link href="/vacancies" className="inline-flex items-center text-sm font-medium mb-8 hover:underline" style={{ color: "#1a2447" }}>
             <ArrowLeft className="h-4 w-4 mr-1" />
-            Back to vacancies
+            返回職位列表
           </Link>
 
           <div className="grid lg:grid-cols-3 gap-8">
@@ -77,20 +77,20 @@ export default function VacancyDetailPage() {
                 </div>
               )}
 
-              <h2 className="text-2xl font-bold mb-6" style={{ color: "#1a2447" }}>Job Details</h2>
+              <h2 className="text-2xl font-bold mb-6" style={{ color: "#1a2447" }}>職位詳情</h2>
 
               <div className="grid sm:grid-cols-2 gap-4 mb-8">
                 <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
                   <Calendar className="h-5 w-5" style={{ color: "#51db3d" }} />
                   <div>
-                    <p className="text-xs text-gray-500">Start Date</p>
+                    <p className="text-xs text-gray-500">開始日期</p>
                     <p className="font-medium" style={{ color: "#1a2447" }}>{vacancy.startDate}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
                   <DollarSign className="h-5 w-5" style={{ color: "#51db3d" }} />
                   <div>
-                    <p className="text-xs text-gray-500">Salary</p>
+                    <p className="text-xs text-gray-500">薪金</p>
                     <p className="font-medium" style={{ color: "#1a2447" }}>
                       ${vacancy.salaryMin?.toLocaleString()} - ${vacancy.salaryMax?.toLocaleString()} / {vacancy.salaryPeriod}
                     </p>
@@ -99,14 +99,14 @@ export default function VacancyDetailPage() {
                 <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
                   <Clock className="h-5 w-5" style={{ color: "#51db3d" }} />
                   <div>
-                    <p className="text-xs text-gray-500">Employment Type</p>
+                    <p className="text-xs text-gray-500">僱傭類型</p>
                     <p className="font-medium" style={{ color: "#1a2447" }}>{vacancy.employmentType}</p>
                   </div>
                 </div>
                 <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
                   <MapPin className="h-5 w-5" style={{ color: "#51db3d" }} />
                   <div>
-                    <p className="text-xs text-gray-500">Location</p>
+                    <p className="text-xs text-gray-500">工作地點</p>
                     <p className="font-medium" style={{ color: "#1a2447" }}>{vacancy.district.districtName}</p>
                   </div>
                 </div>
@@ -114,19 +114,19 @@ export default function VacancyDetailPage() {
 
               <div className="space-y-6">
                 <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Description</h3>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>職位描述</h3>
                   <p className="text-gray-600 leading-relaxed">{vacancy.description}</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Requirements</h3>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>入職要求</h3>
                   <p className="text-gray-600 leading-relaxed">{vacancy.requirements}</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Working Hours</h3>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>工作時間</h3>
                   <p className="text-gray-600 leading-relaxed">{vacancy.workingHours}</p>
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Contact</h3>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>聯絡方式</h3>
                   <div className="flex gap-4">
                     <div className="flex items-center gap-2 text-gray-600">
                       <Phone className="h-4 w-4" style={{ color: "#51db3d" }} />
@@ -144,28 +144,28 @@ export default function VacancyDetailPage() {
             {/* Application Form */}
             <div>
               <div className="p-6 rounded-lg border border-gray-100 shadow-sm sticky top-32">
-                <h3 className="text-xl font-bold mb-6" style={{ color: "#1a2447" }}>Apply Now</h3>
+                <h3 className="text-xl font-bold mb-6" style={{ color: "#1a2447" }}>立即申請</h3>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <Label htmlFor="firstName">First Name</Label>
+                      <Label htmlFor="firstName">名字</Label>
                       <Input id="firstName" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} />
                     </div>
                     <div>
-                      <Label htmlFor="lastName">Last Name</Label>
+                      <Label htmlFor="lastName">姓氏</Label>
                       <Input id="lastName" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
                     </div>
                   </div>
                   <div>
-                    <Label htmlFor="phone">Phone Number</Label>
+                    <Label htmlFor="phone">電話號碼</Label>
                     <Input id="phone" required value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
                   </div>
                   <div>
-                    <Label htmlFor="email">Email</Label>
+                    <Label htmlFor="email">電郵</Label>
                     <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
                   </div>
                   <div>
-                    <Label htmlFor="message">Message</Label>
+                    <Label htmlFor="message">訊息</Label>
                     <Textarea id="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
                   </div>
                   <Button
@@ -173,7 +173,7 @@ export default function VacancyDetailPage() {
                     className="w-full text-white font-semibold hover:opacity-90"
                     style={{ backgroundColor: "#51db3d" }}
                   >
-                    Submit Application
+                    提交申請
                   </Button>
                 </form>
               </div>

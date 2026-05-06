@@ -4,11 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/services", label: "Services" },
-  { href: "/vacancies", label: "Vacancies" },
-  { href: "/contact", label: "Contact" },
+  { href: "/", label: "首頁" },
+  { href: "/about", label: "關於我們" },
+  { href: "/services", label: "服務" },
+  { href: "/vacancies", label: "職位空缺" },
+  { href: "/contact", label: "聯絡我們" },
 ];
 
 export default function NavBar() {
