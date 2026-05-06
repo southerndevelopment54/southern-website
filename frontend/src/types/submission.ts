@@ -12,6 +12,11 @@ export interface Submission {
   licenseNumber?: string;
   message?: string;
   status: string;
+  ipAddress?: string;
+  userAgent?: string;
+  adminNotes?: string;
+  reviewedBy?: number;
+  reviewedAt?: string;
   createdAt: string;
 }
 

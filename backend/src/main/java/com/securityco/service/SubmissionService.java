@@ -3,16 +3,20 @@ package com.securityco.service;
 import com.securityco.dto.DashboardStats;
 import com.securityco.dto.SubmissionRequest;
 import com.securityco.dto.SubmissionResponse;
+import com.securityco.model.AdminUser;
 import com.securityco.model.ApplicantSubmission;
 import com.securityco.model.EducationLevel;
 import com.securityco.model.Vacancy;
+import com.securityco.repository.AdminUserRepository;
 import com.securityco.repository.ApplicantSubmissionRepository;
 import com.securityco.repository.EducationLevelRepository;
 import com.securityco.repository.VacancyRepository;
+import com.securityco.security.AdminUserDetails;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,9 +31,10 @@ public class SubmissionService {
     private final ApplicantSubmissionRepository submissionRepository;
     private final VacancyRepository vacancyRepository;
     private final EducationLevelRepository educationLevelRepository;
+    private final AdminUserRepository adminUserRepository;
 
     @Transactional
-    public SubmissionResponse createSubmission(SubmissionRequest request, String ipAddress) {
+    public SubmissionResponse createSubmission(SubmissionRequest request, String ipAddress, String userAgent) {
         Vacancy vacancy = vacancyRepository.findById(request.getVacancyId())
                 .orElseThrow(() -> new EntityNotFoundException("Vacancy not found"));
 
@@ -45,6 +50,7 @@ public class SubmissionService {
         submission.setMessage(request.getMessage());
         submission.setStatus("new");
         submission.setIpAddress(ipAddress);
+        submission.setUserAgent(userAgent);
         submission.setCreatedAt(LocalDateTime.now());
 
         if (request.getEducationLevelId() != null) {
@@ -69,11 +75,20 @@ public class SubmissionService {
     }
 
     @Transactional
-    public SubmissionResponse updateStatus(Integer id, String status) {
+    public SubmissionResponse updateStatus(Integer id, String status, String adminNotes) {
         ApplicantSubmission submission = submissionRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Submission not found"));
         submission.setStatus(status);
+        submission.setAdminNotes(adminNotes);
         submission.setUpdatedAt(LocalDateTime.now());
+
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.getPrincipal() instanceof AdminUserDetails user) {
+            AdminUser reviewer = adminUserRepository.findById(user.getId()).orElse(null);
+            submission.setReviewedBy(reviewer);
+            submission.setReviewedAt(LocalDateTime.now());
+        }
+
         return toResponse(submissionRepository.save(submission));
     }
 
@@ -116,6 +131,13 @@ public class SubmissionService {
         response.setLicenseNumber(submission.getLicenseNumber());
         response.setMessage(submission.getMessage());
         response.setStatus(submission.getStatus());
+        response.setIpAddress(submission.getIpAddress());
+        response.setUserAgent(submission.getUserAgent());
+        response.setAdminNotes(submission.getAdminNotes());
+        if (submission.getReviewedBy() != null) {
+            response.setReviewedBy(submission.getReviewedBy().getId());
+        }
+        response.setReviewedAt(submission.getReviewedAt());
         response.setCreatedAt(submission.getCreatedAt());
         if (submission.getEducationLevel() != null) {
             response.setEducationLevel(submission.getEducationLevel().getLevelName());

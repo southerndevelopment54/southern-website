@@ -19,5 +19,10 @@ public class SubmissionResponse {
     private String licenseNumber;
     private String message;
     private String status;
+    private String ipAddress;
+    private String userAgent;
+    private String adminNotes;
+    private Integer reviewedBy;
+    private LocalDateTime reviewedAt;
     private LocalDateTime createdAt;
 }

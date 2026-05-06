@@ -55,8 +55,21 @@ public class ApplicantSubmission {
     @Column(length = 20)
     private String status;
 
+    @Column(name = "admin_notes", columnDefinition = "TEXT")
+    private String adminNotes;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "reviewed_by")
+    private AdminUser reviewedBy;
+
+    @Column(name = "reviewed_at")
+    private LocalDateTime reviewedAt;
+
     @Column(name = "ip_address", length = 45)
     private String ipAddress;
+
+    @Column(name = "user_agent", columnDefinition = "TEXT")
+    private String userAgent;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

@@ -35,6 +35,7 @@ public class SubmissionController {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
                     .body("Rate limit exceeded. Please wait 1 minute before submitting again.");
         }
-        return ResponseEntity.ok(submissionService.createSubmission(request, ip));
+        String userAgent = httpRequest.getHeader("User-Agent");
+        return ResponseEntity.ok(submissionService.createSubmission(request, ip, userAgent));
     }
 }

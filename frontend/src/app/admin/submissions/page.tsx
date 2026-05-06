@@ -7,10 +7,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
 
 export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selected, setSelected] = useState<Submission | null>(null);
+  const [adminNotes, setAdminNotes] = useState("");
 
   const fetchSubmissions = () => {
     api.get("/admin/submissions").then((res) => {
@@ -24,8 +27,10 @@ export default function AdminSubmissionsPage() {
 
   const handleStatus = async (id: number, status: string) => {
     try {
-      await api.put(`/admin/submissions/${id}/status?status=${status}`);
+      await api.put(`/admin/submissions/${id}/status?status=${status}&adminNotes=${encodeURIComponent(adminNotes)}`);
       toast({ title: "狀態已更新" });
+      setAdminNotes("");
+      setSelected(null);
       fetchSubmissions();
     } catch {
       toast({ title: "錯誤", variant: "destructive" });
@@ -40,6 +45,17 @@ export default function AdminSubmissionsPage() {
       fetchSubmissions();
     } catch {
       toast({ title: "錯誤", variant: "destructive" });
+    }
+  };
+
+  const statusLabel = (status: string) => {
+    switch (status) {
+      case "new": return "新申請";
+      case "reviewed": return "已審閱";
+      case "contacted": return "已聯絡";
+      case "hired": return "已聘用";
+      case "rejected": return "已拒絕";
+      default: return status;
     }
   };
 
@@ -66,11 +82,10 @@ export default function AdminSubmissionsPage() {
                 <td className="px-4 py-3">{s.vacancyTitle}</td>
                 <td className="px-4 py-3">{s.phoneNumber}</td>
                 <td className="px-4 py-3">
-                  <Badge variant={s.status === "new" ? "default" : "secondary"}>{s.status}</Badge>
+                  <Badge variant={s.status === "new" ? "default" : "secondary"}>{statusLabel(s.status)}</Badge>
                 </td>
                 <td className="px-4 py-3 text-right space-x-2">
-                  <Button size="sm" variant="outline" onClick={() => setSelected(s)}>查看</Button>
-                  <Button size="sm" variant="outline" onClick={() => handleStatus(s.id, "reviewed")}>標記已審閱</Button>
+                  <Button size="sm" variant="outline" onClick={() => { setSelected(s); setAdminNotes(s.adminNotes || ""); }}>查看</Button>
                   <Button size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>刪除</Button>
                 </td>
               </tr>
@@ -86,22 +101,47 @@ export default function AdminSubmissionsPage() {
         </table>
       </div>
 
-      <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent>
+      <Dialog open={!!selected} onOpenChange={() => { setSelected(null); setAdminNotes(""); }}>
+        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>申請詳情</DialogTitle>
+            <DialogTitle>申請詳情 #{selected?.id}</DialogTitle>
           </DialogHeader>
           {selected && (
-            <div className="space-y-2 text-sm">
-              <p><strong>姓名:</strong> {selected.firstName} {selected.lastName}</p>
-              <p><strong>電話:</strong> {selected.phoneNumber}</p>
-              <p><strong>電郵:</strong> {selected.email || "-"}</p>
-              <p><strong>職位:</strong> {selected.vacancyTitle}</p>
-              <p><strong>經驗:</strong> {selected.yearsOfExperience ?? 0} 年</p>
+            <div className="space-y-3 text-sm">
+              <div className="grid grid-cols-2 gap-2">
+                <p><strong>姓名:</strong> {selected.firstName} {selected.lastName}</p>
+                <p><strong>電話:</strong> {selected.phoneNumber}</p>
+                <p><strong>電郵:</strong> {selected.email || "-"}</p>
+                <p><strong>職位:</strong> {selected.vacancyTitle}</p>
+                <p><strong>經驗:</strong> {selected.yearsOfExperience ?? 0} 年</p>
+                <p><strong>學歷:</strong> {selected.educationLevel || "-"}</p>
+              </div>
               <p><strong>保安牌照:</strong> {selected.hasSecurityLicense ? "有" : "無"} {selected.licenseNumber ? `(${selected.licenseNumber})` : ""}</p>
-              <p><strong>學歷:</strong> {selected.educationLevel || "-"}</p>
               <p><strong>訊息:</strong> {selected.message || "-"}</p>
-              <p><strong>狀態:</strong> {selected.status}</p>
+              <p><strong>狀態:</strong> {statusLabel(selected.status)}</p>
+              <p><strong>IP 地址:</strong> {selected.ipAddress || "-"}</p>
+              <p><strong>User-Agent:</strong> <span className="text-xs text-muted-foreground break-all">{selected.userAgent || "-"}</span></p>
+              {selected.reviewedAt && (
+                <p><strong>審閱時間:</strong> {selected.reviewedAt}</p>
+              )}
+
+              <div className="pt-2 border-t">
+                <Label htmlFor="adminNotes">管理員備註</Label>
+                <Textarea
+                  id="adminNotes"
+                  rows={3}
+                  value={adminNotes}
+                  onChange={(e) => setAdminNotes(e.target.value)}
+                  placeholder="輸入備註..."
+                />
+              </div>
+
+              <div className="flex flex-wrap gap-2 pt-2">
+                <Button size="sm" onClick={() => handleStatus(selected.id, "reviewed")}>標記已審閱</Button>
+                <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "contacted")}>標記已聯絡</Button>
+                <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "hired")}>標記已聘用</Button>
+                <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "rejected")}>標記已拒絕</Button>
+              </div>
             </div>
           )}
         </DialogContent>

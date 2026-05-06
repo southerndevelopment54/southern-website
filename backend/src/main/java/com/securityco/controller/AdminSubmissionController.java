@@ -31,8 +31,8 @@ public class AdminSubmissionController {
     }
 
     @PutMapping("/{id}/status")
-    public ResponseEntity<SubmissionResponse> updateStatus(@PathVariable Integer id, @RequestParam String status, HttpServletRequest httpRequest) {
-        SubmissionResponse response = submissionService.updateStatus(id, status);
+    public ResponseEntity<SubmissionResponse> updateStatus(@PathVariable Integer id, @RequestParam String status, @RequestParam(required = false) String adminNotes, HttpServletRequest httpRequest) {
+        SubmissionResponse response = submissionService.updateStatus(id, status, adminNotes);
         auditLogService.log("UPDATE_STATUS", "submission", id, Map.of("status", status), getIp(httpRequest));
         return ResponseEntity.ok(response);
     }
