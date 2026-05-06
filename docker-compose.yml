@@ -3,9 +3,9 @@ services:
     image: postgres:16
     container_name: postgres-db
     environment:
-      POSTGRES_DB: postgres
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: 1Ll0calPost9res
+      POSTGRES_DB: ${DB_NAME:-postgres}
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-1Ll0calPost9res}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
@@ -37,3 +37,28 @@ services:
       - "8200:8200"
     volumes:
       - /home/southern-tech-workstation/vault-data:/vault/file
+
+  vault-seed:
+    image: hashicorp/vault:1.15
+    container_name: vault-seed
+    depends_on:
+      - vault
+    environment:
+      VAULT_ADDR: http://vault:8200
+      VAULT_TOKEN: dev-token
+    entrypoint: ["/bin/sh", "-c"]
+    command: |
+      sleep 3
+      vault kv put secret/security-co jwt.secret="local-dev-jwt-secret-key-must-be-at-least-512-bits-long-change-for-production"
+      echo "Vault seeded successfully."
+    restart: "no"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-local
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

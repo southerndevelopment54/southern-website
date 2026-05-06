@@ -5,9 +5,9 @@ spring:
   application:
     name: security-co
   datasource:
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: postgres
-    password: 1Ll0calPost9res
+    url: jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:postgres}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:1Ll0calPost9res}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -25,7 +25,7 @@ spring:
       max-request-size: 10MB
   cloud:
     vault:
-      enabled: ${VAULT_ENABLED:false}
+      enabled: ${VAULT_ENABLED:true}
       uri: ${VAULT_ADDR:http://localhost:8200}
       token: ${VAULT_TOKEN:dev-token}
       kv:
