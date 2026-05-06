@@ -27,3 +27,5 @@ build/
 
 # Docker volumes
 docker-volumes/
+
+Initial-plan.md
