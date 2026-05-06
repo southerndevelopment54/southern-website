@@ -1,14 +1,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import PublicLayout from "@/components/public/PublicLayout";
+import PageBanner from "@/components/public/PageBanner";
 import { api } from "@/lib/api";
 import { Vacancy } from "@/types/vacancy";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MapPin, Calendar, DollarSign, ArrowRight } from "lucide-react";
 
 export default function VacanciesPage() {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
@@ -32,68 +33,93 @@ export default function VacanciesPage() {
   }, [districtId, guardTypeId]);
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow max-w-6xl mx-auto px-4 py-12 w-full">
-        <h1 className="text-3xl font-bold mb-8">Job Vacancies</h1>
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <Select value={districtId} onValueChange={setDistrictId}>
-            <SelectTrigger className="w-full sm:w-[250px]">
-              <SelectValue placeholder="Filter by district" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Districts</SelectItem>
-              {districts.map((d) => (
-                <SelectItem key={d.id} value={String(d.id)}>
-                  {d.districtName}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-          <Select value={guardTypeId} onValueChange={setGuardTypeId}>
-            <SelectTrigger className="w-full sm:w-[250px]">
-              <SelectValue placeholder="Filter by guard type" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Types</SelectItem>
-              {guardTypes.map((g) => (
-                <SelectItem key={g.id} value={String(g.id)}>
-                  {g.typeName}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
+    <PublicLayout>
+      <PageBanner title="Job Vacancies" subtitle="Find your next career opportunity with us" />
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {vacancies.map((v) => (
-            <Card key={v.id}>
-              <CardHeader>
-                <div className="flex justify-between items-start">
-                  <CardTitle className="text-lg">{v.guardType.typeName}</CardTitle>
-                  {v.isFeatured && <Badge>Featured</Badge>}
-                </div>
-                <p className="text-sm text-muted-foreground">
-                  {v.district.districtName} &middot; {v.locationDescription}
-                </p>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm mb-2">
-                  Salary: ${v.salaryMin?.toLocaleString()} - ${v.salaryMax?.toLocaleString()} / {v.salaryPeriod === 'monthly' ? 'monthly' : v.salaryPeriod}
-                </p>
-                <p className="text-sm text-muted-foreground line-clamp-2">{v.description}</p>
-                <Link href={`/vacancies/${v.id}`} className="text-primary text-sm font-medium mt-4 inline-block">
-                  View Details & Apply
-                </Link>
-              </CardContent>
-            </Card>
-          ))}
-          {vacancies.length === 0 && (
-            <p className="text-muted-foreground col-span-2 text-center py-10">No vacancies available.</p>
-          )}
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <Select value={districtId} onValueChange={setDistrictId}>
+              <SelectTrigger className="w-full sm:w-[250px]">
+                <SelectValue placeholder="Filter by district" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Districts</SelectItem>
+                {districts.map((d) => (
+                  <SelectItem key={d.id} value={String(d.id)}>
+                    {d.districtName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+            <Select value={guardTypeId} onValueChange={setGuardTypeId}>
+              <SelectTrigger className="w-full sm:w-[250px]">
+                <SelectValue placeholder="Filter by guard type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                {guardTypes.map((g) => (
+                  <SelectItem key={g.id} value={String(g.id)}>
+                    {g.typeName}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {vacancies.map((v) => (
+              <Link key={v.id} href={`/vacancies/${v.id}`}>
+                <Card className="h-full hover:shadow-lg transition-shadow overflow-hidden group">
+                  {v.imageUrl ? (
+                    <div className="h-48 w-full overflow-hidden">
+                      <img
+                        src={v.imageUrl}
+                        alt={v.guardType.typeName}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                  ) : (
+                    <div className="h-48 w-full flex items-center justify-center" style={{ backgroundColor: "#1a2447" }}>
+                      <span className="text-white/50 text-sm">No image</span>
+                    </div>
+                  )}
+                  <CardContent className="p-5">
+                    <div className="flex justify-between items-start mb-3">
+                      <h3 className="font-bold text-lg" style={{ color: "#1a2447" }}>{v.guardType.typeName}</h3>
+                      {v.isFeatured && <Badge style={{ backgroundColor: "#51db3d" }}>Featured</Badge>}
+                    </div>
+                    <div className="space-y-2 text-sm text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-4 w-4" style={{ color: "#51db3d" }} />
+                        <span>{v.district.districtName} &middot; {v.locationDescription}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <DollarSign className="h-4 w-4" style={{ color: "#51db3d" }} />
+                        <span>${v.salaryMin?.toLocaleString()} - ${v.salaryMax?.toLocaleString()} / {v.salaryPeriod}</span>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Calendar className="h-4 w-4" style={{ color: "#51db3d" }} />
+                        <span>Start: {v.startDate}</span>
+                      </div>
+                    </div>
+                    <div className="mt-4 flex items-center text-sm font-medium" style={{ color: "#1a2447" }}>
+                      View Details
+                      <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                    </div>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+            {vacancies.length === 0 && (
+              <div className="col-span-full text-center py-16">
+                <p className="text-gray-500 text-lg">No vacancies available at the moment.</p>
+                <p className="text-gray-400 text-sm mt-2">Please check back later for new opportunities.</p>
+              </div>
+            )}
+          </div>
         </div>
-      </main>
-      <Footer />
-    </div>
+      </section>
+    </PublicLayout>
   );
 }

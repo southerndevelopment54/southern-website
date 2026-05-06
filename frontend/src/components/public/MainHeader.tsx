@@ -1,47 +1,66 @@
 "use client";
 
+import { Phone, Mail, Clock } from "lucide-react";
 import Image from "next/image";
-import { Mail, Phone, Clock } from "lucide-react";
 
 export default function MainHeader() {
   return (
-    <div className="bg-white border-b border-gray-100">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between">
-          {/* Logo + Company Info */}
-          <div className="flex items-center gap-4">
-            <div className="relative w-16 h-16 flex-shrink-0">
-              <Image
-                src="/images/hero/southern_service_logo.png"
-                alt="Southern Service Logo"
-                fill
-                className="object-contain"
-                priority
-              />
+    <div className="w-full bg-white py-4 px-4 md:px-8">
+      <div className="max-w-7xl mx-auto flex items-center justify-between">
+        {/* Logo */}
+        <div className="flex items-center">
+          <Image
+            src="/images/hero/southern_service_logo.png"
+            alt="Southern Security Services"
+            width={200}
+            height={60}
+            className="h-12 w-auto object-contain"
+            priority
+          />
+        </div>
+
+        {/* Contact Details */}
+        <div className="hidden md:flex items-center gap-6 text-sm text-gray-700">
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#1a2447" }}
+            >
+              <Phone className="w-4 h-4 text-white" />
             </div>
             <div>
-              <h1 className="text-2xl md:text-3xl font-bold text-purple tracking-tight">
-                Southern Service
-              </h1>
-              <p className="text-sm text-gray-500 mt-0.5">
-                專業保安服務 · 守護您的安全
+              <p className="text-xs text-gray-500">Phone</p>
+              <p className="font-semibold" style={{ color: "#1a2447" }}>
+                +852 2123 4567
               </p>
             </div>
           </div>
-
-          {/* Contact Info */}
-          <div className="hidden md:flex items-center gap-6 text-sm">
-            <div className="flex items-center gap-2 text-gray-600">
-              <Phone className="w-4 h-4 text-green" />
-              <span>+852 2345 6789</span>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#1a2447" }}
+            >
+              <Mail className="w-4 h-4 text-white" />
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
-              <Mail className="w-4 h-4 text-green" />
-              <span>info@southern-service.hk</span>
+            <div>
+              <p className="text-xs text-gray-500">Email</p>
+              <p className="font-semibold" style={{ color: "#1a2447" }}>
+                info@southernsec.com
+              </p>
             </div>
-            <div className="flex items-center gap-2 text-gray-600">
-              <Clock className="w-4 h-4 text-green" />
-              <span>Mon - Sat: 09:00 - 18:00</span>
+          </div>
+          <div className="flex items-center gap-2">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: "#1a2447" }}
+            >
+              <Clock className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-xs text-gray-500">Working Hours</p>
+              <p className="font-semibold" style={{ color: "#1a2447" }}>
+                Mon - Sat 09:00 - 18:00
+              </p>
             </div>
           </div>
         </div>

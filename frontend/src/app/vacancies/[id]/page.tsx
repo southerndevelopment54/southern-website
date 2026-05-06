@@ -2,17 +2,17 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
-import Navbar from "@/components/public/Navbar";
-import Footer from "@/components/public/Footer";
+import PublicLayout from "@/components/public/PublicLayout";
+import PageBanner from "@/components/public/PageBanner";
 import { api } from "@/lib/api";
 import { Vacancy } from "@/types/vacancy";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { MapPin, Calendar, DollarSign, Clock, Phone, Mail, ArrowLeft } from "lucide-react";
 
 export default function VacancyDetailPage() {
   const { id } = useParams();
@@ -43,67 +43,144 @@ export default function VacancyDetailPage() {
     }
   };
 
-  if (!vacancy) return <div className="text-center py-20">Loading...</div>;
+  if (!vacancy) {
+    return (
+      <PublicLayout>
+        <div className="flex-grow flex items-center justify-center py-20">
+          <p className="text-gray-500 text-lg">Loading...</p>
+        </div>
+      </PublicLayout>
+    );
+  }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-grow max-w-4xl mx-auto px-4 py-12 w-full">
-        <Link href="/vacancies" className="text-primary text-sm mb-4 inline-block">
-          &larr; Back to vacancies
-        </Link>
-        <h1 className="text-3xl font-bold mb-2">{vacancy.guardType.typeName}</h1>
-        <p className="text-muted-foreground mb-6">
-          {vacancy.district.districtName} &middot; {vacancy.locationDescription}
-        </p>
+    <PublicLayout>
+      <PageBanner title={vacancy.guardType.typeName} subtitle={`${vacancy.district.districtName} - ${vacancy.locationDescription}`} />
 
-        {vacancy.imageUrl && (
-          <img
-            src={vacancy.imageUrl}
-            alt={vacancy.guardType.typeName}
-            className="w-full h-64 object-cover rounded-lg mb-6"
-          />
-        )}
-        <Card className="mb-8">
-          <CardContent className="p-6 space-y-2">
-            <p><strong>Start Date:</strong> {vacancy.startDate}</p>
-            <p><strong>Salary:</strong> ${vacancy.salaryMin?.toLocaleString()} - ${vacancy.salaryMax?.toLocaleString()} / {vacancy.salaryPeriod === 'monthly' ? 'monthly' : vacancy.salaryPeriod}</p>
-            <p><strong>Employment Type:</strong> {vacancy.employmentType === 'full-time' ? 'Full-time' : vacancy.employmentType}</p>
-            <p><strong>Working Hours:</strong> {vacancy.workingHours}</p>
-            <p><strong>Requirements:</strong> {vacancy.requirements}</p>
-            <p><strong>Description:</strong> {vacancy.description}</p>
-            <p><strong>Contact:</strong> {vacancy.contactPhone} / {vacancy.contactEmail}</p>
-          </CardContent>
-        </Card>
+      <section className="py-16 md:py-24 bg-white">
+        <div className="max-w-7xl mx-auto px-4 md:px-8">
+          <Link href="/vacancies" className="inline-flex items-center text-sm font-medium mb-8 hover:underline" style={{ color: "#1a2447" }}>
+            <ArrowLeft className="h-4 w-4 mr-1" />
+            Back to vacancies
+          </Link>
 
-        <h2 className="text-2xl font-bold mb-4">Apply for this position</h2>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid sm:grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="firstName">First Name</Label>
-              <Input id="firstName" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} />
+          <div className="grid lg:grid-cols-3 gap-8">
+            {/* Job Details */}
+            <div className="lg:col-span-2">
+              {vacancy.imageUrl && (
+                <div className="rounded-lg overflow-hidden mb-8">
+                  <img
+                    src={vacancy.imageUrl}
+                    alt={vacancy.guardType.typeName}
+                    className="w-full h-80 object-cover"
+                  />
+                </div>
+              )}
+
+              <h2 className="text-2xl font-bold mb-6" style={{ color: "#1a2447" }}>Job Details</h2>
+
+              <div className="grid sm:grid-cols-2 gap-4 mb-8">
+                <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
+                  <Calendar className="h-5 w-5" style={{ color: "#51db3d" }} />
+                  <div>
+                    <p className="text-xs text-gray-500">Start Date</p>
+                    <p className="font-medium" style={{ color: "#1a2447" }}>{vacancy.startDate}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
+                  <DollarSign className="h-5 w-5" style={{ color: "#51db3d" }} />
+                  <div>
+                    <p className="text-xs text-gray-500">Salary</p>
+                    <p className="font-medium" style={{ color: "#1a2447" }}>
+                      ${vacancy.salaryMin?.toLocaleString()} - ${vacancy.salaryMax?.toLocaleString()} / {vacancy.salaryPeriod}
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
+                  <Clock className="h-5 w-5" style={{ color: "#51db3d" }} />
+                  <div>
+                    <p className="text-xs text-gray-500">Employment Type</p>
+                    <p className="font-medium" style={{ color: "#1a2447" }}>{vacancy.employmentType}</p>
+                  </div>
+                </div>
+                <div className="flex items-center gap-3 p-4 rounded-lg border border-gray-100">
+                  <MapPin className="h-5 w-5" style={{ color: "#51db3d" }} />
+                  <div>
+                    <p className="text-xs text-gray-500">Location</p>
+                    <p className="font-medium" style={{ color: "#1a2447" }}>{vacancy.district.districtName}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Description</h3>
+                  <p className="text-gray-600 leading-relaxed">{vacancy.description}</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Requirements</h3>
+                  <p className="text-gray-600 leading-relaxed">{vacancy.requirements}</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Working Hours</h3>
+                  <p className="text-gray-600 leading-relaxed">{vacancy.workingHours}</p>
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold mb-2" style={{ color: "#1a2447" }}>Contact</h3>
+                  <div className="flex gap-4">
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Phone className="h-4 w-4" style={{ color: "#51db3d" }} />
+                      <span>{vacancy.contactPhone}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-gray-600">
+                      <Mail className="h-4 w-4" style={{ color: "#51db3d" }} />
+                      <span>{vacancy.contactEmail}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
+
+            {/* Application Form */}
             <div>
-              <Label htmlFor="lastName">Last Name</Label>
-              <Input id="lastName" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
+              <div className="p-6 rounded-lg border border-gray-100 shadow-sm sticky top-32">
+                <h3 className="text-xl font-bold mb-6" style={{ color: "#1a2447" }}>Apply Now</h3>
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="firstName">First Name</Label>
+                      <Input id="firstName" required value={form.firstName} onChange={(e) => setForm({ ...form, firstName: e.target.value })} />
+                    </div>
+                    <div>
+                      <Label htmlFor="lastName">Last Name</Label>
+                      <Input id="lastName" required value={form.lastName} onChange={(e) => setForm({ ...form, lastName: e.target.value })} />
+                    </div>
+                  </div>
+                  <div>
+                    <Label htmlFor="phone">Phone Number</Label>
+                    <Input id="phone" required value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
+                  </div>
+                  <div>
+                    <Label htmlFor="message">Message</Label>
+                    <Textarea id="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
+                  </div>
+                  <Button
+                    type="submit"
+                    className="w-full text-white font-semibold hover:opacity-90"
+                    style={{ backgroundColor: "#51db3d" }}
+                  >
+                    Submit Application
+                  </Button>
+                </form>
+              </div>
             </div>
           </div>
-          <div>
-            <Label htmlFor="phone">Phone Number</Label>
-            <Input id="phone" required value={form.phoneNumber} onChange={(e) => setForm({ ...form, phoneNumber: e.target.value })} />
-          </div>
-          <div>
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-          </div>
-          <div>
-            <Label htmlFor="message">Message</Label>
-            <Textarea id="message" rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-          </div>
-          <Button type="submit">Submit Application</Button>
-        </form>
-      </main>
-      <Footer />
-    </div>
+        </div>
+      </section>
+    </PublicLayout>
   );
 }
