@@ -5,17 +5,17 @@ import Image from "next/image";
 
 export default function MainHeader() {
   return (
-    <div className="w-full bg-white py-4 px-4 md:px-8">
+    <div className="w-full bg-white py-8 px-4 md:px-8">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
         {/* Logo */}
-        <div className="flex items-center">
+        <div className="relative h-24 w-72">
           <Image
             src="/images/hero/southern_service_logo.png"
             alt="南方保安服務"
-            width={200}
-            height={60}
-            className="h-12 w-auto object-contain"
+            fill
+            className="object-contain object-left"
             priority
+            sizes="288px"
           />
         </div>
 
@@ -23,10 +23,10 @@ export default function MainHeader() {
         <div className="hidden md:flex items-center gap-6 text-sm text-gray-700">
           <div className="flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center"
+              className="w-10 h-10 rounded-full flex items-center justify-center"
               style={{ backgroundColor: "#1a2447" }}
             >
-              <Phone className="w-4 h-4 text-white" />
+              <Phone className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500">電話</p>
@@ -37,10 +37,10 @@ export default function MainHeader() {
           </div>
           <div className="flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center"
+              className="w-10 h-10 rounded-full flex items-center justify-center"
               style={{ backgroundColor: "#1a2447" }}
             >
-              <Mail className="w-4 h-4 text-white" />
+              <Mail className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500">電郵</p>
@@ -51,10 +51,10 @@ export default function MainHeader() {
           </div>
           <div className="flex items-center gap-2">
             <div
-              className="w-8 h-8 rounded-full flex items-center justify-center"
+              className="w-10 h-10 rounded-full flex items-center justify-center"
               style={{ backgroundColor: "#1a2447" }}
             >
-              <Clock className="w-4 h-4 text-white" />
+              <Clock className="w-5 h-5 text-white" />
             </div>
             <div>
               <p className="text-xs text-gray-500">辦公時間</p>

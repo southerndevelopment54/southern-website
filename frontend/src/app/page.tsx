@@ -190,8 +190,7 @@ export default function HomePage() {
             </Link>
             <Link href="/vacancies">
               <Button
-                variant="outline"
-                className="text-white border-white hover:bg-white/10 px-8"
+                className="bg-transparent text-white border border-white hover:bg-white/10 px-8"
               >
                 查看職位空缺
               </Button>

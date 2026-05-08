@@ -41,7 +41,7 @@ public class MinioService {
 
     @SneakyThrows
     public String getPresignedUrl(String objectName) {
-        return minioClient.getPresignedObjectUrl(
+        String url = minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .method(Method.GET)
                         .bucket(minioConfig.getBucketName())
@@ -49,5 +49,11 @@ public class MinioService {
                         .expiry(7, TimeUnit.DAYS)
                         .build()
         );
+        // If an external endpoint is configured (e.g., for Docker setups),
+        // replace the internal endpoint host so browsers can resolve the URL.
+        if (minioConfig.getExternalEndpoint() != null && !minioConfig.getExternalEndpoint().isBlank()) {
+            url = url.replace(minioConfig.getEndpoint(), minioConfig.getExternalEndpoint());
+        }
+        return url;
     }
 }

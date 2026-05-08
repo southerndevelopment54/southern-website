@@ -46,12 +46,48 @@ services:
     environment:
       VAULT_ADDR: http://vault:8200
       VAULT_TOKEN: dev-token
-    entrypoint: ["/bin/sh", "-c"]
-    command: |
-      sleep 3
-      vault kv put secret/security-co jwt.secret="local-dev-jwt-secret-key-must-be-at-least-512-bits-long-change-for-production"
-      echo "Vault seeded successfully."
+    command: ["/bin/sh", "-c", "sleep 3 && vault kv put secret/security-co jwt.secret='xzzD1n3v1qO5nWZwXNrxfBl6DdE9o3zWtq3lL6dBmXTIOu+dz5c1BmW0+G0gMtFtaK+4bAxhJOu4C7+GbsfofA==' && echo 'Vault seeded successfully.'"]
     restart: "no"
+
+  backend:
+    build: ./backend
+    container_name: backend-app
+    ports:
+      - "8080:8080"
+    environment:
+      - DB_HOST=postgres
+      - DB_NAME=${DB_NAME:-postgres}
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-1Ll0calPost9res}
+      - MINIO_ENDPOINT=http://minio:9000
+      - MINIO_EXTERNAL_ENDPOINT=http://localhost:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET=security-co
+      - VAULT_ENABLED=true
+      - VAULT_ADDR=http://vault:8200
+      - VAULT_TOKEN=dev-token
+    depends_on:
+      postgres:
+        condition: service_started
+      minio:
+        condition: service_started
+      vault-seed:
+        condition: service_completed_successfully
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        API_URL: http://backend:8080
+    container_name: frontend-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      backend:
+        condition: service_started
 
   nginx:
     image: nginx:alpine
@@ -60,5 +96,8 @@ services:
       - "80:80"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    depends_on:
+      backend:
+        condition: service_started
+      frontend:
+        condition: service_started
