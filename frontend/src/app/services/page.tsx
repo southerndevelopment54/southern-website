@@ -48,7 +48,7 @@ const services = [
 export default function ServicesPage() {
   return (
     <PublicLayout>
-      <PageBanner title="我們的服務" subtitle="為各種需求提供全面的保安方案" />
+      <PageBanner title="我們的服務" subtitle="為各種需求提供全面的保安方案" image="/images/about/guard_assisting.png" />
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">

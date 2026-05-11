@@ -3,15 +3,18 @@
 interface PageBannerProps {
   title: string;
   subtitle?: string;
+  image?: string;
 }
 
-export default function PageBanner({ title, subtitle }: PageBannerProps) {
+export default function PageBanner({ title, subtitle, image }: PageBannerProps) {
   return (
     <div className="relative w-full h-64 md:h-80 overflow-hidden">
-      {/* Background image placeholder */}
+      {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center"
-        style={{ backgroundImage: "url('/images/hero/banner-placeholder.jpg')" }}
+        style={{
+          backgroundImage: `url('${image || "/images/hero/banner-placeholder.jpg"}')`,
+        }}
       />
       {/* Semi-transparent black mask */}
       <div className="absolute inset-0 bg-black/60" />

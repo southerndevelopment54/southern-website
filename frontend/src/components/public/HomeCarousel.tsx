@@ -7,21 +7,24 @@ import Link from "next/link";
 const slides = [
   {
     description: "專業保安服務",
-    title: "守護您最珍視的一切",
+    title: "您的安全 我們的使命",
     button: "了解更多",
     link: "/about",
+    image: "/images/hero/ICC_image.jpg",
   },
   {
     description: "加入我們的團隊",
     title: "精彩的事業發展機會",
     button: "查看職位空缺",
     link: "/vacancies",
+    image: "/images/hero/security_guard_icc.png",
   },
   {
     description: "全天候支援",
-    title: "您的安全是我們的首要任務",
+    title: "您的安全 我們的承諾",
     button: "聯絡我們",
     link: "/contact",
+    image: "/images/hero/security_guard_walkie_talkie.png",
   },
 ];
 
@@ -54,7 +57,7 @@ export default function HomeCarousel() {
           <div
             className="absolute inset-0 bg-cover bg-center"
             style={{
-              backgroundImage: `url('/images/hero/slide-${index + 1}.jpg')`,
+              backgroundImage: `url('${slide.image}')`,
             }}
           />
           {/* Semi-transparent black mask */}
@@ -68,7 +71,7 @@ export default function HomeCarousel() {
               >
                 {slide.description}
               </p>
-              <h2 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight whitespace-nowrap">
                 {slide.title}
               </h2>
               <Link

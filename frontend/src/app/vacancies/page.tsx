@@ -34,7 +34,7 @@ export default function VacanciesPage() {
 
   return (
     <PublicLayout>
-      <PageBanner title="職位空缺" subtitle="與我們一起尋找您的下一個事業機會" />
+      <PageBanner title="職位空缺" subtitle="與我們一起尋找您的下一個事業機會" image="/images/about/security_guard_vacancy.png" />
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">

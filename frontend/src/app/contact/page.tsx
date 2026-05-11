@@ -31,7 +31,7 @@ export default function ContactPage() {
 
   return (
     <PublicLayout>
-      <PageBanner title="聯絡我們" subtitle="與我們的團隊取得聯繫" />
+      <PageBanner title="聯絡我們" subtitle="與我們的團隊取得聯繫" image="/images/about/contact_us.png" />
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">

@@ -5,7 +5,7 @@ import { Shield, Users, Award, Target } from "lucide-react";
 export default function AboutPage() {
   return (
     <PublicLayout>
-      <PageBanner title="關於我們" subtitle="了解更多關於南方保安服務" />
+      <PageBanner title="關於我們" subtitle="了解更多關於南方保安服務" image="/images/about/security_guard_team_residential.png" />
 
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 md:px-8">
