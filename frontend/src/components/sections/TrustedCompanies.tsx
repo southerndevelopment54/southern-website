@@ -1,5 +1,7 @@
 "use client";
 
+import { useI18n } from "@/components/I18nProvider";
+
 const companies = [
   { name: "新鴻基地產", logo: "/images/clients/SHKP.png" },
   { name: "長江實業集團", logo: "/images/clients/CK.png" },
@@ -12,15 +14,17 @@ const companies = [
 ];
 
 export default function TrustedCompanies() {
+  const { t } = useI18n();
+
   return (
     <section className="py-16 md:py-20 bg-off-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <h2 className="text-2xl md:text-3xl font-bold text-dark mb-3">
-            客戶信賴
+            {t.trustedCompanies.title}
           </h2>
           <p className="text-gray-600">
-            深受眾多知名企業及機構信賴
+            {t.trustedCompanies.subtitle}
           </p>
         </div>
 

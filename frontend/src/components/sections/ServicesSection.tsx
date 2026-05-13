@@ -1,78 +1,42 @@
 "use client";
 
 import { Building2, Home, PartyPopper, UserCheck, ShoppingBag, Factory, Car, Phone, Hotel } from "lucide-react";
+import { useI18n } from "@/components/I18nProvider";
 
-const services = [
-  {
-    icon: Building2,
-    image: "/images/skyscarpper.png",
-    title: "商業大廈保安",
-    description: "為寫字樓、商業中心提供門禁管理、巡邏監察及訪客登記等全面保安服務，確保商業環境安全有序。",
-  },
-  {
-    icon: Home,
-    image: "/images/residetial_building_hk.png",
-    title: "住宅保安服務",
-    description: "為私人屋苑、豪宅提供住戶出入管理、訪客控制、停車場管理及緊急事故應變等專業保安服務。",
-  },
-  {
-    icon: PartyPopper,
-    image: "/images/event.png",
-    title: "活動保安管理",
-    description: "為大型活動、展覽、演唱會提供人流控制、場地巡邏及緊急疏散等專業活動保安策劃及執行。",
-  },
-  {
-    icon: UserCheck,
-    image: "/images/personal_body_guard.png",
-    title: "個人護衛服務",
-    description: "為企業高管、名人及有特殊安全需要的個人提供專業貼身護衛，確保人身安全。",
-  },
-  {
-    icon: ShoppingBag,
-    image: "/images/retails_store.png",
-    title: "零售店舖保安",
-    description: "為商場、零售店舖提供防盜監察、顧客服務及緊急應變，保障商戶財產及顧客安全。",
-  },
-  {
-    icon: Factory,
-    image: "/images/warehouse.png",
-    title: "工業設施保安",
-    description: "為工廠、倉庫及物流設施提供出入管制、貨物監察及消防安全巡查等專業保安服務。",
-  },
-  {
-    icon: Car,
-    image: "/images/car_patrol1.png",
-    title: "車隊巡邏服務",
-    description: "配備專業巡邏車隊，於指定區域進行定時及不定時巡邏，確保範圍內安全無虞。",
-  },
-  {
-    icon: Phone,
-    image: "/images/security_report.png",
-    title: "電話報跟服務",
-    description: "提供24小時電話報更及跟進服務，確保保安人員準時到崗及突發事件即時處理。",
-  },
-  {
-    icon: Hotel,
-    image: "/images/hotel_renaissance.png",
-    title: "酒店及商場保安",
-    description: "為酒店、商場及零售物業提供專業禮賓、防盜及人群管理服務，提升顧客體驗。",
-  },
+const icons = [Building2, Home, PartyPopper, UserCheck, ShoppingBag, Factory, Car, Phone, Hotel];
+const images = [
+  "/images/skyscarpper.png",
+  "/images/residetial_building_hk.png",
+  "/images/event.png",
+  "/images/personal_body_guard.png",
+  "/images/retails_store.png",
+  "/images/warehouse.png",
+  "/images/car_patrol1.png",
+  "/images/security_report.png",
+  "/images/hotel_renaissance.png",
 ];
 
 export default function ServicesSection() {
+  const { t } = useI18n();
+  const services = t.services.items.map((item, index) => ({
+    ...item,
+    icon: icons[index],
+    image: images[index],
+  }));
+
   return (
     <section id="services" className="py-20 md:py-28 bg-off-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
           <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-6">
-            服務範圍
+            {t.services.badge}
           </div>
           <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
-            全面保安解決方案
+            {t.services.title}
           </h2>
           <p className="text-gray-600 leading-relaxed">
-            我們提供多元化的專業保安服務，滿足不同客戶的獨特需求，為您的財產及人員提供全方位保護。
+            {t.services.description}
           </p>
         </div>
 

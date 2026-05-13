@@ -10,7 +10,9 @@ export default function ClientsPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <ClientShowcase />
+      <div className="pt-44">
+        <ClientShowcase />
+      </div>
       <Footer />
     </main>
   );

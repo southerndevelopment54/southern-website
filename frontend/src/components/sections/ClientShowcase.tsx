@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Building2, Users, Star } from "lucide-react";
+import { useI18n } from "@/components/I18nProvider";
 
 const clients = [
   { name: "新鴻基地產", abbr: "SHKP", category: "地產發展商", logo: "/images/clients/SHKP.png" },
@@ -19,60 +20,37 @@ const clients = [
 ];
 
 const sites = [
-  {
-    name: "環球貿易廣場 (ICC)",
-    location: "九龍柯士甸道西1號",
-    image: "/images/sites/icc.jpg",
-  },
-  {
-    name: "國際金融中心 (IFC)",
-    location: "中環金融街8號",
-    image: "/images/sites/IFC.jpg",
-  },
-  {
-    name: "海港城",
-    location: "尖沙咀廣東道",
-    image: "/images/sites/harbour%20city.jpg",
-  },
-  {
-    name: "時代廣場",
-    location: "銅鑼灣勿地臣街1號",
-    image: "/images/sites/time%20square.jpeg",
-  },
-  {
-    name: "太古廣場",
-    location: "金鐘金鐘道88號",
-    image: "/images/sites/pacific%20place.jpg",
-  },
-  {
-    name: "圓方 (Elements)",
-    location: "尖沙咀柯士甸道西1號",
-    image: "/images/sites/elements.png",
-  },
-];
-
-const tabs = [
-  { id: "clients", label: "合作客戶", icon: Users },
-  { id: "sites", label: "重點項目", icon: Building2 },
+  { name: "環球貿易廣場 (ICC)", location: "九龍柯士甸道西1號", image: "/images/sites/icc.jpg" },
+  { name: "國際金融中心 (IFC)", location: "中環金融街8號", image: "/images/sites/IFC.jpg" },
+  { name: "海港城", location: "尖沙咀廣東道", image: "/images/sites/harbour%20city.jpg" },
+  { name: "時代廣場", location: "銅鑼灣勿地臣街1號", image: "/images/sites/time%20square.jpeg" },
+  { name: "太古廣場", location: "金鐘金鐘道88號", image: "/images/sites/pacific%20place.jpg" },
+  { name: "圓方 (Elements)", location: "尖沙咀柯士甸道西1號", image: "/images/sites/elements.png" },
 ];
 
 export default function ClientShowcase() {
+  const { t } = useI18n();
   const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
 
+  const tabs = [
+    { id: "clients" as const, label: t.clientShowcase.tabClients, icon: Users },
+    { id: "sites" as const, label: t.clientShowcase.tabSites, icon: Building2 },
+  ];
+
   return (
-    <section className="pt-32 pb-20 md:pb-28 bg-light min-h-screen">
+    <section className="py-20 md:py-28 bg-light min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Page Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-6">
             <Star className="w-4 h-4" />
-            實力見證
+            {t.clientShowcase.badge}
           </div>
           <h1 className="text-3xl md:text-4xl font-bold text-dark mb-4">
-            客戶及重點項目
+            {t.clientShowcase.title}
           </h1>
           <p className="text-gray-600 leading-relaxed">
-            多年來，南方警衛為眾多知名企業及地標項目提供專業保安服務，實力深受業界認可。
+            {t.clientShowcase.description}
           </p>
         </div>
 
@@ -82,7 +60,7 @@ export default function ClientShowcase() {
             {tabs.map((tab) => (
               <button
                 key={tab.id}
-                onClick={() => setActiveTab(tab.id as "clients" | "sites")}
+                onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center gap-2 px-6 py-3 rounded-lg text-sm font-semibold transition-all duration-200 ${
                   activeTab === tab.id
                     ? "bg-dark text-white shadow-md"

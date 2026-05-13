@@ -1,35 +1,38 @@
 "use client";
 
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
-
-const contactDetails = [
-  {
-    icon: Phone,
-    label: "電話",
-    value: "+852 2762 8128",
-    href: "tel:+85227628128",
-  },
-  {
-    icon: Mail,
-    label: "電郵",
-    value: "info@southern-security.hk",
-    href: "mailto:info@southern-security.hk",
-  },
-  {
-    icon: MapPin,
-    label: "地址",
-    value: "新蒲崗五芳街10號新寶中心19樓1907室",
-    href: "#",
-  },
-  {
-    icon: Clock,
-    label: "辦公時間",
-    value: "星期一至五 09:00 - 18:00",
-    href: "#",
-  },
-];
+import { useI18n } from "@/components/I18nProvider";
 
 export default function GetInTouch() {
+  const { t } = useI18n();
+
+  const contactDetails = [
+    {
+      icon: Phone,
+      label: t.contact.phone,
+      value: "+852 2762 8128",
+      href: "tel:+85227628128",
+    },
+    {
+      icon: Mail,
+      label: t.contact.email,
+      value: "info@southern-security.hk",
+      href: "mailto:info@southern-security.hk",
+    },
+    {
+      icon: MapPin,
+      label: t.contact.address,
+      value: "新蒲崗五芳街10號新寶中心19樓1907室",
+      href: "#",
+    },
+    {
+      icon: Clock,
+      label: t.contact.hours,
+      value: t.contact.officeHours,
+      href: "#",
+    },
+  ];
+
   return (
     <section id="contact" className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -39,7 +42,7 @@ export default function GetInTouch() {
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
               <img
                 src="/images/phone_holding.png"
-                alt="聯絡我們"
+                alt={t.contact.badge}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -48,13 +51,13 @@ export default function GetInTouch() {
           {/* Right - Contact Details */}
           <div>
             <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-6">
-              聯絡我們
+              {t.contact.badge}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-dark mb-4">
-              立即聯絡我們
+              {t.contact.title}
             </h2>
             <p className="text-gray-600 leading-relaxed mb-10">
-              無論您有任何保安服務需求或疑問，我們的專業團隊隨時為您提供協助。歡迎透過以下方式與我們聯絡。
+              {t.contact.description}
             </p>
 
             <div className="space-y-6">

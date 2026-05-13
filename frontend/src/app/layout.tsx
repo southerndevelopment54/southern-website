@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
 
 export const metadata: Metadata = {
   title: "南方(警衛及管業)有限公司 | Southern Security Services",
@@ -16,7 +15,6 @@ export default function RootLayout({
     <html lang="zh-Hant">
       <body className="antialiased bg-light text-dark">
         {children}
-        <Toaster />
       </body>
     </html>
   );

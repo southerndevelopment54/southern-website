@@ -3,38 +3,47 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
-
-const navItems = [
-  { label: "關於我們", href: "/#about" },
-  { label: "服務範圍", href: "/services" },
-  { label: "客戶及項目", href: "/clients" },
-  { label: "加入我們", href: "/careers" },
-  { label: "聯絡我們", href: "/contact" },
-];
+import { useI18n } from "@/components/I18nProvider";
+import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Header() {
+  const { locale, t } = useI18n();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const navItems = [
+    { label: t.header.nav.about, href: `/${locale}/#about` },
+    { label: t.header.nav.services, href: `/${locale}/services` },
+    { label: t.header.nav.clients, href: `/${locale}/clients` },
+    { label: t.header.nav.careers, href: `/${locale}/careers` },
+    { label: t.header.nav.contact, href: `/${locale}/contact` },
+  ];
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between h-36 pb-1">
+        {/* Top bar - Language switcher */}
+        <div className="flex justify-end pt-2 pb-3">
+          <LanguageSwitcher />
+        </div>
+
+        {/* Main header row */}
+        <div className="flex items-end justify-between h-32 pb-3">
           {/* Logo and Company Name */}
-          <a href="/" className="flex items-center gap-4 pt-2">
+          <a href={`/${locale}`} className="flex items-center gap-4">
             <Image
               src="/southern_service_logo.png"
-              alt="南方(警衛及管業)有限公司"
+              alt={t.header.companyName}
               width={128}
               height={128}
               className="w-32 h-auto object-contain"
             />
             <span className="text-white font-bold text-2xl tracking-wide hidden sm:block">
-              南方(警衛及管業)有限公司
+              {t.header.companyName}
             </span>
           </a>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-end gap-8 pb-1">
+          <nav className="hidden md:flex items-end gap-6 pb-1">
             {navItems.map((item) => (
               <a
                 key={item.href}
@@ -47,13 +56,15 @@ export default function Header() {
           </nav>
 
           {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white p-2 pb-3"
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
-          </button>
+          <div className="md:hidden flex items-center gap-3 pb-3">
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-white p-2"
+              aria-label="Toggle menu"
+            >
+              {mobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
+            </button>
+          </div>
         </div>
       </div>
 

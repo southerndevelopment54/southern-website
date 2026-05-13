@@ -4,39 +4,41 @@ import { useCallback, useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronRight } from "lucide-react";
-
-const slides = [
-  {
-    id: 1,
-    image: "/images/ICC_image.jpg",
-    title: "專業保安服務",
-    description: "我們提供頂級的商業及住宅保安解決方案，確保您的財產和人員安全無虞。",
-    buttonText: "了解更多",
-    buttonHref: "#services",
-  },
-  {
-    id: 2,
-    image: "/images/Event.png",
-    title: "活動安全保障",
-    description: "為各類大型活動提供全面的安全規劃及執行，讓活動順利進行。",
-    buttonText: "查詢服務",
-    buttonHref: "#contact",
-  },
-  {
-    id: 3,
-    image: "/images/body_guard_banner.png",
-    title: "個人安全護衛",
-    description: "專業護衛團隊為您提供貼身保護，確保您在任何場合都能安心無憂。",
-    buttonText: "立即預約",
-    buttonHref: "#contact",
-  },
-];
+import { useI18n } from "@/components/I18nProvider";
 
 export default function HeroCarousel() {
+  const { t } = useI18n();
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     Autoplay({ delay: 5000, stopOnInteraction: false }),
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const slides = [
+    {
+      id: 1,
+      image: "/images/ICC_image.jpg",
+      title: t.hero.slide1.title,
+      description: t.hero.slide1.description,
+      buttonText: t.hero.slide1.button,
+      buttonHref: "#services",
+    },
+    {
+      id: 2,
+      image: "/images/Event.png",
+      title: t.hero.slide2.title,
+      description: t.hero.slide2.description,
+      buttonText: t.hero.slide2.button,
+      buttonHref: "#contact",
+    },
+    {
+      id: 3,
+      image: "/images/body_guard_banner.png",
+      title: t.hero.slide3.title,
+      description: t.hero.slide3.description,
+      buttonText: t.hero.slide3.button,
+      buttonHref: "#contact",
+    },
+  ];
 
   const onSelect = useCallback(() => {
     if (!emblaApi) return;
@@ -58,7 +60,7 @@ export default function HeroCarousel() {
   );
 
   return (
-    <section className="relative mt-36">
+    <section className="relative mt-44">
       <div className="embla" ref={emblaRef}>
         <div className="embla__container">
           {slides.map((slide) => (
