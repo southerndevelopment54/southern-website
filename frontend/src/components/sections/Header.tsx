@@ -3,11 +3,13 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useI18n } from "@/components/I18nProvider";
 import LanguageSwitcher from "@/components/LanguageSwitcher";
 
 export default function Header() {
   const { locale, t } = useI18n();
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
@@ -17,6 +19,13 @@ export default function Header() {
     { label: t.header.nav.careers, href: `/${locale}/careers` },
     { label: t.header.nav.contact, href: `/${locale}/contact` },
   ];
+
+  const isActive = (href: string) => {
+    if (href === `/${locale}/`) {
+      return pathname === `/${locale}` || pathname === `/${locale}/`;
+    }
+    return pathname.startsWith(href);
+  };
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark">
@@ -44,15 +53,22 @@ export default function Header() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-end gap-6 pb-1">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                className="text-white/80 hover:text-primary text-lg font-medium tracking-wide transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-primary"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className={`text-lg font-medium tracking-wide transition-colors duration-200 pb-1 border-b-2 ${
+                    active
+                      ? "text-white border-primary"
+                      : "text-white/80 border-transparent hover:text-primary hover:border-primary"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
 
           {/* Mobile Menu Button */}
@@ -72,16 +88,23 @@ export default function Header() {
       {mobileMenuOpen && (
         <div className="md:hidden bg-dark-gray border-t border-white/10">
           <nav className="flex flex-col px-4 py-4">
-            {navItems.map((item) => (
-              <a
-                key={item.href}
-                href={item.href}
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-white/80 hover:text-primary py-3 text-lg font-medium tracking-wide transition-colors border-b border-white/5 last:border-0"
-              >
-                {item.label}
-              </a>
-            ))}
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`py-3 text-lg font-medium tracking-wide transition-colors border-b border-white/5 last:border-0 ${
+                    active
+                      ? "text-primary"
+                      : "text-white/80 hover:text-primary"
+                  }`}
+                >
+                  {item.label}
+                </a>
+              );
+            })}
           </nav>
         </div>
       )}
