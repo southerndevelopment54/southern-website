@@ -1,10 +1,33 @@
 "use client";
 
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
+import { useState } from "react";
+import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
+import { useToast } from "@/hooks/use-toast";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export default function GetInTouch() {
   const { t } = useI18n();
+  const { toast } = useToast();
+
+  const [form, setForm] = useState({
+    name: "",
+    company: "",
+    phone: "",
+    email: "",
+    serviceType: "",
+    message: "",
+  });
 
   const contactDetails = [
     {
@@ -33,10 +56,35 @@ export default function GetInTouch() {
     },
   ];
 
+  const serviceOptions = t.services.items.map((item) => item.title);
+
+  const handleChange = (field: string, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    // In production, this would POST to a backend API
+    console.log("Inquiry submitted:", form);
+    toast({
+      title: t.contact.successTitle,
+      description: t.contact.successMessage,
+    });
+    setForm({
+      name: "",
+      company: "",
+      phone: "",
+      email: "",
+      serviceType: "",
+      message: "",
+    });
+  };
+
   return (
     <section id="contact" className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+        {/* Top Section: Image + Contact Details */}
+        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20">
           {/* Left - Image */}
           <div className="relative">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
@@ -79,6 +127,115 @@ export default function GetInTouch() {
                 </a>
               ))}
             </div>
+          </div>
+        </div>
+
+        {/* Bottom Section: Inquiry Form */}
+        <div className="max-w-4xl mx-auto">
+          <div className="bg-off-white rounded-2xl p-8 md:p-12">
+            <div className="text-center mb-10">
+              <h3 className="text-2xl md:text-3xl font-bold text-dark mb-2">
+                {t.contact.inquiryTitle}
+              </h3>
+              <p className="text-gray-600">{t.contact.inquirySubtitle}</p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Name */}
+                <div className="space-y-2">
+                  <Label htmlFor="name">{t.contact.name}</Label>
+                  <Input
+                    id="name"
+                    value={form.name}
+                    onChange={(e) => handleChange("name", e.target.value)}
+                    placeholder={t.contact.namePlaceholder}
+                    required
+                  />
+                </div>
+
+                {/* Company */}
+                <div className="space-y-2">
+                  <Label htmlFor="company">{t.contact.company}</Label>
+                  <Input
+                    id="company"
+                    value={form.company}
+                    onChange={(e) => handleChange("company", e.target.value)}
+                    placeholder={t.contact.companyPlaceholder}
+                  />
+                </div>
+
+                {/* Phone */}
+                <div className="space-y-2">
+                  <Label htmlFor="phone">{t.contact.phoneLabel}</Label>
+                  <Input
+                    id="phone"
+                    type="tel"
+                    value={form.phone}
+                    onChange={(e) => handleChange("phone", e.target.value)}
+                    placeholder={t.contact.phonePlaceholder}
+                    required
+                  />
+                </div>
+
+                {/* Email */}
+                <div className="space-y-2">
+                  <Label htmlFor="email">{t.contact.emailLabel}</Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={form.email}
+                    onChange={(e) => handleChange("email", e.target.value)}
+                    placeholder={t.contact.emailPlaceholder}
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Service Type */}
+              <div className="space-y-2">
+                <Label htmlFor="serviceType">{t.contact.serviceType}</Label>
+                <Select
+                  value={form.serviceType}
+                  onValueChange={(value) => handleChange("serviceType", value)}
+                >
+                  <SelectTrigger id="serviceType">
+                    <SelectValue placeholder={t.contact.servicePlaceholder} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {serviceOptions.map((option) => (
+                      <SelectItem key={option} value={option}>
+                        {option}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Message */}
+              <div className="space-y-2">
+                <Label htmlFor="message">{t.contact.message}</Label>
+                <Textarea
+                  id="message"
+                  value={form.message}
+                  onChange={(e) => handleChange("message", e.target.value)}
+                  placeholder={t.contact.messagePlaceholder}
+                  rows={5}
+                  required
+                />
+              </div>
+
+              {/* Submit */}
+              <div className="pt-2">
+                <Button
+                  type="submit"
+                  className="w-full md:w-auto bg-primary hover:bg-primary-light text-white px-8 py-3 h-auto text-base font-semibold"
+                >
+                  <Send className="w-4 h-4 mr-2" />
+                  {t.contact.submit}
+                </Button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
