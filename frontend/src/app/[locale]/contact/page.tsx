@@ -11,7 +11,7 @@ export default function ContactPage() {
     <main className="min-h-screen">
       <Header />
       <div className="pt-44">
-        <GetInTouch />
+        <GetInTouch showForm />
       </div>
       <Footer />
     </main>

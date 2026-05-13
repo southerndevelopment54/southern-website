@@ -15,7 +15,7 @@ export default function Footer() {
 
   const footerLinks = {
     [t.footer.companyInfo]: [
-      { label: t.header.nav.about, href: `/${locale}/#about` },
+      { label: t.header.nav.about, href: `/${locale}/` },
       { label: t.header.nav.services, href: `/${locale}/services` },
       { label: t.header.nav.careers, href: `/${locale}/careers` },
       { label: t.header.nav.contact, href: `/${locale}/contact` },

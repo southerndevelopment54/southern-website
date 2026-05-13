@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export default function GetInTouch() {
+export default function GetInTouch({ showForm = false }: { showForm?: boolean }) {
   const { t } = useI18n();
   const { toast } = useToast();
 
@@ -131,6 +131,7 @@ export default function GetInTouch() {
         </div>
 
         {/* Bottom Section: Inquiry Form */}
+        {showForm && (
         <div className="max-w-4xl mx-auto">
           <div className="bg-off-white rounded-2xl p-8 md:p-12">
             <div className="text-center mb-10">
@@ -238,6 +239,7 @@ export default function GetInTouch() {
             </form>
           </div>
         </div>
+        )}
       </div>
     </section>
   );
