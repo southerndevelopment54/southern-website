@@ -18,7 +18,7 @@ const contactDetails = [
   {
     icon: MapPin,
     label: "地址",
-    value: "香港九龍尖沙咀廣東道1號",
+    value: "新蒲崗五芳街10號新寶中心19樓1907室",
     href: "#",
   },
   {

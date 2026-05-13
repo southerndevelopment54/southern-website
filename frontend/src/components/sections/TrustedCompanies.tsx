@@ -13,13 +13,13 @@ const companies = [
 
 export default function TrustedCompanies() {
   return (
-    <section className="py-16 md:py-20 bg-dark">
+    <section className="py-16 md:py-20 bg-off-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-3">
+          <h2 className="text-2xl md:text-3xl font-bold text-dark mb-3">
             客戶信賴
           </h2>
-          <p className="text-white/60">
+          <p className="text-gray-600">
             深受眾多知名企業及機構信賴
           </p>
         </div>
@@ -28,7 +28,7 @@ export default function TrustedCompanies() {
           {companies.map((company, index) => (
             <div
               key={index}
-              className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-lg p-6 flex flex-col items-center justify-center transition-colors duration-200"
+              className="bg-white hover:bg-gray-50 border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center transition-colors duration-200 shadow-sm"
             >
               <div className="w-14 h-14 rounded-lg overflow-hidden bg-white flex items-center justify-center mb-3 p-2">
                 <img
@@ -37,7 +37,7 @@ export default function TrustedCompanies() {
                   className="w-full h-full object-contain"
                 />
               </div>
-              <div className="text-sm text-white/70 text-center font-medium">
+              <div className="text-sm text-gray-700 text-center font-medium">
                 {company.name}
               </div>
             </div>
