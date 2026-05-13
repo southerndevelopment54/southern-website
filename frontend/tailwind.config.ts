@@ -21,8 +21,10 @@ const config: Config = {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#008f3f",
+          foreground: "#ffffff",
+          dark: "#006b2f",
+          light: "#00b34f",
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",
@@ -43,6 +45,10 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        dark: "#0a0a0a",
+        "dark-gray": "#1a1a1a",
+        light: "#fafafa",
+        "off-white": "#f5f5f5",
         purple: "#373076",
         green: "#008f3f",
       },
@@ -50,6 +56,9 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
+      },
+      fontFamily: {
+        sans: ["'Noto Sans TC'", "sans-serif"],
       },
     },
   },

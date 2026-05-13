@@ -11,4 +11,9 @@ mvnw.cmd
 *.log
 .env
 .env.*
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore
 .DS_Store

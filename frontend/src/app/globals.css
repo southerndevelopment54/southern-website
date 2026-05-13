@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;600;700;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -10,7 +12,7 @@
     --card-foreground: 246 43% 32%;
     --popover: 0 0% 100%;
     --popover-foreground: 246 43% 32%;
-    --primary: 246 43% 32%;
+    --primary: 145 100% 28%;
     --primary-foreground: 0 0% 100%;
     --secondary: 145 100% 28%;
     --secondary-foreground: 0 0% 100%;
@@ -22,11 +24,11 @@
     --destructive-foreground: 0 0% 98%;
     --border: 246 20% 90%;
     --input: 246 20% 90%;
-    --ring: 246 43% 32%;
+    --ring: 145 100% 28%;
     --radius: 0.5rem;
-    
-    --purple: #373076;
-    --green: #008f3f;
+
+    --foreground-rgb: 10, 10, 10;
+    --background-rgb: 250, 250, 250;
   }
 }
 
@@ -35,8 +37,9 @@
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: rgb(var(--foreground-rgb));
+    background: rgb(var(--background-rgb));
+    font-family: 'Noto Sans TC', sans-serif;
   }
 }
 
@@ -44,4 +47,19 @@
   .text-balance {
     text-wrap: balance;
   }
+}
+
+.embla {
+  overflow: hidden;
+}
+
+.embla__container {
+  display: flex;
+  touch-action: pan-y pinch-zoom;
+}
+
+.embla__slide {
+  transform: translate3d(0, 0, 0);
+  flex: 0 0 100%;
+  min-width: 0;
 }

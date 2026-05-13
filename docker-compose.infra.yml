@@ -50,9 +50,6 @@ services:
     environment:
       VAULT_ADDR: http://vault:8200
       VAULT_TOKEN: dev-token
-    environment:
-      VAULT_ADDR: http://vault:8200
-      VAULT_TOKEN: dev-token
       JWT_SECRET: ${JWT_SECRET}
     command: ["/bin/sh", "-c", "sleep 3 && vault kv put secret/security-co jwt.secret=\"$JWT_SECRET\" && echo 'Vault seeded successfully.'"]
     restart: "no"

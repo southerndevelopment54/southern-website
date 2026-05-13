@@ -1,0 +1,11 @@
+export { default as Header } from "./Header";
+export { default as HeroCarousel } from "./HeroCarousel";
+export { default as AboutSection } from "./AboutSection";
+export { default as ServicesSection } from "./ServicesSection";
+export { default as WhyChooseUs } from "./WhyChooseUs";
+export { default as TrustedCompanies } from "./TrustedCompanies";
+export { default as GetInTouch } from "./GetInTouch";
+export { default as CareersSection } from "./CareersSection";
+export { default as VacanciesSection } from "./VacanciesSection";
+export { default as ClientShowcase } from "./ClientShowcase";
+export { default as Footer } from "./Footer";

@@ -28,4 +28,13 @@ build/
 # Docker volumes
 docker-volumes/
 
+# Sensitive documents
+Agent.md
 Initial-plan.md
+
+# Certificates / keys
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore

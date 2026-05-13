@@ -1,13 +1,10 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 
-const inter = Inter({ subsets: ["latin"] });
-
 export const metadata: Metadata = {
-  title: "南方保安服務 - 香港專業保安服務",
-  description: "香港專業保安服務供應商，提供住宅、商業及零售保安服務",
+  title: "南方(警衛及管業)有限公司 | Southern Security Services",
+  description: "專業保安服務，守護您的安全。提供全面保安解決方案，包括商業大廈、住宅、活動及個人保安服務。",
 };
 
 export default function RootLayout({
@@ -17,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="zh-Hant">
-      <body className={inter.className}>
+      <body className="antialiased bg-light text-dark">
         {children}
         <Toaster />
       </body>
