@@ -18,7 +18,7 @@ export default function AboutSection() {
           <div className="relative">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
               <img
-                src="/images/nice_security_guard_young.png"
+                src="/images/security_guard_icc.png"
                 alt="南方保安團隊"
                 className="w-full h-full object-cover"
               />

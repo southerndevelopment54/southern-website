@@ -6,8 +6,6 @@ import {
   WhyChooseUs,
   TrustedCompanies,
   GetInTouch,
-  CareersSection,
-  VacanciesSection,
   Footer,
 } from "@/components/sections";
 
@@ -21,8 +19,6 @@ export default function Home() {
       <WhyChooseUs />
       <TrustedCompanies />
       <GetInTouch />
-      <CareersSection />
-      <VacanciesSection />
       <Footer />
     </main>
   );

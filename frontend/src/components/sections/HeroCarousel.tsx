@@ -58,7 +58,7 @@ export default function HeroCarousel() {
   );
 
   return (
-    <section className="relative mt-20">
+    <section className="relative mt-36">
       <div className="embla" ref={emblaRef}>
         <div className="embla__container">
           {slides.map((slide) => (

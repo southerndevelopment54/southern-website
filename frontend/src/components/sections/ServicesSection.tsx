@@ -11,7 +11,7 @@ const services = [
   },
   {
     icon: Home,
-    image: "/images/public_housing.png",
+    image: "/images/residetial_building_hk.png",
     title: "住宅保安服務",
     description: "為私人屋苑、豪宅提供住戶出入管理、訪客控制、停車場管理及緊急事故應變等專業保安服務。",
   },
@@ -29,13 +29,13 @@ const services = [
   },
   {
     icon: ShoppingBag,
-    image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=600&q=80",
+    image: "/images/retails_store.png",
     title: "零售店舖保安",
     description: "為商場、零售店舖提供防盜監察、顧客服務及緊急應變，保障商戶財產及顧客安全。",
   },
   {
     icon: Factory,
-    image: "/images/industrial_site_guard1.png",
+    image: "/images/warehouse.png",
     title: "工業設施保安",
     description: "為工廠、倉庫及物流設施提供出入管制、貨物監察及消防安全巡查等專業保安服務。",
   },

@@ -20,7 +20,7 @@ export default function WhyChooseUs() {
           <div className="relative order-2 lg:order-1">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
               <img
-                src="/images/security_guard_team.png"
+                src="/images/guard_with_dog1.png"
                 alt="專業保安團隊"
                 className="w-full h-full object-cover"
               />

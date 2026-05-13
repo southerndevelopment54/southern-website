@@ -7,9 +7,9 @@ import { Phone, Mail, MapPin } from "lucide-react";
 const footerLinks = {
   公司資訊: [
     { label: "關於我們", href: "#about" },
-    { label: "服務範圍", href: "#services" },
-    { label: "加入我們", href: "#careers" },
-    { label: "聯絡我們", href: "#contact" },
+    { label: "服務範圍", href: "/services" },
+    { label: "加入我們", href: "/careers" },
+    { label: "聯絡我們", href: "/contact" },
   ],
   服務類型: [
     { label: "商業大廈保安", href: "#services" },

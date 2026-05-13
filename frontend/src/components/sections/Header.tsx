@@ -6,10 +6,10 @@ import { Menu, X } from "lucide-react";
 
 const navItems = [
   { label: "關於我們", href: "/#about" },
-  { label: "服務範圍", href: "/#services" },
+  { label: "服務範圍", href: "/services" },
   { label: "客戶及項目", href: "/clients" },
-  { label: "加入我們", href: "/#careers" },
-  { label: "聯絡我們", href: "/#contact" },
+  { label: "加入我們", href: "/careers" },
+  { label: "聯絡我們", href: "/contact" },
 ];
 
 export default function Header() {
@@ -18,18 +18,18 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-dark">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-end justify-between h-20 pb-3">
+        <div className="flex items-end justify-between h-36 pb-1">
           {/* Logo and Company Name */}
-          <a href="/" className="flex items-center gap-3">
+          <a href="/" className="flex items-center gap-4 pt-2">
             <Image
               src="/southern_service_logo.png"
               alt="南方(警衛及管業)有限公司"
-              width={48}
-              height={48}
-              className="w-12 h-12 object-contain"
+              width={128}
+              height={128}
+              className="w-32 h-auto object-contain"
             />
-            <span className="text-white font-bold text-lg tracking-wide hidden sm:block">
-              南方警衛
+            <span className="text-white font-bold text-2xl tracking-wide hidden sm:block">
+              南方(警衛及管業)有限公司
             </span>
           </a>
 
@@ -39,7 +39,7 @@ export default function Header() {
               <a
                 key={item.href}
                 href={item.href}
-                className="text-white/80 hover:text-primary text-sm font-medium tracking-wide transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-primary"
+                className="text-white/80 hover:text-primary text-lg font-medium tracking-wide transition-colors duration-200 pb-1 border-b-2 border-transparent hover:border-primary"
               >
                 {item.label}
               </a>
@@ -52,7 +52,7 @@ export default function Header() {
             className="md:hidden text-white p-2 pb-3"
             aria-label="Toggle menu"
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileMenuOpen ? <X size={32} /> : <Menu size={32} />}
           </button>
         </div>
       </div>
@@ -66,7 +66,7 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-white/80 hover:text-primary py-3 text-sm font-medium tracking-wide transition-colors border-b border-white/5 last:border-0"
+                className="text-white/80 hover:text-primary py-3 text-lg font-medium tracking-wide transition-colors border-b border-white/5 last:border-0"
               >
                 {item.label}
               </a>
