@@ -25,8 +25,26 @@ public class ContactMessage {
     @Column(nullable = false, length = 100)
     private String email;
 
+    @Column(length = 100)
+    private String company;
+
+    @Column(length = 20)
+    private String phone;
+
+    @Column(name = "service_type", length = 100)
+    private String serviceType;
+
     @Column(nullable = false, columnDefinition = "TEXT")
     private String message;
+
+    @Column(name = "ip_address", length = 45)
+    private String ipAddress;
+
+    @Column(name = "user_agent", columnDefinition = "TEXT")
+    private String userAgent;
+
+    @Column(name = "is_read")
+    private Boolean isRead = false;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

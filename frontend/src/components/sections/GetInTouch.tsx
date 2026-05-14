@@ -15,6 +15,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { api } from "@/lib/api";
 
 export default function GetInTouch({ showForm = false }: { showForm?: boolean }) {
   const { t } = useI18n();
@@ -62,22 +63,37 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In production, this would POST to a backend API
-    console.log("Inquiry submitted:", form);
-    toast({
-      title: t.contact.successTitle,
-      description: t.contact.successMessage,
-    });
-    setForm({
-      name: "",
-      company: "",
-      phone: "",
-      email: "",
-      serviceType: "",
-      message: "",
-    });
+    try {
+      await api.post("/contact", form);
+      toast({
+        title: t.contact.successTitle,
+        description: t.contact.successMessage,
+      });
+      setForm({
+        name: "",
+        company: "",
+        phone: "",
+        email: "",
+        serviceType: "",
+        message: "",
+      });
+    } catch (err: any) {
+      if (err.response?.status === 429) {
+        toast({
+          title: "提交過於頻繁",
+          description: "請稍候一分鐘後再試。",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "提交失敗",
+          description: "請稍後再試。",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (
