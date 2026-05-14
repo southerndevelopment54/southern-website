@@ -41,15 +41,15 @@ export default function ClientShowcase() {
   const { t } = useI18n();
 
   const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
-  const [siteFilter, setSiteFilter] = useState<"all" | SiteCategory>("all");
+  const [siteFilter, setSiteFilter] = useState<SiteCategory>("key");
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
-    const filter = params.get("filter") as SiteCategory | "all" | null;
+    const filter = params.get("filter") as SiteCategory | null;
 
     if (tab === "sites") setActiveTab("sites");
-    if (filter && ["all", "key", "commercial", "residential"].includes(filter)) {
+    if (filter && ["key", "commercial", "residential"].includes(filter)) {
       setSiteFilter(filter);
     }
   }, []);
@@ -60,14 +60,12 @@ export default function ClientShowcase() {
   ];
 
   const siteFilters = [
-    { id: "all" as const, label: t.clientShowcase.tabAll },
     { id: "key" as const, label: t.clientShowcase.tabKey },
     { id: "commercial" as const, label: t.clientShowcase.tabCommercial },
     { id: "residential" as const, label: t.clientShowcase.tabResidential },
   ];
 
-  const filteredSites =
-    siteFilter === "all" ? sites : sites.filter((s) => s.category === siteFilter);
+  const filteredSites = sites.filter((s) => s.category === siteFilter);
 
   return (
     <section className="py-20 md:py-28 bg-light min-h-screen">
