@@ -18,9 +18,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -69,8 +69,6 @@ public class VacancyService {
         validateDates(request);
         Vacancy vacancy = new Vacancy();
         mapRequestToEntity(request, vacancy);
-        vacancy.setIsActive(true);
-        vacancy.setCreatedAt(java.time.LocalDateTime.now());
 
         var auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.getPrincipal() instanceof AdminUserDetails user) {
@@ -111,37 +109,72 @@ public class VacancyService {
     private void mapRequestToEntity(VacancyRequest request, Vacancy vacancy) {
         SecurityGuardType guardType = guardTypeRepository.findById(request.getGuardTypeId())
                 .orElseThrow(() -> new EntityNotFoundException("Guard type not found"));
-        District district = districtRepository.findById(request.getDistrictId())
-                .orElseThrow(() -> new EntityNotFoundException("District not found"));
 
+        vacancy.setTitle(request.getTitle());
         vacancy.setGuardType(guardType);
-        vacancy.setDistrict(district);
+        if (request.getDistrictId() != null && request.getDistrictId() > 0) {
+            District district = districtRepository.findById(request.getDistrictId())
+                    .orElseThrow(() -> new EntityNotFoundException("District not found"));
+            vacancy.setDistrict(district);
+        } else {
+            vacancy.setDistrict(null);
+        }
         vacancy.setLocationDescription(request.getLocationDescription());
         vacancy.setStartDate(request.getStartDate());
         vacancy.setSalaryMin(request.getSalaryMin());
         vacancy.setSalaryMax(request.getSalaryMax());
         vacancy.setSalaryPeriod(request.getSalaryPeriod());
         vacancy.setEmploymentType(request.getEmploymentType());
-        vacancy.setWorkingHours(request.getWorkingHours());
         vacancy.setRequirements(request.getRequirements());
         vacancy.setDescription(request.getDescription());
         vacancy.setContactPhone(request.getContactPhone());
         vacancy.setContactEmail(request.getContactEmail());
+        vacancy.setIsActive(request.getIsActive());
         vacancy.setIsFeatured(request.getIsFeatured());
+        vacancy.setIsUrgent(request.getIsUrgent() != null ? request.getIsUrgent() : false);
         vacancy.setImageKey(request.getImageKey() != null && !request.getImageKey().isBlank() ? request.getImageKey() : null);
         vacancy.setExpiresAt(request.getExpiresAt());
         vacancy.setUpdatedAt(java.time.LocalDateTime.now());
+
+        // Auto-compute display fields
+        vacancy.setSalaryDisplay(computeSalaryDisplay(request.getSalaryMin(), request.getSalaryMax(), request.getSalaryPeriod()));
+        vacancy.setJobType(computeJobType(request.getEmploymentType()));
+    }
+
+    private String computeSalaryDisplay(BigDecimal min, BigDecimal max, String period) {
+        if (min == null || max == null) return "面議";
+        String periodLabel = switch (period) {
+            case "monthly" -> " / 月";
+            case "hourly" -> " / 小時";
+            case "yearly" -> " / 年";
+            default -> "";
+        };
+        return "$" + min.stripTrailingZeros().toPlainString() + " - $" + max.stripTrailingZeros().toPlainString() + periodLabel;
+    }
+
+    private String computeJobType(String employmentType) {
+        return switch (employmentType) {
+            case "full-time" -> "全職";
+            case "part-time" -> "兼職";
+            case "contract" -> "合約";
+            case "temporary" -> "臨時";
+            default -> "全職";
+        };
     }
 
     private VacancyResponse toResponse(Vacancy vacancy) {
         VacancyResponse response = new VacancyResponse();
         response.setId(vacancy.getId());
+        response.setTitle(vacancy.getTitle());
         response.setLocationDescription(vacancy.getLocationDescription());
+        response.setLocationDisplay(vacancy.getLocationDisplay());
         response.setStartDate(vacancy.getStartDate());
         response.setSalaryMin(vacancy.getSalaryMin());
         response.setSalaryMax(vacancy.getSalaryMax());
+        response.setSalaryDisplay(vacancy.getSalaryDisplay());
         response.setSalaryPeriod(vacancy.getSalaryPeriod());
         response.setEmploymentType(vacancy.getEmploymentType());
+        response.setJobType(vacancy.getJobType());
         response.setWorkingHours(vacancy.getWorkingHours());
         response.setRequirements(vacancy.getRequirements());
         response.setDescription(vacancy.getDescription());
@@ -149,9 +182,11 @@ public class VacancyService {
         response.setContactEmail(vacancy.getContactEmail());
         response.setIsActive(vacancy.getIsActive());
         response.setIsFeatured(vacancy.getIsFeatured());
+        response.setIsUrgent(vacancy.getIsUrgent());
         response.setImageKey(vacancy.getImageKey());
         response.setCreatedBy(vacancy.getCreatedBy());
         response.setCreatedAt(vacancy.getCreatedAt());
+        response.setUpdatedAt(vacancy.getUpdatedAt());
         response.setExpiresAt(vacancy.getExpiresAt());
 
         VacancyResponse.GuardTypeDto gtDto = new VacancyResponse.GuardTypeDto();
@@ -159,11 +194,13 @@ public class VacancyService {
         gtDto.setTypeName(vacancy.getGuardType().getTypeName());
         response.setGuardType(gtDto);
 
-        VacancyResponse.DistrictDto dDto = new VacancyResponse.DistrictDto();
-        dDto.setId(vacancy.getDistrict().getId());
-        dDto.setDistrictName(vacancy.getDistrict().getDistrictName());
-        dDto.setRegion(vacancy.getDistrict().getRegion());
-        response.setDistrict(dDto);
+        if (vacancy.getDistrict() != null) {
+            VacancyResponse.DistrictDto dDto = new VacancyResponse.DistrictDto();
+            dDto.setId(vacancy.getDistrict().getId());
+            dDto.setDistrictName(vacancy.getDistrict().getDistrictName());
+            dDto.setRegion(vacancy.getDistrict().getRegion());
+            response.setDistrict(dDto);
+        }
 
         if (vacancy.getImageKey() != null && !vacancy.getImageKey().isBlank()) {
             response.setImageUrl(minioService.getPresignedUrl(vacancy.getImageKey()));

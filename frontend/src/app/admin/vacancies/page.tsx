@@ -7,9 +7,11 @@ import { Vacancy } from "@/types/vacancy";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 export default function AdminVacanciesPage() {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
 
   const fetchVacancies = () => {
     api.get("/admin/vacancies").then((res) => {
@@ -21,16 +23,19 @@ export default function AdminVacanciesPage() {
     fetchVacancies();
   }, []);
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("確定要刪除此職位空缺？")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
     try {
-      await api.delete(`/admin/vacancies/${id}`);
+      await api.delete(`/admin/vacancies/${deleteId}`);
       toast({ title: "已刪除" });
+      setDeleteId(null);
       fetchVacancies();
     } catch {
       toast({ title: "錯誤", description: "刪除失敗", variant: "destructive" });
     }
   };
+
+  const pendingVacancy = vacancies.find((v) => v.id === deleteId);
 
   return (
     <div>
@@ -46,11 +51,12 @@ export default function AdminVacanciesPage() {
           <thead className="bg-slate-100">
             <tr>
               <th className="text-left px-4 py-3 font-medium">編號</th>
+              <th className="text-left px-4 py-3 font-medium">職位名稱</th>
               <th className="text-left px-4 py-3 font-medium">類型</th>
               <th className="text-left px-4 py-3 font-medium">地區</th>
-              <th className="text-left px-4 py-3 font-medium">地點</th>
-              <th className="text-left px-4 py-3 font-medium">到期日</th>
-              <th className="text-left px-4 py-3 font-medium">建立者</th>
+              <th className="text-left px-4 py-3 font-medium">薪金</th>
+              <th className="text-left px-4 py-3 font-medium">類別</th>
+              <th className="text-left px-4 py-3 font-medium">精選</th>
               <th className="text-left px-4 py-3 font-medium">狀態</th>
               <th className="text-right px-4 py-3 font-medium">操作</th>
             </tr>
@@ -59,11 +65,14 @@ export default function AdminVacanciesPage() {
             {vacancies.map((v) => (
               <tr key={v.id} className="border-t">
                 <td className="px-4 py-3">{v.id}</td>
-                <td className="px-4 py-3">{v.guardType.typeName}</td>
-                <td className="px-4 py-3">{v.district.districtName}</td>
-                <td className="px-4 py-3">{v.locationDescription}</td>
-                <td className="px-4 py-3">{v.expiresAt}</td>
-                <td className="px-4 py-3">{v.createdBy || '-'}</td>
+                <td className="px-4 py-3 font-medium">{v.title}</td>
+                <td className="px-4 py-3">{v.guardType?.typeName || '-'}</td>
+                <td className="px-4 py-3">{v.district?.districtName || '-'}</td>
+                <td className="px-4 py-3">{v.salaryDisplay || '-'}</td>
+                <td className="px-4 py-3">{v.jobType || '-'}</td>
+                <td className="px-4 py-3">
+                  {v.isFeatured ? <Badge>精選</Badge> : <Badge variant="secondary">-</Badge>}
+                </td>
                 <td className="px-4 py-3">
                   {v.isActive ? <Badge>生效中</Badge> : <Badge variant="secondary">已停用</Badge>}
                 </td>
@@ -71,13 +80,13 @@ export default function AdminVacanciesPage() {
                   <Link href={`/admin/vacancies/${v.id}/edit`}>
                     <Button size="sm" variant="outline">編輯</Button>
                   </Link>
-                  <Button size="sm" variant="destructive" onClick={() => handleDelete(v.id)}>刪除</Button>
+                  <Button size="sm" variant="destructive" onClick={() => setDeleteId(v.id)}>刪除</Button>
                 </td>
               </tr>
             ))}
             {vacancies.length === 0 && (
               <tr>
-                <td colSpan={8} className="px-4 py-6 text-center text-muted-foreground">
+                <td colSpan={9} className="px-4 py-6 text-center text-muted-foreground">
                   暫無職位空缺。
                 </td>
               </tr>
@@ -85,6 +94,21 @@ export default function AdminVacanciesPage() {
           </tbody>
         </table>
       </div>
+
+      <Dialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>確認刪除</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-gray-600">
+            確定要刪除職位「<span className="font-semibold text-gray-900">{pendingVacancy?.title}</span>」嗎？此操作無法復原。
+          </p>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
+            <Button variant="destructive" onClick={handleDelete}>確認刪除</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
