@@ -37,7 +37,7 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-3 mb-6">
               <Image
-                src="/southern_service_logo.png"
+                src="/white-ssl-logo-transparent-bg.png"
                 alt={t.header.companyName}
                 width={40}
                 height={40}

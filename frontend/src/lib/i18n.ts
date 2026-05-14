@@ -61,10 +61,14 @@ export const translations = {
     },
     clientShowcase: {
       badge: "實力見證",
-      title: "客戶及重點項目",
+      title: "客戶及合作項目",
       description: "多年來，南方警衛為眾多知名企業及地標項目提供專業保安服務，實力深受業界認可。",
       tabClients: "合作客戶",
-      tabSites: "重點項目",
+      tabSites: "合作項目",
+      tabAll: "全部",
+      tabKey: "重點項目",
+      tabCommercial: "商場大廈",
+      tabResidential: "住宅",
     },
     careers: {
       badge: "加入我們",
@@ -230,10 +234,14 @@ export const translations = {
     },
     clientShowcase: {
       badge: "Our Track Record",
-      title: "Clients & Key Projects",
+      title: "Clients & Partner Projects",
       description: "Over the years, Southern Security has provided professional security services for numerous renowned enterprises and landmark projects, earning wide recognition in the industry.",
       tabClients: "Partner Clients",
-      tabSites: "Key Projects",
+      tabSites: "Partner Projects",
+      tabAll: "All",
+      tabKey: "Key Projects",
+      tabCommercial: "Commercial & Malls",
+      tabResidential: "Residential",
     },
     careers: {
       badge: "Join Us",

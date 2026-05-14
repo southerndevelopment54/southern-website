@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Building2, Users, Star } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 
@@ -19,23 +19,55 @@ const clients = [
   { name: "會德豐地產", abbr: "WHEEL", category: "地產發展商", logo: "/images/clients/WHEELOCK.png" },
 ];
 
-const sites = [
-  { name: "環球貿易廣場 (ICC)", location: "九龍柯士甸道西1號", image: "/images/sites/icc.jpg" },
-  { name: "國際金融中心 (IFC)", location: "中環金融街8號", image: "/images/sites/IFC.jpg" },
-  { name: "海港城", location: "尖沙咀廣東道", image: "/images/sites/harbour%20city.jpg" },
-  { name: "時代廣場", location: "銅鑼灣勿地臣街1號", image: "/images/sites/time%20square.jpeg" },
-  { name: "太古廣場", location: "金鐘金鐘道88號", image: "/images/sites/pacific%20place.jpg" },
-  { name: "圓方 (Elements)", location: "尖沙咀柯士甸道西1號", image: "/images/sites/elements.png" },
+type SiteCategory = "key" | "commercial" | "residential";
+
+interface Site {
+  name: string;
+  location: string;
+  image: string;
+  category: SiteCategory;
+}
+
+const sites: Site[] = [
+  { name: "環球貿易廣場 (ICC)", location: "九龍柯士甸道西1號", image: "/images/sites/icc.jpg", category: "key" },
+  { name: "國際金融中心 (IFC)", location: "中環金融街8號", image: "/images/sites/IFC.jpg", category: "key" },
+  { name: "海港城", location: "尖沙咀廣東道", image: "/images/sites/harbour%20city.jpg", category: "key" },
+  { name: "時代廣場", location: "銅鑼灣勿地臣街1號", image: "/images/sites/time%20square.jpeg", category: "key" },
+  { name: "太古廣場", location: "金鐘金鐘道88號", image: "/images/sites/pacific%20place.jpg", category: "key" },
+  { name: "圓方 (Elements)", location: "尖沙咀柯士甸道西1號", image: "/images/sites/elements.png", category: "key" },
 ];
 
 export default function ClientShowcase() {
   const { t } = useI18n();
-  const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
 
-  const tabs = [
+  const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
+  const [siteFilter, setSiteFilter] = useState<"all" | SiteCategory>("all");
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tab = params.get("tab");
+    const filter = params.get("filter") as SiteCategory | "all" | null;
+
+    if (tab === "sites") setActiveTab("sites");
+    if (filter && ["all", "key", "commercial", "residential"].includes(filter)) {
+      setSiteFilter(filter);
+    }
+  }, []);
+
+  const mainTabs = [
     { id: "clients" as const, label: t.clientShowcase.tabClients, icon: Users },
     { id: "sites" as const, label: t.clientShowcase.tabSites, icon: Building2 },
   ];
+
+  const siteFilters = [
+    { id: "all" as const, label: t.clientShowcase.tabAll },
+    { id: "key" as const, label: t.clientShowcase.tabKey },
+    { id: "commercial" as const, label: t.clientShowcase.tabCommercial },
+    { id: "residential" as const, label: t.clientShowcase.tabResidential },
+  ];
+
+  const filteredSites =
+    siteFilter === "all" ? sites : sites.filter((s) => s.category === siteFilter);
 
   return (
     <section className="py-20 md:py-28 bg-light min-h-screen">
@@ -54,10 +86,10 @@ export default function ClientShowcase() {
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex justify-center mb-12">
+        {/* Main Tabs */}
+        <div className="flex justify-center mb-8">
           <div className="inline-flex bg-off-white rounded-xl p-1.5">
-            {tabs.map((tab) => (
+            {mainTabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -73,6 +105,27 @@ export default function ClientShowcase() {
             ))}
           </div>
         </div>
+
+        {/* Site Filter Tabs */}
+        {activeTab === "sites" && (
+          <div className="flex justify-center mb-12">
+            <div className="inline-flex bg-white rounded-lg p-1 border border-gray-100">
+              {siteFilters.map((filter) => (
+                <button
+                  key={filter.id}
+                  onClick={() => setSiteFilter(filter.id)}
+                  className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
+                    siteFilter === filter.id
+                      ? "bg-primary text-white shadow-sm"
+                      : "text-gray-500 hover:text-dark"
+                  }`}
+                >
+                  {filter.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Clients Tab */}
         {activeTab === "clients" && (
@@ -106,29 +159,37 @@ export default function ClientShowcase() {
 
         {/* Sites Tab */}
         {activeTab === "sites" && (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {sites.map((site, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
-              >
-                <div className="aspect-[16/10] overflow-hidden">
-                  <img
-                    src={site.image}
-                    alt={site.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                </div>
-                <div className="p-6">
-                  <h3 className="font-bold text-dark text-lg mb-1">{site.name}</h3>
-                  <p className="text-sm text-gray-500 flex items-center gap-1.5">
-                    <Building2 className="w-3.5 h-3.5 text-primary" />
-                    {site.location}
-                  </p>
-                </div>
+          <>
+            {filteredSites.length > 0 ? (
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {filteredSites.map((site, index) => (
+                  <div
+                    key={index}
+                    className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
+                  >
+                    <div className="aspect-[16/10] overflow-hidden">
+                      <img
+                        src={site.image}
+                        alt={site.name}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <h3 className="font-bold text-dark text-lg mb-1">{site.name}</h3>
+                      <p className="text-sm text-gray-500 flex items-center gap-1.5">
+                        <Building2 className="w-3.5 h-3.5 text-primary" />
+                        {site.location}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            ) : (
+              <div className="text-center py-20">
+                <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
+              </div>
+            )}
+          </>
         )}
       </div>
     </section>

@@ -11,7 +11,7 @@ export default function CareersPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="pt-44">
+      <div className="pt-32">
         <CareersSection />
         <VacanciesSection />
       </div>

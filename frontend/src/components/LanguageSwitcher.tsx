@@ -25,19 +25,19 @@ export default function LanguageSwitcher() {
         className={`px-2 py-1 text-sm font-medium transition-colors duration-200 rounded ${
           locale === "zh"
             ? "text-white bg-primary"
-            : "text-white/60 hover:text-white"
+            : "text-dark/60 hover:text-dark"
         }`}
         aria-label="Switch to Chinese"
       >
         中文
       </button>
-      <span className="text-white/30 text-xs">|</span>
+      <span className="text-dark/20 text-xs">|</span>
       <button
         onClick={() => switchLocale("en")}
         className={`px-2 py-1 text-sm font-medium transition-colors duration-200 rounded ${
           locale === "en"
             ? "text-white bg-primary"
-            : "text-white/60 hover:text-white"
+            : "text-dark/60 hover:text-dark"
         }`}
         aria-label="Switch to English"
       >
