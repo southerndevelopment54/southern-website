@@ -2,46 +2,34 @@
 
 import { useState, useEffect } from "react";
 import { Building2, Users, Star } from "lucide-react";
+import { api } from "@/lib/api";
 import { useI18n } from "@/components/I18nProvider";
 
-const clients = [
-  { name: "新鴻基地產", abbr: "SHKP", category: "地產發展商", logo: "/images/clients/SHKP.png" },
-  { name: "長江實業集團", abbr: "CK", category: "綜合企業", logo: "/images/clients/CK.png" },
-  { name: "恒基兆業地產", abbr: "HEND", category: "地產發展商", logo: "/images/clients/Henderson_Land_Development.png" },
-  { name: "信和置業", abbr: "SINO", category: "地產發展商", logo: "/images/clients/SinoGroup.png" },
-  { name: "太古地產", abbr: "SWIRE", category: "地產發展商", logo: "/images/clients/swire.png" },
-  { name: "九龍倉集團", abbr: "WHARF", category: "綜合企業", logo: "/images/clients/WHARF.png" },
-  { name: "新世界發展", abbr: "NWD", category: "綜合企業", logo: "/images/clients/New%20world%20group.png" },
-  { name: "華懋集團", abbr: "CML", category: "地產發展商", logo: "/images/clients/CHINACHEM%20group.png" },
-  { name: "領展房地產投資信託基金", abbr: "LINK", category: "零售物業", logo: "/images/clients/LINK.png" },
-  { name: "港鐵公司", abbr: "MTR", category: "交通基建", logo: "/images/clients/MTR.png" },
-  { name: "香港置地", abbr: "HKL", category: "地產投資", logo: "/images/clients/HKL.png" },
-  { name: "會德豐地產", abbr: "WHEEL", category: "地產發展商", logo: "/images/clients/WHEELOCK.png" },
-];
-
-type SiteCategory = "key" | "commercial" | "residential";
-
-interface Site {
+interface Client {
+  id: number;
   name: string;
-  location: string;
-  image: string;
-  category: SiteCategory;
+  logoUrl: string;
+  enterpriseTypeName: string;
 }
 
-const sites: Site[] = [
-  { name: "環球貿易廣場 (ICC)", location: "九龍柯士甸道西1號", image: "/images/sites/icc.jpg", category: "key" },
-  { name: "國際金融中心 (IFC)", location: "中環金融街8號", image: "/images/sites/IFC.jpg", category: "key" },
-  { name: "海港城", location: "尖沙咀廣東道", image: "/images/sites/harbour%20city.jpg", category: "key" },
-  { name: "時代廣場", location: "銅鑼灣勿地臣街1號", image: "/images/sites/time%20square.jpeg", category: "key" },
-  { name: "太古廣場", location: "金鐘金鐘道88號", image: "/images/sites/pacific%20place.jpg", category: "key" },
-  { name: "圓方 (Elements)", location: "尖沙咀柯士甸道西1號", image: "/images/sites/elements.png", category: "key" },
-];
+interface GuardingSite {
+  id: number;
+  name: string;
+  imageUrl: string;
+  address: string;
+  category: string;
+  tier: number;
+}
+
+type SiteCategory = "key" | "commercial" | "residential";
 
 export default function ClientShowcase() {
   const { t } = useI18n();
 
   const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
   const [siteFilter, setSiteFilter] = useState<SiteCategory>("key");
+  const [clients, setClients] = useState<Client[]>([]);
+  const [sites, setSites] = useState<GuardingSite[]>([]);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -54,6 +42,22 @@ export default function ClientShowcase() {
     }
   }, []);
 
+  useEffect(() => {
+    api.get("/clients")
+      .then((res) => setClients(res.data))
+      .catch(() => setClients([]));
+  }, []);
+
+  useEffect(() => {
+    const tier = siteFilter === "key" ? 1 : 2;
+    api.get(`/projects?category=${siteFilter}&tier=${tier}`)
+      .then((res) => {
+        const data = res.data.content || res.data;
+        setSites(data);
+      })
+      .catch(() => setSites([]));
+  }, [siteFilter]);
+
   const mainTabs = [
     { id: "clients" as const, label: t.clientShowcase.tabClients, icon: Users },
     { id: "sites" as const, label: t.clientShowcase.tabSites, icon: Building2 },
@@ -64,8 +68,6 @@ export default function ClientShowcase() {
     { id: "commercial" as const, label: t.clientShowcase.tabCommercial },
     { id: "residential" as const, label: t.clientShowcase.tabResidential },
   ];
-
-  const filteredSites = sites.filter((s) => s.category === siteFilter);
 
   return (
     <section className="py-20 md:py-28 bg-light min-h-screen">
@@ -128,15 +130,15 @@ export default function ClientShowcase() {
         {/* Clients Tab */}
         {activeTab === "clients" && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-            {clients.map((client, index) => (
+            {clients.map((client) => (
               <div
-                key={index}
+                key={client.id}
                 className="bg-white rounded-xl border border-gray-100 p-6 text-center hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
               >
-                {client.logo ? (
+                {client.logoUrl ? (
                   <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 overflow-hidden bg-white border border-gray-100 group-hover:border-primary/30 transition-colors duration-200">
                     <img
-                      src={client.logo}
+                      src={client.logoUrl}
                       alt={client.name}
                       className="w-full h-full object-contain p-2"
                     />
@@ -144,30 +146,35 @@ export default function ClientShowcase() {
                 ) : (
                   <div className="w-16 h-16 bg-dark rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors duration-200">
                     <span className="text-white font-bold text-lg">
-                      {client.abbr}
+                      {client.name.charAt(0)}
                     </span>
                   </div>
                 )}
                 <h3 className="font-bold text-dark mb-1">{client.name}</h3>
-                <p className="text-xs text-gray-400">{client.category}</p>
+                <p className="text-xs text-gray-400">{client.enterpriseTypeName || ""}</p>
               </div>
             ))}
+            {clients.length === 0 && (
+              <div className="col-span-full text-center py-20">
+                <p className="text-gray-400 text-lg">暫無客戶 / No clients yet</p>
+              </div>
+            )}
           </div>
         )}
 
         {/* Sites Tab */}
         {activeTab === "sites" && (
           <>
-            {filteredSites.length > 0 ? (
+            {sites.length > 0 ? (
               <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {filteredSites.map((site, index) => (
+                {sites.map((site) => (
                   <div
-                    key={index}
+                    key={site.id}
                     className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
                   >
                     <div className="aspect-[16/10] overflow-hidden">
                       <img
-                        src={site.image}
+                        src={site.imageUrl || "/images/placeholder.jpg"}
                         alt={site.name}
                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
@@ -176,7 +183,7 @@ export default function ClientShowcase() {
                       <h3 className="font-bold text-dark text-lg mb-1">{site.name}</h3>
                       <p className="text-sm text-gray-500 flex items-center gap-1.5">
                         <Building2 className="w-3.5 h-3.5 text-primary" />
-                        {site.location}
+                        {site.address || "-"}
                       </p>
                     </div>
                   </div>

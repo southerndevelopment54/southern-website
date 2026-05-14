@@ -1,0 +1,161 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
+import { api } from "@/lib/api";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "@/hooks/use-toast";
+import Link from "next/link";
+
+interface EnterpriseType {
+  id: number;
+  typeName: string;
+}
+
+interface ClientForm {
+  name: string;
+  logoKey: string;
+  enterpriseTypeId: string;
+  isFeatured: boolean;
+  displayOrder: string;
+  isActive: boolean;
+}
+
+export default function EditClientPage() {
+  const router = useRouter();
+  const { id } = useParams();
+  const [types, setTypes] = useState<EnterpriseType[]>([]);
+  const [form, setForm] = useState<ClientForm>({
+    name: "",
+    logoKey: "",
+    enterpriseTypeId: "",
+    isFeatured: false,
+    displayOrder: "",
+    isActive: true,
+  });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    api.get("/enterprise-types").then((res) => setTypes(res.data));
+    api.get(`/admin/clients/${id}`).then((res) => {
+      const c = res.data;
+      setForm({
+        name: c.name || "",
+        logoKey: c.logoKey || "",
+        enterpriseTypeId: c.enterpriseTypeId ? String(c.enterpriseTypeId) : "",
+        isFeatured: c.isFeatured || false,
+        displayOrder: c.displayOrder != null ? String(c.displayOrder) : "",
+        isActive: c.isActive != null ? c.isActive : true,
+      });
+      setLoading(false);
+    });
+  }, [id]);
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("folder", "clients");
+    try {
+      const res = await api.post("/admin/upload", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      setForm({ ...form, logoKey: res.data.imageKey });
+      toast({ title: "圖片上傳成功" });
+    } catch {
+      toast({ title: "圖片上傳失敗", variant: "destructive" });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name) {
+      toast({ title: "錯誤", description: "請填寫名稱", variant: "destructive" });
+      return;
+    }
+    try {
+      await api.put(`/admin/clients/${id}`, {
+        name: form.name,
+        logoKey: form.logoKey || null,
+        enterpriseTypeId: form.enterpriseTypeId ? Number(form.enterpriseTypeId) : null,
+        isFeatured: form.isFeatured,
+        displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
+        isActive: form.isActive,
+      });
+      toast({ title: "客戶已更新" });
+      router.push("/admin/clients");
+    } catch (err: any) {
+      toast({ title: "錯誤", description: err.response?.data?.message || "更新失敗", variant: "destructive" });
+    }
+  };
+
+  if (loading) return <div className="text-center py-10">載入中...</div>;
+
+  return (
+    <div className="max-w-2xl mx-auto">
+      <div className="flex items-center gap-4 mb-6">
+        <Link href="/admin/clients" className="text-sm text-primary">&larr; 返回</Link>
+        <h1 className="text-2xl font-bold">編輯客戶</h1>
+      </div>
+
+      <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border shadow-sm">
+        <div>
+          <Label>名稱</Label>
+          <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+        </div>
+        <div>
+          <Label>企業類型</Label>
+          <Select value={form.enterpriseTypeId} onValueChange={(v) => setForm({ ...form, enterpriseTypeId: v })}>
+            <SelectTrigger><SelectValue placeholder="選擇類型（可選）" /></SelectTrigger>
+            <SelectContent>
+              {types.map((t) => <SelectItem key={t.id} value={String(t.id)}>{t.typeName}</SelectItem>)}
+            </SelectContent>
+          </Select>
+        </div>
+        <div>
+          <Label>客戶商標</Label>
+          <Input type="file" accept="image/*" onChange={handleImageUpload} />
+          {form.logoKey && <p className="text-sm text-muted-foreground mt-1">已上傳: {form.logoKey}</p>}
+        </div>
+        <div>
+          <Label>顯示排序 <span className="text-muted-foreground font-normal">(值越小越靠前: {form.displayOrder || 1})</span></Label>
+          <input
+            type="range"
+            min={1}
+            max={10}
+            step={1}
+            value={form.displayOrder ? Number(form.displayOrder) : 1}
+            onChange={(e) => setForm({ ...form, displayOrder: e.target.value })}
+            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800 mt-2"
+          />
+          <div className="flex justify-between px-1 mt-1">
+            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
+              <div key={v} className="flex flex-col items-center">
+                <div className={`w-px bg-slate-300 ${v === 1 || v === 10 ? "h-3" : "h-1.5"}`} />
+                <span className="text-[10px] text-slate-400 mt-0.5">{v}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="featured" checked={form.isFeatured} onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })} />
+            <Label htmlFor="featured">精選客戶（首頁展示）</Label>
+          </div>
+          <div className="flex items-center gap-2">
+            <input type="checkbox" id="active" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} />
+            <Label htmlFor="active">生效中</Label>
+          </div>
+        </div>
+        <div className="flex justify-end gap-2">
+          <Link href="/admin/clients"><Button variant="outline" type="button">取消</Button></Link>
+          <Button type="submit">儲存</Button>
+        </div>
+      </form>
+    </div>
+  );
+}

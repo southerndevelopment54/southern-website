@@ -1,20 +1,24 @@
 "use client";
 
+import { useEffect, useState } from "react";
+import { api } from "@/lib/api";
 import { useI18n } from "@/components/I18nProvider";
 
-const companies = [
-  { name: "新鴻基地產", logo: "/images/clients/SHKP.png" },
-  { name: "長江實業集團", logo: "/images/clients/CK.png" },
-  { name: "恒基兆業地產", logo: "/images/clients/Henderson_Land_Development.png" },
-  { name: "信和置業", logo: "/images/clients/SinoGroup.png" },
-  { name: "太古地產", logo: "/images/clients/swire.png" },
-  { name: "九龍倉集團", logo: "/images/clients/WHARF.png" },
-  { name: "新世界發展", logo: "/images/clients/New%20world%20group.png" },
-  { name: "港鐵公司", logo: "/images/clients/MTR.png" },
-];
+interface Client {
+  id: number;
+  name: string;
+  logoUrl: string;
+}
 
 export default function TrustedCompanies() {
   const { t } = useI18n();
+  const [clients, setClients] = useState<Client[]>([]);
+
+  useEffect(() => {
+    api.get("/clients?featured=true")
+      .then((res) => setClients(res.data))
+      .catch(() => setClients([]));
+  }, []);
 
   return (
     <section className="py-16 md:py-20 bg-off-white">
@@ -29,17 +33,23 @@ export default function TrustedCompanies() {
         </div>
 
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 md:gap-8">
-          {companies.map((company, index) => (
+          {clients.map((company) => (
             <div
-              key={index}
+              key={company.id}
               className="bg-white hover:bg-gray-50 border border-gray-200 rounded-lg p-6 flex flex-col items-center justify-center transition-colors duration-200 shadow-sm"
             >
               <div className="w-14 h-14 rounded-lg overflow-hidden bg-white flex items-center justify-center mb-3 p-2">
-                <img
-                  src={company.logo}
-                  alt={company.name}
-                  className="w-full h-full object-contain"
-                />
+                {company.logoUrl ? (
+                  <img
+                    src={company.logoUrl}
+                    alt={company.name}
+                    className="w-full h-full object-contain"
+                  />
+                ) : (
+                  <span className="text-sm font-bold text-gray-400">
+                    {company.name.charAt(0)}
+                  </span>
+                )}
               </div>
               <div className="text-sm text-gray-700 text-center font-medium">
                 {company.name}

@@ -25,12 +25,18 @@ export default function AdminDashboardPage() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold">儀表板</h1>
-        <div className="space-x-2">
+        <div className="flex flex-wrap gap-2">
           <Link href="/admin/vacancies">
             <Button variant="outline">管理職位空缺</Button>
           </Link>
           <Link href="/admin/submissions">
             <Button variant="outline">管理申請紀錄</Button>
+          </Link>
+          <Link href="/admin/clients">
+            <Button variant="outline">管理合作客戶</Button>
+          </Link>
+          <Link href="/admin/projects">
+            <Button variant="outline">管理合作項目</Button>
           </Link>
         </div>
       </div>
