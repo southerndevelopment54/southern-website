@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Building2, Users, Star } from "lucide-react";
 import { api } from "@/lib/api";
 import { useI18n } from "@/components/I18nProvider";
@@ -30,7 +30,9 @@ export default function ClientShowcase() {
   const [siteFilter, setSiteFilter] = useState<SiteCategory>("key");
   const [clients, setClients] = useState<Client[]>([]);
   const [sites, setSites] = useState<GuardingSite[]>([]);
+  const [loadingSites, setLoadingSites] = useState(false);
 
+  // Read URL params once on mount
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
@@ -42,21 +44,33 @@ export default function ClientShowcase() {
     }
   }, []);
 
+  // Fetch clients once
   useEffect(() => {
     api.get("/clients")
       .then((res) => setClients(res.data))
       .catch(() => setClients([]));
   }, []);
 
+  // Fetch sites whenever the category filter changes
+  const fetchSites = useCallback(async (category: SiteCategory) => {
+    setLoadingSites(true);
+    setSites([]);
+    try {
+      const res = await api.get(`/projects?category=${encodeURIComponent(category)}`);
+      const data = Array.isArray(res.data) ? res.data : res.data?.content || [];
+      setSites(data);
+    } catch {
+      setSites([]);
+    } finally {
+      setLoadingSites(false);
+    }
+  }, []);
+
   useEffect(() => {
-    const tier = siteFilter === "key" ? 1 : 2;
-    api.get(`/projects?category=${siteFilter}&tier=${tier}`)
-      .then((res) => {
-        const data = res.data.content || res.data;
-        setSites(data);
-      })
-      .catch(() => setSites([]));
-  }, [siteFilter]);
+    if (activeTab === "sites") {
+      fetchSites(siteFilter);
+    }
+  }, [siteFilter, activeTab, fetchSites]);
 
   const mainTabs = [
     { id: "clients" as const, label: t.clientShowcase.tabClients, icon: Users },
@@ -165,8 +179,12 @@ export default function ClientShowcase() {
         {/* Sites Tab */}
         {activeTab === "sites" && (
           <>
-            {sites.length > 0 ? (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {loadingSites ? (
+              <div className="text-center py-20">
+                <p className="text-gray-400 text-lg">載入中...</p>
+              </div>
+            ) : sites.length > 0 ? (
+              <div key={siteFilter} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {sites.map((site) => (
                   <div
                     key={site.id}

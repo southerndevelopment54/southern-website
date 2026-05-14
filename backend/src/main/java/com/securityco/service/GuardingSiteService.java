@@ -73,6 +73,15 @@ public class GuardingSiteService {
     }
 
     @Transactional(readOnly = true)
+    public List<GuardingSiteResponse> getByCategory(String category) {
+        return guardingSiteRepository
+                .findActiveByCategoryOrdered(category)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public GuardingSiteResponse getById(Integer id) {
         GuardingSite site = guardingSiteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Guarding site not found"));

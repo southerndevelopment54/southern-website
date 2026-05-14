@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
+import OrderSlider from "@/components/OrderSlider";
 
 interface SiteForm {
   name: string;
@@ -28,7 +29,7 @@ export default function NewProjectPage() {
     address: "",
     category: "key",
     tier: "1",
-    displayOrder: "",
+    displayOrder: "1",
     isActive: true,
   });
 
@@ -116,7 +117,10 @@ export default function NewProjectPage() {
         </div>
         <div>
           <Label>顯示排序</Label>
-          <Input type="number" value={form.displayOrder} onChange={(e) => setForm({ ...form, displayOrder: e.target.value })} placeholder="數字越小越靠前" />
+          <OrderSlider
+            value={form.displayOrder ? Number(form.displayOrder) : 1}
+            onChange={(v) => setForm({ ...form, displayOrder: String(v) })}
+          />
         </div>
         <div className="flex items-center gap-2">
           <input type="checkbox" id="active" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} />

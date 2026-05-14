@@ -30,6 +30,10 @@ public class PublicGuardingSiteController {
             return ResponseEntity.ok(guardingSiteService.getByCategoryAndTier(category, tier, page, size));
         }
 
+        if (category != null) {
+            return ResponseEntity.ok(guardingSiteService.getByCategory(category));
+        }
+
         List<GuardingSiteResponse> all = guardingSiteService.getAllActive();
         return ResponseEntity.ok(all);
     }

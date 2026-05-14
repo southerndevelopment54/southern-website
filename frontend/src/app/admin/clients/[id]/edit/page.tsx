@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
+import OrderSlider from "@/components/OrderSlider";
 
 interface EnterpriseType {
   id: number;
@@ -122,24 +123,11 @@ export default function EditClientPage() {
           {form.logoKey && <p className="text-sm text-muted-foreground mt-1">已上傳: {form.logoKey}</p>}
         </div>
         <div>
-          <Label>顯示排序 <span className="text-muted-foreground font-normal">(值越小越靠前: {form.displayOrder || 1})</span></Label>
-          <input
-            type="range"
-            min={1}
-            max={10}
-            step={1}
+          <Label>顯示排序</Label>
+          <OrderSlider
             value={form.displayOrder ? Number(form.displayOrder) : 1}
-            onChange={(e) => setForm({ ...form, displayOrder: e.target.value })}
-            className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800 mt-2"
+            onChange={(v) => setForm({ ...form, displayOrder: String(v) })}
           />
-          <div className="flex justify-between px-1 mt-1">
-            {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((v) => (
-              <div key={v} className="flex flex-col items-center">
-                <div className={`w-px bg-slate-300 ${v === 1 || v === 10 ? "h-3" : "h-1.5"}`} />
-                <span className="text-[10px] text-slate-400 mt-0.5">{v}</span>
-              </div>
-            ))}
-          </div>
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
