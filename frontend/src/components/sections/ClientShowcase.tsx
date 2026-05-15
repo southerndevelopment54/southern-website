@@ -143,29 +143,31 @@ export default function ClientShowcase() {
 
         {/* Clients Tab */}
         {activeTab === "clients" && (
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {clients.map((client) => (
               <div
                 key={client.id}
-                className="bg-white rounded-xl border border-gray-100 p-6 text-center hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
+                className="bg-white rounded-xl border border-gray-100 p-6 md:p-8 flex items-center gap-5 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
               >
                 {client.logoUrl ? (
-                  <div className="w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4 overflow-hidden bg-white border border-gray-100 group-hover:border-primary/30 transition-colors duration-200">
+                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-xl flex items-center justify-center shrink-0 overflow-hidden bg-white border border-gray-100 group-hover:border-primary/30 transition-colors duration-200">
                     <img
                       src={client.logoUrl}
                       alt={client.name}
-                      className="w-full h-full object-contain p-2"
+                      className="w-full h-full object-contain p-3"
                     />
                   </div>
                 ) : (
-                  <div className="w-16 h-16 bg-dark rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:bg-primary transition-colors duration-200">
-                    <span className="text-white font-bold text-lg">
+                  <div className="w-24 h-24 md:w-28 md:h-28 bg-dark rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors duration-200">
+                    <span className="text-white font-bold text-2xl">
                       {client.name.charAt(0)}
                     </span>
                   </div>
                 )}
-                <h3 className="font-bold text-dark mb-1">{client.name}</h3>
-                <p className="text-xs text-gray-400">{client.enterpriseTypeName || ""}</p>
+                <div className="min-w-0">
+                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1 truncate">{client.name}</h3>
+                  <p className="text-sm text-gray-400">{client.enterpriseTypeName || ""}</p>
+                </div>
               </div>
             ))}
             {clients.length === 0 && (

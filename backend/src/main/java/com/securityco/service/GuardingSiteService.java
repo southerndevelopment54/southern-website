@@ -6,6 +6,7 @@ import com.securityco.model.GuardingSite;
 import com.securityco.model.TierLimit;
 import com.securityco.repository.GuardingSiteRepository;
 import com.securityco.repository.TierLimitRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -84,7 +85,7 @@ public class GuardingSiteService {
     @Transactional(readOnly = true)
     public GuardingSiteResponse getById(Integer id) {
         GuardingSite site = guardingSiteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Guarding site not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Guarding site not found"));
         return toResponse(site);
     }
 
@@ -108,7 +109,7 @@ public class GuardingSiteService {
     @Transactional
     public GuardingSiteResponse update(Integer id, GuardingSiteRequest request) {
         GuardingSite site = guardingSiteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Guarding site not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Guarding site not found"));
 
         boolean tierChanged = !site.getTier().equals(request.getTier())
                 || !site.getCategory().equals(request.getCategory());
@@ -132,7 +133,7 @@ public class GuardingSiteService {
     @Transactional
     public void delete(Integer id) {
         GuardingSite site = guardingSiteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Guarding site not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Guarding site not found"));
         guardingSiteRepository.delete(site);
     }
 
@@ -153,7 +154,7 @@ public class GuardingSiteService {
         }
 
         if (currentCount >= maxCount) {
-            throw new RuntimeException("Tier limit reached for category '" + category + "' tier " + tier
+            throw new IllegalArgumentException("Tier limit reached for category '" + category + "' tier " + tier
                     + ". Maximum allowed: " + maxCount);
         }
     }

@@ -20,14 +20,17 @@ interface GuardingSite {
   isActive: boolean;
 }
 
-const categoryLabel = (c: string) => {
-  switch (c) {
-    case "key": return "重點項目";
-    case "commercial": return "商場大廈";
-    case "residential": return "住宅";
-    default: return c;
-  }
-};
+interface CategoryConfig {
+  key: string;
+  label: string;
+  badgeColor: string;
+}
+
+const CATEGORIES: CategoryConfig[] = [
+  { key: "key", label: "重點項目", badgeColor: "bg-amber-100 text-amber-700" },
+  { key: "commercial", label: "商場大廈", badgeColor: "bg-blue-100 text-blue-700" },
+  { key: "residential", label: "住宅", badgeColor: "bg-emerald-100 text-emerald-700" },
+];
 
 export default function AdminProjectsPage() {
   const [sites, setSites] = useState<GuardingSite[]>([]);
@@ -57,6 +60,11 @@ export default function AdminProjectsPage() {
 
   const pendingSite = sites.find((s) => s.id === deleteId);
 
+  const sitesByCategory = (category: string) =>
+    sites
+      .filter((s) => s.category === category)
+      .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
+
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
@@ -66,50 +74,90 @@ export default function AdminProjectsPage() {
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
-        <table className="w-full text-sm">
-          <thead className="bg-slate-100">
-            <tr>
-              <th className="text-left px-4 py-3 font-medium">編號</th>
-              <th className="text-left px-4 py-3 font-medium">名稱</th>
-              <th className="text-left px-4 py-3 font-medium">類別</th>
-              <th className="text-left px-4 py-3 font-medium">層級</th>
-              <th className="text-left px-4 py-3 font-medium">排序</th>
-              <th className="text-left px-4 py-3 font-medium">狀態</th>
-              <th className="text-right px-4 py-3 font-medium">操作</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sites.map((s) => (
-              <tr key={s.id} className="border-t">
-                <td className="px-4 py-3">{s.id}</td>
-                <td className="px-4 py-3 flex items-center gap-2">
-                  {s.imageUrl && <img src={s.imageUrl} alt="" className="w-10 h-10 object-cover rounded" />}
-                  {s.name}
-                </td>
-                <td className="px-4 py-3">{categoryLabel(s.category)}</td>
-                <td className="px-4 py-3">{s.tier}</td>
-                <td className="px-4 py-3">{s.displayOrder ?? "-"}</td>
-                <td className="px-4 py-3">
-                  {s.isActive ? <Badge>生效中</Badge> : <Badge variant="secondary">已停用</Badge>}
-                </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <Link href={`/admin/projects/${s.id}/edit`}>
-                    <Button size="sm" variant="outline">編輯</Button>
-                  </Link>
-                  <Button size="sm" variant="destructive" onClick={() => setDeleteId(s.id)}>刪除</Button>
-                </td>
-              </tr>
-            ))}
-            {sites.length === 0 && (
-              <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">
-                  暫無合作項目。
-                </td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+      <div className="space-y-8">
+        {CATEGORIES.map((cat) => {
+          const catSites = sitesByCategory(cat.key);
+          return (
+            <div key={cat.key}>
+              <div className="flex items-center gap-3 mb-3">
+                <h2 className="text-lg font-bold text-slate-800">{cat.label}</h2>
+                <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${cat.badgeColor}`}>
+                  {catSites.length} 項
+                </span>
+              </div>
+              <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+                <table className="w-full text-sm">
+                  <thead className="bg-slate-50">
+                    <tr>
+                      <th className="text-left px-4 py-3 font-medium w-16">編號</th>
+                      <th className="text-left px-4 py-3 font-medium">名稱</th>
+                      <th className="text-left px-4 py-3 font-medium w-16">層級</th>
+                      <th className="text-left px-4 py-3 font-medium w-20">排序</th>
+                      <th className="text-left px-4 py-3 font-medium w-20">狀態</th>
+                      <th className="text-right px-4 py-3 font-medium w-32">操作</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {catSites.map((s) => (
+                      <tr key={s.id} className="border-t">
+                        <td className="px-4 py-3">{s.id}</td>
+                        <td className="px-4 py-3">
+                          <div className="flex items-center gap-3">
+                            {s.imageUrl && (
+                              <img
+                                src={s.imageUrl}
+                                alt=""
+                                className="w-10 h-10 object-cover rounded"
+                              />
+                            )}
+                            <span className="font-medium text-slate-700">{s.name}</span>
+                          </div>
+                        </td>
+                        <td className="px-4 py-3">
+                          <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">
+                            {s.tier}
+                          </span>
+                        </td>
+                        <td className="px-4 py-3">{s.displayOrder ?? "-"}</td>
+                        <td className="px-4 py-3">
+                          {s.isActive ? (
+                            <Badge>生效中</Badge>
+                          ) : (
+                            <Badge variant="secondary">已停用</Badge>
+                          )}
+                        </td>
+                        <td className="px-4 py-3 text-right space-x-2">
+                          <Link href={`/admin/projects/${s.id}/edit`}>
+                            <Button size="sm" variant="outline">
+                              編輯
+                            </Button>
+                          </Link>
+                          <Button
+                            size="sm"
+                            variant="destructive"
+                            onClick={() => setDeleteId(s.id)}
+                          >
+                            刪除
+                          </Button>
+                        </td>
+                      </tr>
+                    ))}
+                    {catSites.length === 0 && (
+                      <tr>
+                        <td
+                          colSpan={6}
+                          className="px-4 py-6 text-center text-muted-foreground"
+                        >
+                          暫無{cat.label}。
+                        </td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <Dialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
@@ -118,11 +166,19 @@ export default function AdminProjectsPage() {
             <DialogTitle>確認刪除</DialogTitle>
           </DialogHeader>
           <p className="text-sm text-gray-600">
-            確定要刪除項目「<span className="font-semibold text-gray-900">{pendingSite?.name}</span>」嗎？此操作無法復原。
+            確定要刪除項目「
+            <span className="font-semibold text-gray-900">
+              {pendingSite?.name}
+            </span>
+            」嗎？此操作無法復原。
           </p>
           <div className="flex justify-end gap-2 mt-4">
-            <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
-            <Button variant="destructive" onClick={handleDelete}>確認刪除</Button>
+            <Button variant="outline" onClick={() => setDeleteId(null)}>
+              取消
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              確認刪除
+            </Button>
           </div>
         </DialogContent>
       </Dialog>
