@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useSortable } from "@/hooks/useSortable";
+import SortHeader from "@/components/SortHeader";
 
 interface Client {
   id: number;
@@ -22,6 +24,7 @@ interface Client {
 export default function AdminClientsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const { sortedItems, sortKey, direction, requestSort } = useSortable(clients);
 
   const fetchClients = () => {
     api.get("/admin/clients").then((res) => {
@@ -60,17 +63,17 @@ export default function AdminClientsPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-100">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">編號</th>
-              <th className="text-left px-4 py-3 font-medium">名稱</th>
-              <th className="text-left px-4 py-3 font-medium">企業類型</th>
-              <th className="text-left px-4 py-3 font-medium">精選</th>
-              <th className="text-left px-4 py-3 font-medium">排序</th>
-              <th className="text-left px-4 py-3 font-medium">狀態</th>
-              <th className="text-right px-4 py-3 font-medium">操作</th>
+              <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="名稱" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="企業類型" sortKey="enterpriseTypeName" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="精選" sortKey="isFeatured" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="排序" sortKey="displayOrder" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
+              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
             </tr>
           </thead>
           <tbody>
-            {clients.map((c) => (
+            {sortedItems.map((c) => (
               <tr key={c.id} className="border-t">
                 <td className="px-4 py-3">{c.id}</td>
                 <td className="px-4 py-3 flex items-center gap-2">
@@ -93,7 +96,7 @@ export default function AdminClientsPage() {
                 </td>
               </tr>
             ))}
-            {clients.length === 0 && (
+            {sortedItems.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">
                   暫無客戶。

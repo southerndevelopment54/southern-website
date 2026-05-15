@@ -9,11 +9,14 @@ import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { useSortable } from "@/hooks/useSortable";
+import SortHeader from "@/components/SortHeader";
 
 export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selected, setSelected] = useState<Submission | null>(null);
   const [adminNotes, setAdminNotes] = useState("");
+  const { sortedItems, sortKey, direction, requestSort } = useSortable(submissions);
 
   const fetchSubmissions = () => {
     api.get("/admin/submissions").then((res) => {
@@ -66,16 +69,16 @@ export default function AdminSubmissionsPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-100">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">編號</th>
-              <th className="text-left px-4 py-3 font-medium">姓名</th>
-              <th className="text-left px-4 py-3 font-medium">職位</th>
-              <th className="text-left px-4 py-3 font-medium">電話</th>
-              <th className="text-left px-4 py-3 font-medium">狀態</th>
-              <th className="text-right px-4 py-3 font-medium">操作</th>
+              <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="姓名" sortKey="firstName" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="職位" sortKey="vacancyTitle" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="電話" sortKey="phoneNumber" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="狀態" sortKey="status" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
+              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
             </tr>
           </thead>
           <tbody>
-            {submissions.map((s) => (
+            {sortedItems.map((s) => (
               <tr key={s.id} className="border-t">
                 <td className="px-4 py-3">{s.id}</td>
                 <td className="px-4 py-3">{s.firstName} {s.lastName}</td>
@@ -90,7 +93,7 @@ export default function AdminSubmissionsPage() {
                 </td>
               </tr>
             ))}
-            {submissions.length === 0 && (
+            {sortedItems.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-6 text-center text-muted-foreground">
                   暫無申請紀錄。

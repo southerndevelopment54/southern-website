@@ -8,10 +8,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useSortable } from "@/hooks/useSortable";
+import SortHeader from "@/components/SortHeader";
 
 export default function AdminVacanciesPage() {
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [deleteId, setDeleteId] = useState<number | null>(null);
+  const { sortedItems, sortKey, direction, requestSort } = useSortable(vacancies);
 
   const fetchVacancies = () => {
     api.get("/admin/vacancies").then((res) => {
@@ -50,19 +53,19 @@ export default function AdminVacanciesPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-100">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">編號</th>
-              <th className="text-left px-4 py-3 font-medium">職位名稱</th>
-              <th className="text-left px-4 py-3 font-medium">類型</th>
-              <th className="text-left px-4 py-3 font-medium">地區</th>
-              <th className="text-left px-4 py-3 font-medium">薪金</th>
-              <th className="text-left px-4 py-3 font-medium">類別</th>
-              <th className="text-left px-4 py-3 font-medium">精選</th>
-              <th className="text-left px-4 py-3 font-medium">狀態</th>
-              <th className="text-right px-4 py-3 font-medium">操作</th>
+              <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="職位名稱" sortKey="title" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="類型" sortKey="guardType.typeName" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="地區" sortKey="district.districtName" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="薪金" sortKey="salaryDisplay" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="類別" sortKey="jobType" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="精選" sortKey="isFeatured" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
+              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
             </tr>
           </thead>
           <tbody>
-            {vacancies.map((v) => (
+            {sortedItems.map((v) => (
               <tr key={v.id} className="border-t">
                 <td className="px-4 py-3">{v.id}</td>
                 <td className="px-4 py-3 font-medium">{v.title}</td>
@@ -84,7 +87,7 @@ export default function AdminVacanciesPage() {
                 </td>
               </tr>
             ))}
-            {vacancies.length === 0 && (
+            {sortedItems.length === 0 && (
               <tr>
                 <td colSpan={9} className="px-4 py-6 text-center text-muted-foreground">
                   暫無職位空缺。

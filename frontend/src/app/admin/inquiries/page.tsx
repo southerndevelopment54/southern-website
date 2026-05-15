@@ -7,6 +7,8 @@ import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
+import { useSortable } from "@/hooks/useSortable";
+import SortHeader from "@/components/SortHeader";
 
 interface Inquiry {
   id: number;
@@ -25,6 +27,7 @@ interface Inquiry {
 export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [selected, setSelected] = useState<Inquiry | null>(null);
+  const { sortedItems, sortKey, direction, requestSort } = useSortable(inquiries);
 
   const fetchInquiries = () => {
     api.get("/admin/inquiries?size=100").then((res) => {
@@ -69,17 +72,17 @@ export default function AdminInquiriesPage() {
         <table className="w-full text-sm">
           <thead className="bg-slate-100">
             <tr>
-              <th className="text-left px-4 py-3 font-medium">狀態</th>
-              <th className="text-left px-4 py-3 font-medium">姓名</th>
-              <th className="text-left px-4 py-3 font-medium">公司</th>
-              <th className="text-left px-4 py-3 font-medium">電話</th>
-              <th className="text-left px-4 py-3 font-medium">服務類型</th>
-              <th className="text-left px-4 py-3 font-medium">時間</th>
-              <th className="text-right px-4 py-3 font-medium">操作</th>
+              <SortHeader label="狀態" sortKey="isRead" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
+              <SortHeader label="姓名" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="公司" sortKey="company" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="電話" sortKey="phone" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="服務類型" sortKey="serviceType" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="時間" sortKey="createdAt" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <th className="text-right px-4 py-3 font-medium w-40">操作</th>
             </tr>
           </thead>
           <tbody>
-            {inquiries.map((q) => (
+            {sortedItems.map((q) => (
               <tr key={q.id} className={`border-t ${!q.isRead ? "bg-blue-50/50" : ""}`}>
                 <td className="px-4 py-3">
                   <Badge variant={q.isRead ? "secondary" : "default"}>
@@ -108,7 +111,7 @@ export default function AdminInquiriesPage() {
                 </td>
               </tr>
             ))}
-            {inquiries.length === 0 && (
+            {sortedItems.length === 0 && (
               <tr>
                 <td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">
                   暫無服務查詢。
