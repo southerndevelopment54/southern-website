@@ -68,8 +68,9 @@ export default function NewProjectPage() {
       });
       toast({ title: "項目已建立" });
       router.push("/admin/projects");
-    } catch (err: any) {
-      toast({ title: "錯誤", description: err.response?.data?.message || "建立失敗", variant: "destructive" });
+    } catch (err) {
+      const e = err as { response?: { data?: { message?: string } } };
+      toast({ title: "錯誤", description: e.response?.data?.message || "建立失敗", variant: "destructive" });
     }
   };
 

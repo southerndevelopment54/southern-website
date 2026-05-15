@@ -89,8 +89,9 @@ export default function EditClientPage() {
       });
       toast({ title: "客戶已更新" });
       router.push("/admin/clients");
-    } catch (err: any) {
-      toast({ title: "錯誤", description: err.response?.data?.message || "更新失敗", variant: "destructive" });
+    } catch (err) {
+      const e = err as { response?: { data?: { message?: string } } };
+      toast({ title: "錯誤", description: e.response?.data?.message || "更新失敗", variant: "destructive" });
     }
   };
 

@@ -86,8 +86,9 @@ export default function EditProjectPage() {
       });
       toast({ title: "項目已更新" });
       router.push("/admin/projects");
-    } catch (err: any) {
-      toast({ title: "錯誤", description: err.response?.data?.message || "更新失敗", variant: "destructive" });
+    } catch (err) {
+      const e = err as { response?: { data?: { message?: string } } };
+      toast({ title: "錯誤", description: e.response?.data?.message || "更新失敗", variant: "destructive" });
     }
   };
 

@@ -128,7 +128,7 @@ public class ClientService {
         response.setName(client.getName());
         response.setLogoKey(client.getLogoKey());
         if (client.getLogoKey() != null && !client.getLogoKey().isBlank()) {
-            response.setLogoUrl(minioService.getPresignedUrl(client.getLogoKey()));
+            response.setLogoUrl(minioService.getPublicUrl(client.getLogoKey()));
         }
         if (client.getEnterpriseType() != null) {
             response.setEnterpriseTypeId(client.getEnterpriseType().getId());

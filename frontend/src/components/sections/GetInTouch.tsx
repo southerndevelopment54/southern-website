@@ -79,8 +79,9 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
         serviceType: "",
         message: "",
       });
-    } catch (err: any) {
-      if (err.response?.status === 429) {
+    } catch (err) {
+      const e = err as { response?: { status?: number } };
+      if (e.response?.status === 429) {
         toast({
           title: "提交過於頻繁",
           description: "請稍候一分鐘後再試。",

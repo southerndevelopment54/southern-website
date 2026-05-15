@@ -164,7 +164,7 @@ public class GuardingSiteService {
         response.setName(site.getName());
         response.setImageKey(site.getImageKey());
         if (site.getImageKey() != null && !site.getImageKey().isBlank()) {
-            response.setImageUrl(minioService.getPresignedUrl(site.getImageKey()));
+            response.setImageUrl(minioService.getPublicUrl(site.getImageKey()));
         }
         response.setAddress(site.getAddress());
         response.setCategory(site.getCategory());

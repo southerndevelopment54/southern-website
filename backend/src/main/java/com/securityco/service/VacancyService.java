@@ -203,7 +203,7 @@ public class VacancyService {
         }
 
         if (vacancy.getImageKey() != null && !vacancy.getImageKey().isBlank()) {
-            response.setImageUrl(minioService.getPresignedUrl(vacancy.getImageKey()));
+            response.setImageUrl(minioService.getPublicUrl(vacancy.getImageKey()));
         }
 
         return response;

@@ -2,6 +2,7 @@ package com.securityco.service;
 
 import com.securityco.config.MinioConfig;
 import io.minio.BucketExistsArgs;
+import io.minio.GetObjectArgs;
 import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;
@@ -55,5 +56,21 @@ public class MinioService {
             url = url.replace(minioConfig.getEndpoint(), minioConfig.getExternalEndpoint());
         }
         return url;
+    }
+
+    @SneakyThrows
+    public byte[] getObjectBytes(String objectName) {
+        try (var stream = minioClient.getObject(
+                GetObjectArgs.builder()
+                        .bucket(minioConfig.getBucketName())
+                        .object(objectName)
+                        .build())) {
+            return stream.readAllBytes();
+        }
+    }
+
+    public String getPublicUrl(String objectName) {
+        if (objectName == null || objectName.isBlank()) return null;
+        return "/api/files/" + objectName;
     }
 }
