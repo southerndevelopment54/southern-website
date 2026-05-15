@@ -16,7 +16,7 @@ public class GuardingSiteRequest {
     private String address;
 
     @NotBlank(message = "Category is required")
-    @Pattern(regexp = "key|commercial|residential", message = "Category must be key, commercial, or residential")
+    @Pattern(regexp = "key|commercial|residential|events", message = "Category must be key, commercial, residential, or events")
     private String category;
 
     @NotNull(message = "Tier is required")

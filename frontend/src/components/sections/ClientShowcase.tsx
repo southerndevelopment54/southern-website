@@ -21,7 +21,7 @@ interface GuardingSite {
   tier: number;
 }
 
-type SiteCategory = "key" | "commercial" | "residential";
+type SiteCategory = "key" | "commercial" | "residential" | "events";
 
 export default function ClientShowcase() {
   const { t } = useI18n();
@@ -39,7 +39,7 @@ export default function ClientShowcase() {
     const filter = params.get("filter") as SiteCategory | null;
 
     if (tab === "sites") setActiveTab("sites");
-    if (filter && ["key", "commercial", "residential"].includes(filter)) {
+    if (filter && ["key", "commercial", "residential", "events"].includes(filter)) {
       setSiteFilter(filter);
     }
   }, []);
@@ -81,6 +81,7 @@ export default function ClientShowcase() {
     { id: "key" as const, label: t.clientShowcase.tabKey },
     { id: "commercial" as const, label: t.clientShowcase.tabCommercial },
     { id: "residential" as const, label: t.clientShowcase.tabResidential },
+    { id: "events" as const, label: t.clientShowcase.tabEvents },
   ];
 
   return (

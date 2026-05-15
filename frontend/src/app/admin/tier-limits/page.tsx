@@ -20,6 +20,7 @@ const categoryLabel = (c: string) => {
     case "key": return "重點項目";
     case "commercial": return "商場大廈";
     case "residential": return "住宅";
+    case "events": return "大型活動";
     default: return c;
   }
 };

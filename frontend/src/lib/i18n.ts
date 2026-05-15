@@ -69,6 +69,7 @@ export const translations = {
       tabKey: "重點項目",
       tabCommercial: "商場大廈",
       tabResidential: "住宅",
+      tabEvents: "大型活動",
     },
     careers: {
       badge: "加入我們",
@@ -242,6 +243,7 @@ export const translations = {
       tabKey: "Key Projects",
       tabCommercial: "Commercial & Malls",
       tabResidential: "Residential",
+      tabEvents: "Large Events",
     },
     careers: {
       badge: "Join Us",
