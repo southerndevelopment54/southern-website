@@ -8,8 +8,8 @@ export default function AboutSection() {
 
   const stats = [
     { icon: Shield, value: "20+", label: t.about.stats.experience },
-    { icon: Award, value: "500+", label: t.about.stats.clients },
-    { icon: Users, value: "1000+", label: t.about.stats.guards },
+    { icon: Award, value: "1997", label: t.about.stats.established },
+    { icon: Users, value: "500+", label: t.about.stats.personnel },
     { icon: Clock, value: "24/7", label: t.about.stats.service },
   ];
 
@@ -42,13 +42,13 @@ export default function AboutSection() {
             <div className="space-y-4 text-gray-600 leading-relaxed mb-8">
               <p>
                 {locale === "zh"
-                  ? "南方(警衛及管業)有限公司成立多年，一直致力為客戶提供專業、可靠的保安服務。我們擁有經驗豐富的管理團隊及訓練有素的保安人員，為各類商業及住宅物業提供全面的保安解決方案。"
-                  : "Southern Security Services Ltd. has been established for many years, dedicated to providing professional and reliable security services. We have an experienced management team and well-trained security personnel, offering comprehensive security solutions for various commercial and residential properties."}
+                  ? "本公司於一九九七年成立迄今已逾二十載，所有管理階層均為資深保安從業員。現僱用約500名保安人員，為尊貴客戶在商業大廈、屋苑、學校、廠房、商場、物流倉庫、建築地盤及展覽盛事場地提供專業警衛服務。"
+                  : "Southern was established in 1997 in Hong Kong, with its Headquarters at New Treasure Centre, Sanpokong, Kowloon. We specialize in professional Security Services including Security Guarding, Gurkha Guarding, Key Holding, Mobile Patrolling, Close Protection, Body Guard, and Car Pick-up & Transit. At present, we have about 500 security personnel posted at various locations including high-class residential buildings, commercial complexes, schools, factories, shopping malls, logistics warehouses, construction sites, and event venues."}
               </p>
               <p>
                 {locale === "zh"
-                  ? "我們深信，優質的保安服務不僅是保護財產，更是守護人們的安全與安心。憑藉專業的態度及先進的管理系統，我們已成功為超過500位客戶提供滿意的保安服務，贏得業界的廣泛認可。"
-                  : "We believe that quality security service is not only about protecting property, but also safeguarding people's safety and peace of mind. With a professional attitude and advanced management systems, we have successfully provided satisfactory security services to over 500 clients, earning wide recognition in the industry."}
+                  ? "本公司所聘用之保安人員均已接受政府認可機構之培訓，持有有效培訓證書及保安人員許可證，並設有24小時中央監控中心，由高級主管監察所有崗位運作。我們一直以最專業的服務、最合理的價格，成為客戶最信賴的長期合作夥伴。"
+                  : "All security personnel employed receive stringent trainings from government-recognized institutions and hold valid training certificates and security permits. Our Control Room operates 24 hours daily with senior officers monitoring all posts. We are committed to being our clients' most trusted long-term partner through the most professional service at the most reasonable prices."}
               </p>
             </div>
             <a

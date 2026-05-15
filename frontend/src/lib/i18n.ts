@@ -21,8 +21,8 @@ export const translations = {
       title: "值得信賴的保安服務夥伴",
       stats: {
         experience: "年保安經驗",
-        clients: "合作客戶",
-        guards: "專業保安人員",
+        established: "年成立",
+        personnel: "保安人員",
         service: "全天候服務",
       },
     },
@@ -195,8 +195,8 @@ export const translations = {
       title: "A Trusted Security Partner",
       stats: {
         experience: "Years of Experience",
-        clients: "Partner Clients",
-        guards: "Professional Guards",
+        established: "Established",
+        personnel: "Security Personnel",
         service: "24/7 Service",
       },
     },
