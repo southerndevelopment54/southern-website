@@ -16,11 +16,10 @@ public class GuardingSiteRequest {
     private String address;
 
     @NotBlank(message = "Category is required")
-    @Pattern(regexp = "key|commercial|residential|events", message = "Category must be key, commercial, residential, or events")
+    @Pattern(regexp = "commercial|residential|events", message = "Category must be commercial, residential, or events")
     private String category;
 
-    @NotNull(message = "Tier is required")
-    private Integer tier;
+    private Boolean isFeatured;
 
     private Integer displayOrder;
 

@@ -32,8 +32,8 @@ public class GuardingSite {
     @Column(nullable = false, length = 20)
     private String category;
 
-    @Column(nullable = false)
-    private Integer tier;
+    @Column(name = "is_featured")
+    private Boolean isFeatured;
 
     @Column(name = "display_order")
     private Integer displayOrder;

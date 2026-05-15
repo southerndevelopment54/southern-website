@@ -18,16 +18,16 @@ interface GuardingSite {
   imageUrl: string;
   address: string;
   category: string;
-  tier: number;
+  isFeatured: boolean;
 }
 
-type SiteCategory = "key" | "commercial" | "residential" | "events";
+type SiteFilter = "featured" | "commercial" | "residential" | "events";
 
 export default function ClientShowcase() {
   const { t } = useI18n();
 
   const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
-  const [siteFilter, setSiteFilter] = useState<SiteCategory>("key");
+  const [siteFilter, setSiteFilter] = useState<SiteFilter>("featured");
   const [clients, setClients] = useState<Client[]>([]);
   const [sites, setSites] = useState<GuardingSite[]>([]);
   const [loadingSites, setLoadingSites] = useState(false);
@@ -36,10 +36,10 @@ export default function ClientShowcase() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
-    const filter = params.get("filter") as SiteCategory | null;
+    const filter = params.get("filter") as SiteFilter | null;
 
     if (tab === "sites") setActiveTab("sites");
-    if (filter && ["key", "commercial", "residential", "events"].includes(filter)) {
+    if (filter && ["featured", "commercial", "residential", "events"].includes(filter)) {
       setSiteFilter(filter);
     }
   }, []);
@@ -51,12 +51,15 @@ export default function ClientShowcase() {
       .catch(() => setClients([]));
   }, []);
 
-  // Fetch sites whenever the category filter changes
-  const fetchSites = useCallback(async (category: SiteCategory) => {
+  // Fetch sites whenever the filter changes
+  const fetchSites = useCallback(async (filter: SiteFilter) => {
     setLoadingSites(true);
     setSites([]);
     try {
-      const res = await api.get(`/projects?category=${encodeURIComponent(category)}`);
+      const url = filter === "featured"
+        ? "/projects?featured=true"
+        : `/projects?category=${encodeURIComponent(filter)}`;
+      const res = await api.get(url);
       const data = Array.isArray(res.data) ? res.data : res.data?.content || [];
       setSites(data);
     } catch {
@@ -78,7 +81,7 @@ export default function ClientShowcase() {
   ];
 
   const siteFilters = [
-    { id: "key" as const, label: t.clientShowcase.tabKey },
+    { id: "featured" as const, label: t.clientShowcase.tabKey },
     { id: "commercial" as const, label: t.clientShowcase.tabCommercial },
     { id: "residential" as const, label: t.clientShowcase.tabResidential },
     { id: "events" as const, label: t.clientShowcase.tabEvents },

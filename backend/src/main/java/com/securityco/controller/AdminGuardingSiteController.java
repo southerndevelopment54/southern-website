@@ -37,7 +37,7 @@ public class AdminGuardingSiteController {
             HttpServletRequest httpRequest) {
         GuardingSiteResponse response = guardingSiteService.create(request);
         auditLogService.log("CREATE", "guarding_site", response.getId(),
-                Map.of("name", request.getName(), "category", request.getCategory(), "tier", request.getTier()),
+                Map.of("name", request.getName(), "category", request.getCategory()),
                 getIp(httpRequest));
         return ResponseEntity.ok(response);
     }
@@ -49,7 +49,7 @@ public class AdminGuardingSiteController {
             HttpServletRequest httpRequest) {
         GuardingSiteResponse response = guardingSiteService.update(id, request);
         auditLogService.log("UPDATE", "guarding_site", id,
-                Map.of("name", request.getName(), "category", request.getCategory(), "tier", request.getTier()),
+                Map.of("name", request.getName(), "category", request.getCategory()),
                 getIp(httpRequest));
         return ResponseEntity.ok(response);
     }

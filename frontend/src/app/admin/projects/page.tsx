@@ -17,7 +17,7 @@ interface GuardingSite {
   imageUrl: string;
   address: string;
   category: string;
-  tier: number;
+  isFeatured: boolean;
   displayOrder: number;
   isActive: boolean;
 }
@@ -30,7 +30,6 @@ interface CategoryConfig {
 }
 
 const CATEGORIES: CategoryConfig[] = [
-  { key: "key", label: "重點項目", badgeColor: "bg-amber-50 text-amber-700 border-amber-200", dotColor: "bg-amber-500" },
   { key: "commercial", label: "商場大廈", badgeColor: "bg-blue-50 text-blue-700 border-blue-200", dotColor: "bg-blue-500" },
   { key: "residential", label: "住宅", badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200", dotColor: "bg-emerald-500" },
   { key: "events", label: "大型活動", badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200", dotColor: "bg-indigo-500" },
@@ -62,7 +61,6 @@ function CategorySection({
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="名稱" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
-              <SortHeader label="層級" sortKey="tier" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="排序" sortKey="displayOrder" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
               <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
               <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">操作</th>
@@ -83,13 +81,13 @@ function CategorySection({
                         <span className="text-xs font-bold text-slate-400">{s.name.charAt(0)}</span>
                       </div>
                     )}
-                    <span className="font-medium text-slate-900">{s.name}</span>
+                    <div className="min-w-0">
+                      <span className="font-medium text-slate-900">{s.name}</span>
+                      {s.isFeatured && (
+                        <Badge className="ml-2 bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200 whitespace-nowrap">精選</Badge>
+                      )}
+                    </div>
                   </div>
-                </td>
-                <td className="px-5 py-4">
-                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold tabular-nums">
-                    {s.tier}
-                  </span>
                 </td>
                 <td className="px-5 py-4 text-slate-400 tabular-nums">{s.displayOrder ?? "—"}</td>
                 <td className="px-5 py-4">
@@ -115,7 +113,7 @@ function CategorySection({
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-12 text-center text-slate-400 text-sm">
+                <td colSpan={5} className="px-5 py-12 text-center text-slate-400 text-sm">
                   暫無{cat.label}
                 </td>
               </tr>
@@ -155,10 +153,16 @@ export default function AdminProjectsPage() {
 
   const pendingSite = sites.find((s) => s.id === deleteId);
 
-  const sitesByCategory = (category: string) =>
-    sites
+  const sitesByCategory = (category: string) => {
+    const list = sites
       .filter((s) => s.category === category)
-      .sort((a, b) => (a.displayOrder ?? 999) - (b.displayOrder ?? 999));
+      .sort((a, b) => {
+        // Featured first, then by displayOrder
+        if (a.isFeatured !== b.isFeatured) return b.isFeatured ? 1 : -1;
+        return (a.displayOrder ?? 999) - (b.displayOrder ?? 999);
+      });
+    return list;
+  };
 
   return (
     <div>

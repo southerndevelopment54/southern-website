@@ -17,7 +17,7 @@ interface SiteForm {
   imageKey: string;
   address: string;
   category: string;
-  tier: string;
+  isFeatured: boolean;
   displayOrder: string;
   isActive: boolean;
 }
@@ -28,8 +28,8 @@ export default function NewProjectPage() {
     name: "",
     imageKey: "",
     address: "",
-    category: "key",
-    tier: "1",
+    category: "commercial",
+    isFeatured: false,
     displayOrder: "1",
     isActive: true,
   });
@@ -53,7 +53,7 @@ export default function NewProjectPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.name || !form.category || !form.tier) {
+    if (!form.name || !form.category) {
       toast({ title: "錯誤", description: "請填寫所有必填欄位", variant: "destructive" });
       return;
     }
@@ -63,7 +63,7 @@ export default function NewProjectPage() {
         imageKey: form.imageKey || null,
         address: form.address || null,
         category: form.category,
-        tier: Number(form.tier),
+        isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
         isActive: form.isActive,
       });
@@ -92,22 +92,15 @@ export default function NewProjectPage() {
           <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="key">重點項目</SelectItem>
               <SelectItem value="commercial">商場大廈</SelectItem>
               <SelectItem value="residential">住宅</SelectItem>
               <SelectItem value="events">大型活動</SelectItem>
             </SelectContent>
           </Select>
         </div>
-        <div>
-          <Label>層級</Label>
-          <Select value={form.tier} onValueChange={(v) => setForm({ ...form, tier: v })}>
-            <SelectTrigger><SelectValue /></SelectTrigger>
-            <SelectContent>
-              <SelectItem value="1">1</SelectItem>
-              <SelectItem value="2">2</SelectItem>
-            </SelectContent>
-          </Select>
+        <div className="flex items-center gap-2">
+          <input type="checkbox" id="featured" checked={form.isFeatured} onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })} />
+          <Label htmlFor="featured">精選項目</Label>
         </div>
         <div>
           <Label>地址</Label>

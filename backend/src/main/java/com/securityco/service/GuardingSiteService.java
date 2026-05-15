@@ -8,10 +8,6 @@ import com.securityco.repository.GuardingSiteRepository;
 import com.securityco.repository.TierLimitRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -54,20 +50,8 @@ public class GuardingSiteService {
     }
 
     @Transactional(readOnly = true)
-    public Page<GuardingSiteResponse> getByCategoryAndTier(String category, Integer tier, int page, int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<GuardingSite> result = guardingSiteRepository
-                .findByCategoryAndTierAndIsActiveTrueOrderByDisplayOrderAsc(category, tier, pageable);
-        List<GuardingSiteResponse> content = result.getContent().stream()
-                .map(this::toResponse)
-                .toList();
-        return new PageImpl<>(content, pageable, result.getTotalElements());
-    }
-
-    @Transactional(readOnly = true)
-    public List<GuardingSiteResponse> getByCategoryAndTier(String category, Integer tier) {
-        return guardingSiteRepository
-                .findByCategoryAndTierAndIsActiveTrueOrderByDisplayOrderAsc(category, tier)
+    public List<GuardingSiteResponse> getFeatured() {
+        return guardingSiteRepository.findActiveFeaturedOrdered()
                 .stream()
                 .map(this::toResponse)
                 .toList();
@@ -91,14 +75,14 @@ public class GuardingSiteService {
 
     @Transactional
     public GuardingSiteResponse create(GuardingSiteRequest request) {
-        validateTierLimit(request.getCategory(), request.getTier(), null);
+        validateCategoryLimit(request.getCategory(), null);
 
         GuardingSite site = new GuardingSite();
         site.setName(request.getName());
         site.setImageKey(request.getImageKey());
         site.setAddress(request.getAddress());
         site.setCategory(request.getCategory());
-        site.setTier(request.getTier());
+        site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
         site.setIsActive(request.getIsActive());
 
@@ -111,18 +95,17 @@ public class GuardingSiteService {
         GuardingSite site = guardingSiteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Guarding site not found"));
 
-        boolean tierChanged = !site.getTier().equals(request.getTier())
-                || !site.getCategory().equals(request.getCategory());
+        boolean categoryChanged = !site.getCategory().equals(request.getCategory());
         boolean activating = Boolean.TRUE.equals(request.getIsActive()) && !Boolean.TRUE.equals(site.getIsActive());
-        if (tierChanged || activating) {
-            validateTierLimit(request.getCategory(), request.getTier(), id);
+        if (categoryChanged || activating) {
+            validateCategoryLimit(request.getCategory(), id);
         }
 
         site.setName(request.getName());
         site.setImageKey(request.getImageKey());
         site.setAddress(request.getAddress());
         site.setCategory(request.getCategory());
-        site.setTier(request.getTier());
+        site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
         site.setIsActive(request.getIsActive());
 
@@ -137,25 +120,24 @@ public class GuardingSiteService {
         guardingSiteRepository.delete(site);
     }
 
-    private void validateTierLimit(String category, Integer tier, Integer excludeId) {
-        int maxCount = tierLimitRepository.findByCategoryAndTier(category, tier)
+    private void validateCategoryLimit(String category, Integer excludeId) {
+        int maxCount = tierLimitRepository.findByCategoryAndTier(category, 1)
                 .map(TierLimit::getMaxCount)
                 .orElse(200);
 
-        long currentCount = guardingSiteRepository.countByCategoryAndTierAndIsActiveTrue(category, tier);
+        long currentCount = guardingSiteRepository.countByCategoryAndIsActiveTrue(category);
         if (excludeId != null) {
             Optional<GuardingSite> excluded = guardingSiteRepository.findById(excludeId);
             if (excluded.isPresent()
                     && excluded.get().getCategory().equals(category)
-                    && excluded.get().getTier().equals(tier)
                     && Boolean.TRUE.equals(excluded.get().getIsActive())) {
                 currentCount--;
             }
         }
 
         if (currentCount >= maxCount) {
-            throw new IllegalArgumentException("Tier limit reached for category '" + category + "' tier " + tier
-                    + ". Maximum allowed: " + maxCount);
+            throw new IllegalArgumentException("Category limit reached for '" + category
+                    + "'. Maximum allowed: " + maxCount);
         }
     }
 
@@ -169,7 +151,7 @@ public class GuardingSiteService {
         }
         response.setAddress(site.getAddress());
         response.setCategory(site.getCategory());
-        response.setTier(site.getTier());
+        response.setIsFeatured(site.getIsFeatured());
         response.setDisplayOrder(site.getDisplayOrder());
         response.setIsActive(site.getIsActive());
         response.setCreatedAt(site.getCreatedAt());

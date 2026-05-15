@@ -13,7 +13,7 @@ public class GuardingSiteResponse {
     private String imageUrl;
     private String address;
     private String category;
-    private Integer tier;
+    private Boolean isFeatured;
     private Integer displayOrder;
     private Boolean isActive;
     private LocalDateTime createdAt;
