@@ -43,15 +43,15 @@ export default function AdminVacanciesPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">職位空缺</h1>
+        <h1 className="text-2xl font-bold text-slate-900">職位空缺</h1>
         <Link href="/admin/vacancies/new">
           <Button>新增職位空缺</Button>
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-100">
+          <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="職位名稱" sortKey="title" currentKey={sortKey} direction={direction} onSort={requestSort} />
@@ -61,36 +61,50 @@ export default function AdminVacanciesPage() {
               <SortHeader label="類別" sortKey="jobType" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="精選" sortKey="isFeatured" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
-              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
+              <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">操作</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {sortedItems.map((v) => (
-              <tr key={v.id} className="border-t">
-                <td className="px-4 py-3">{v.id}</td>
-                <td className="px-4 py-3 font-medium">{v.title}</td>
-                <td className="px-4 py-3">{v.guardType?.typeName || '-'}</td>
-                <td className="px-4 py-3">{v.district?.districtName || '-'}</td>
-                <td className="px-4 py-3">{v.salaryDisplay || '-'}</td>
-                <td className="px-4 py-3">{v.jobType || '-'}</td>
-                <td className="px-4 py-3">
-                  {v.isFeatured ? <Badge>精選</Badge> : <Badge variant="secondary">-</Badge>}
+              <tr key={v.id} className="hover:bg-slate-50/60 transition-colors group">
+                <td className="px-5 py-4 text-slate-400 tabular-nums">{v.id}</td>
+                <td className="px-5 py-4 font-medium text-slate-900">{v.title}</td>
+                <td className="px-5 py-4 text-slate-500">{v.guardType?.typeName || "—"}</td>
+                <td className="px-5 py-4 text-slate-500">{v.district?.districtName || "—"}</td>
+                <td className="px-5 py-4 text-slate-500">{v.salaryDisplay || "—"}</td>
+                <td className="px-5 py-4 text-slate-500">{v.jobType || "—"}</td>
+                <td className="px-5 py-4">
+                  {v.isFeatured ? (
+                    <Badge className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200 whitespace-nowrap">精選</Badge>
+                  ) : (
+                    <span className="text-slate-300">—</span>
+                  )}
                 </td>
-                <td className="px-4 py-3">
-                  {v.isActive ? <Badge>生效中</Badge> : <Badge variant="secondary">已停用</Badge>}
+                <td className="px-5 py-4">
+                  {v.isActive ? (
+                    <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-emerald-200 whitespace-nowrap">生效中</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-slate-400 border-slate-200 whitespace-nowrap">已停用</Badge>
+                  )}
                 </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <Link href={`/admin/vacancies/${v.id}/edit`}>
-                    <Button size="sm" variant="outline">編輯</Button>
-                  </Link>
-                  <Button size="sm" variant="destructive" onClick={() => setDeleteId(v.id)}>刪除</Button>
+                <td className="px-5 py-4 text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Link href={`/admin/vacancies/${v.id}/edit`}>
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                        編輯
+                      </Button>
+                    </Link>
+                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => setDeleteId(v.id)}>
+                      刪除
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={9} className="px-4 py-6 text-center text-muted-foreground">
-                  暫無職位空缺。
+                <td colSpan={9} className="px-5 py-12 text-center text-slate-400 text-sm">
+                  暫無職位空缺
                 </td>
               </tr>
             )}
@@ -103,8 +117,8 @@ export default function AdminVacanciesPage() {
           <DialogHeader>
             <DialogTitle>確認刪除</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
-            確定要刪除職位「<span className="font-semibold text-gray-900">{pendingVacancy?.title}</span>」嗎？此操作無法復原。
+          <p className="text-sm text-slate-600">
+            確定要刪除職位「<span className="font-semibold text-slate-900">{pendingVacancy?.title}</span>」嗎？此操作無法復原。
           </p>
           <div className="flex justify-end gap-2 mt-4">
             <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>

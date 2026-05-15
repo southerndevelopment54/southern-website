@@ -12,6 +12,14 @@ import { Label } from "@/components/ui/label";
 import { useSortable } from "@/hooks/useSortable";
 import SortHeader from "@/components/SortHeader";
 
+const statusConfig: Record<string, { label: string; className: string }> = {
+  new: { label: "新申請", className: "bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200 whitespace-nowrap" },
+  reviewed: { label: "已審閱", className: "bg-slate-100 text-slate-700 hover:bg-slate-100 border-slate-200 whitespace-nowrap" },
+  contacted: { label: "已聯絡", className: "bg-violet-50 text-violet-700 hover:bg-violet-50 border-violet-200 whitespace-nowrap" },
+  hired: { label: "已聘用", className: "bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-emerald-200 whitespace-nowrap" },
+  rejected: { label: "已拒絕", className: "bg-red-50 text-red-700 hover:bg-red-50 border-red-200 whitespace-nowrap" },
+};
+
 export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selected, setSelected] = useState<Submission | null>(null);
@@ -51,52 +59,52 @@ export default function AdminSubmissionsPage() {
     }
   };
 
-  const statusLabel = (status: string) => {
-    switch (status) {
-      case "new": return "新申請";
-      case "reviewed": return "已審閱";
-      case "contacted": return "已聯絡";
-      case "hired": return "已聘用";
-      case "rejected": return "已拒絕";
-      default: return status;
-    }
-  };
-
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">申請紀錄</h1>
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">申請紀錄</h1>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-100">
+          <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="姓名" sortKey="firstName" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="職位" sortKey="vacancyTitle" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="電話" sortKey="phoneNumber" currentKey={sortKey} direction={direction} onSort={requestSort} />
-              <SortHeader label="狀態" sortKey="status" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
-              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
+              <SortHeader label="狀態" sortKey="status" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-24" />
+              <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">操作</th>
             </tr>
           </thead>
-          <tbody>
-            {sortedItems.map((s) => (
-              <tr key={s.id} className="border-t">
-                <td className="px-4 py-3">{s.id}</td>
-                <td className="px-4 py-3">{s.firstName} {s.lastName}</td>
-                <td className="px-4 py-3">{s.vacancyTitle}</td>
-                <td className="px-4 py-3">{s.phoneNumber}</td>
-                <td className="px-4 py-3">
-                  <Badge variant={s.status === "new" ? "default" : "secondary"}>{statusLabel(s.status)}</Badge>
-                </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <Button size="sm" variant="outline" onClick={() => { setSelected(s); setAdminNotes(s.adminNotes || ""); }}>查看</Button>
-                  <Button size="sm" variant="destructive" onClick={() => handleDelete(s.id)}>刪除</Button>
-                </td>
-              </tr>
-            ))}
+          <tbody className="divide-y divide-slate-100">
+            {sortedItems.map((s) => {
+              const statusCfg = statusConfig[s.status] || { label: s.status, className: "" };
+              return (
+                <tr key={s.id} className="hover:bg-slate-50/60 transition-colors group">
+                  <td className="px-5 py-4 text-slate-400 tabular-nums">{s.id}</td>
+                  <td className="px-5 py-4">
+                    <span className="font-medium text-slate-900">{s.firstName} {s.lastName}</span>
+                  </td>
+                  <td className="px-5 py-4 text-slate-500">{s.vacancyTitle}</td>
+                  <td className="px-5 py-4 text-slate-500">{s.phoneNumber}</td>
+                  <td className="px-5 py-4">
+                    <Badge className={statusCfg.className}>{statusCfg.label}</Badge>
+                  </td>
+                  <td className="px-5 py-4 text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100" onClick={() => { setSelected(s); setAdminNotes(s.adminNotes || ""); }}>
+                        查看
+                      </Button>
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(s.id)}>
+                        刪除
+                      </Button>
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-muted-foreground">
-                  暫無申請紀錄。
+                <td colSpan={6} className="px-5 py-12 text-center text-slate-400 text-sm">
+                  暫無申請紀錄
                 </td>
               </tr>
             )}
@@ -121,7 +129,7 @@ export default function AdminSubmissionsPage() {
               </div>
               <p><strong>保安牌照:</strong> {selected.hasSecurityLicense ? "有" : "無"} {selected.licenseNumber ? `(${selected.licenseNumber})` : ""}</p>
               <p><strong>訊息:</strong> {selected.message || "-"}</p>
-              <p><strong>狀態:</strong> {statusLabel(selected.status)}</p>
+              <p><strong>狀態:</strong> {(statusConfig[selected.status] || { label: selected.status }).label}</p>
               <p><strong>IP 地址:</strong> {selected.ipAddress || "-"}</p>
               <p><strong>User-Agent:</strong> <span className="text-xs text-muted-foreground break-all">{selected.userAgent || "-"}</span></p>
               {selected.reviewedAt && (

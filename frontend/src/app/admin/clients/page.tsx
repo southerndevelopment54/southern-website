@@ -53,15 +53,15 @@ export default function AdminClientsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">合作客戶</h1>
+        <h1 className="text-2xl font-bold text-slate-900">合作客戶</h1>
         <Link href="/admin/clients/new">
           <Button>新增客戶</Button>
         </Link>
       </div>
 
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-100">
+          <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="名稱" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
@@ -69,37 +69,61 @@ export default function AdminClientsPage() {
               <SortHeader label="精選" sortKey="isFeatured" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="排序" sortKey="displayOrder" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
-              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
+              <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">操作</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {sortedItems.map((c) => (
-              <tr key={c.id} className="border-t">
-                <td className="px-4 py-3">{c.id}</td>
-                <td className="px-4 py-3 flex items-center gap-2">
-                  {c.logoUrl && <img src={c.logoUrl} alt="" className="w-8 h-8 object-contain" />}
-                  {c.name}
+              <tr key={c.id} className="hover:bg-slate-50/60 transition-colors group">
+                <td className="px-5 py-4 text-slate-400 tabular-nums">{c.id}</td>
+                <td className="px-5 py-4">
+                  <div className="flex items-center gap-3">
+                    {c.logoUrl ? (
+                      <div className="w-9 h-9 rounded-lg bg-white border border-slate-100 overflow-hidden flex items-center justify-center shrink-0">
+                        <img src={c.logoUrl} alt="" className="w-full h-full object-contain p-1" />
+                      </div>
+                    ) : (
+                      <div className="w-9 h-9 rounded-lg bg-slate-100 border border-slate-100 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-bold text-slate-400">{c.name.charAt(0)}</span>
+                      </div>
+                    )}
+                    <span className="font-medium text-slate-900">{c.name}</span>
+                  </div>
                 </td>
-                <td className="px-4 py-3">{c.enterpriseTypeName || "-"}</td>
-                <td className="px-4 py-3">
-                  {c.isFeatured ? <Badge>精選</Badge> : <Badge variant="secondary">-</Badge>}
+                <td className="px-5 py-4 text-slate-500">{c.enterpriseTypeName || "—"}</td>
+                <td className="px-5 py-4">
+                  {c.isFeatured ? (
+                    <Badge className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200 whitespace-nowrap">精選</Badge>
+                  ) : (
+                    <span className="text-slate-300">—</span>
+                  )}
                 </td>
-                <td className="px-4 py-3">{c.displayOrder ?? "-"}</td>
-                <td className="px-4 py-3">
-                  {c.isActive ? <Badge>生效中</Badge> : <Badge variant="secondary">已停用</Badge>}
+                <td className="px-5 py-4 text-slate-400 tabular-nums">{c.displayOrder ?? "—"}</td>
+                <td className="px-5 py-4">
+                  {c.isActive ? (
+                    <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-emerald-200 whitespace-nowrap">生效中</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-slate-400 border-slate-200 whitespace-nowrap">已停用</Badge>
+                  )}
                 </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <Link href={`/admin/clients/${c.id}/edit`}>
-                    <Button size="sm" variant="outline">編輯</Button>
-                  </Link>
-                  <Button size="sm" variant="destructive" onClick={() => setDeleteId(c.id)}>刪除</Button>
+                <td className="px-5 py-4 text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Link href={`/admin/clients/${c.id}/edit`}>
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                        編輯
+                      </Button>
+                    </Link>
+                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => setDeleteId(c.id)}>
+                      刪除
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">
-                  暫無客戶。
+                <td colSpan={7} className="px-5 py-12 text-center text-slate-400 text-sm">
+                  暫無客戶
                 </td>
               </tr>
             )}
@@ -112,8 +136,8 @@ export default function AdminClientsPage() {
           <DialogHeader>
             <DialogTitle>確認刪除</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
-            確定要刪除客戶「<span className="font-semibold text-gray-900">{pendingClient?.name}</span>」嗎？此操作無法復原。
+          <p className="text-sm text-slate-600">
+            確定要刪除客戶「<span className="font-semibold text-slate-900">{pendingClient?.name}</span>」嗎？此操作無法復原。
           </p>
           <div className="flex justify-end gap-2 mt-4">
             <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>

@@ -67,10 +67,10 @@ export default function AdminInquiriesPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold mb-6">服務查詢</h1>
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+      <h1 className="text-2xl font-bold text-slate-900 mb-6">服務查詢</h1>
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-100">
+          <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <SortHeader label="狀態" sortKey="isRead" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="姓名" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
@@ -78,43 +78,49 @@ export default function AdminInquiriesPage() {
               <SortHeader label="電話" sortKey="phone" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="服務類型" sortKey="serviceType" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="時間" sortKey="createdAt" currentKey={sortKey} direction={direction} onSort={requestSort} />
-              <th className="text-right px-4 py-3 font-medium w-40">操作</th>
+              <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-36">操作</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {sortedItems.map((q) => (
-              <tr key={q.id} className={`border-t ${!q.isRead ? "bg-blue-50/50" : ""}`}>
-                <td className="px-4 py-3">
-                  <Badge variant={q.isRead ? "secondary" : "default"}>
-                    {q.isRead ? "已讀" : "未讀"}
-                  </Badge>
+              <tr key={q.id} className={`hover:bg-slate-50/60 transition-colors group ${!q.isRead ? "bg-blue-50/40" : ""}`}>
+                <td className="px-5 py-4">
+                  {q.isRead ? (
+                    <Badge variant="outline" className="text-slate-400 border-slate-200 whitespace-nowrap">已讀</Badge>
+                  ) : (
+                    <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200 whitespace-nowrap">未讀</Badge>
+                  )}
                 </td>
-                <td className="px-4 py-3">{q.name}</td>
-                <td className="px-4 py-3">{q.company || "—"}</td>
-                <td className="px-4 py-3">{q.phone || "—"}</td>
-                <td className="px-4 py-3">{q.serviceType || "—"}</td>
-                <td className="px-4 py-3 text-muted-foreground">
+                <td className="px-5 py-4">
+                  <span className={`font-medium ${q.isRead ? "text-slate-900" : "text-slate-900"}`}>{q.name}</span>
+                </td>
+                <td className="px-5 py-4 text-slate-500">{q.company || "—"}</td>
+                <td className="px-5 py-4 text-slate-500">{q.phone || "—"}</td>
+                <td className="px-5 py-4 text-slate-500">{q.serviceType || "—"}</td>
+                <td className="px-5 py-4 text-slate-400 text-xs">
                   {new Date(q.createdAt).toLocaleString("zh-HK")}
                 </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <Button size="sm" variant="outline" onClick={() => setSelected(q)}>
-                    查看
-                  </Button>
-                  {!q.isRead && (
-                    <Button size="sm" variant="ghost" onClick={() => handleMarkRead(q.id)}>
-                      標記已讀
+                <td className="px-5 py-4 text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100" onClick={() => setSelected(q)}>
+                      查看
                     </Button>
-                  )}
-                  <Button size="sm" variant="destructive" onClick={() => handleDelete(q.id)}>
-                    刪除
-                  </Button>
+                    {!q.isRead && (
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-blue-600 hover:text-blue-700 hover:bg-blue-50" onClick={() => handleMarkRead(q.id)}>
+                        標記已讀
+                      </Button>
+                    )}
+                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(q.id)}>
+                      刪除
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-4 py-6 text-center text-muted-foreground">
-                  暫無服務查詢。
+                <td colSpan={7} className="px-5 py-12 text-center text-slate-400 text-sm">
+                  暫無服務查詢
                 </td>
               </tr>
             )}

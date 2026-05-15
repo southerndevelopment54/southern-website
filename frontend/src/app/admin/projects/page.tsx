@@ -26,12 +26,13 @@ interface CategoryConfig {
   key: string;
   label: string;
   badgeColor: string;
+  dotColor: string;
 }
 
 const CATEGORIES: CategoryConfig[] = [
-  { key: "key", label: "重點項目", badgeColor: "bg-amber-100 text-amber-700" },
-  { key: "commercial", label: "商場大廈", badgeColor: "bg-blue-100 text-blue-700" },
-  { key: "residential", label: "住宅", badgeColor: "bg-emerald-100 text-emerald-700" },
+  { key: "key", label: "重點項目", badgeColor: "bg-amber-50 text-amber-700 border-amber-200", dotColor: "bg-amber-500" },
+  { key: "commercial", label: "商場大廈", badgeColor: "bg-blue-50 text-blue-700 border-blue-200", dotColor: "bg-blue-500" },
+  { key: "residential", label: "住宅", badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200", dotColor: "bg-emerald-500" },
 ];
 
 function CategorySection({
@@ -48,56 +49,73 @@ function CategorySection({
   return (
     <div>
       <div className="flex items-center gap-3 mb-3">
-        <h2 className="text-lg font-bold text-slate-800">{cat.label}</h2>
-        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full ${cat.badgeColor}`}>
-          {sites.length} 項
+        <span className={`w-2.5 h-2.5 rounded-full ${cat.dotColor}`} />
+        <h2 className="text-base font-bold text-slate-800">{cat.label}</h2>
+        <span className={`text-xs font-semibold px-2.5 py-0.5 rounded-full border ${cat.badgeColor}`}>
+          {sites.length}
         </span>
       </div>
-      <div className="bg-white rounded-lg border shadow-sm overflow-hidden">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-slate-50">
+          <thead className="bg-slate-50 border-b border-slate-200">
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="名稱" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="層級" sortKey="tier" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="排序" sortKey="displayOrder" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
               <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
-              <th className="text-right px-4 py-3 font-medium w-32">操作</th>
+              <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">操作</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-slate-100">
             {sortedItems.map((s) => (
-              <tr key={s.id} className="border-t">
-                <td className="px-4 py-3">{s.id}</td>
-                <td className="px-4 py-3">
+              <tr key={s.id} className="hover:bg-slate-50/60 transition-colors group">
+                <td className="px-5 py-4 text-slate-400 tabular-nums">{s.id}</td>
+                <td className="px-5 py-4">
                   <div className="flex items-center gap-3">
-                    {s.imageUrl && (
-                      <img src={s.imageUrl} alt="" className="w-10 h-10 object-cover rounded" />
+                    {s.imageUrl ? (
+                      <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-100 overflow-hidden flex items-center justify-center shrink-0">
+                        <img src={s.imageUrl} alt="" className="w-full h-full object-cover" />
+                      </div>
+                    ) : (
+                      <div className="w-10 h-10 rounded-lg bg-slate-100 border border-slate-100 flex items-center justify-center shrink-0">
+                        <span className="text-xs font-bold text-slate-400">{s.name.charAt(0)}</span>
+                      </div>
                     )}
-                    <span className="font-medium text-slate-700">{s.name}</span>
+                    <span className="font-medium text-slate-900">{s.name}</span>
                   </div>
                 </td>
-                <td className="px-4 py-3">
-                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold">
+                <td className="px-5 py-4">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-slate-600 text-xs font-bold tabular-nums">
                     {s.tier}
                   </span>
                 </td>
-                <td className="px-4 py-3">{s.displayOrder ?? "-"}</td>
-                <td className="px-4 py-3">
-                  {s.isActive ? <Badge>生效中</Badge> : <Badge variant="secondary">已停用</Badge>}
+                <td className="px-5 py-4 text-slate-400 tabular-nums">{s.displayOrder ?? "—"}</td>
+                <td className="px-5 py-4">
+                  {s.isActive ? (
+                    <Badge className="bg-emerald-50 text-emerald-700 hover:bg-emerald-50 border-emerald-200 whitespace-nowrap">生效中</Badge>
+                  ) : (
+                    <Badge variant="outline" className="text-slate-400 border-slate-200 whitespace-nowrap">已停用</Badge>
+                  )}
                 </td>
-                <td className="px-4 py-3 text-right space-x-2">
-                  <Link href={`/admin/projects/${s.id}/edit`}>
-                    <Button size="sm" variant="outline">編輯</Button>
-                  </Link>
-                  <Button size="sm" variant="destructive" onClick={() => onDelete(s.id)}>刪除</Button>
+                <td className="px-5 py-4 text-right">
+                  <div className="flex items-center justify-end gap-1">
+                    <Link href={`/admin/projects/${s.id}/edit`}>
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100">
+                        編輯
+                      </Button>
+                    </Link>
+                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => onDelete(s.id)}>
+                      刪除
+                    </Button>
+                  </div>
                 </td>
               </tr>
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-4 py-6 text-center text-muted-foreground">
-                  暫無{cat.label}。
+                <td colSpan={6} className="px-5 py-12 text-center text-slate-400 text-sm">
+                  暫無{cat.label}
                 </td>
               </tr>
             )}
@@ -144,7 +162,7 @@ export default function AdminProjectsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">合作項目</h1>
+        <h1 className="text-2xl font-bold text-slate-900">合作項目</h1>
         <Link href="/admin/projects/new">
           <Button>新增項目</Button>
         </Link>
@@ -166,8 +184,8 @@ export default function AdminProjectsPage() {
           <DialogHeader>
             <DialogTitle>確認刪除</DialogTitle>
           </DialogHeader>
-          <p className="text-sm text-gray-600">
-            確定要刪除項目「<span className="font-semibold text-gray-900">{pendingSite?.name}</span>」嗎？此操作無法復原。
+          <p className="text-sm text-slate-600">
+            確定要刪除項目「<span className="font-semibold text-slate-900">{pendingSite?.name}</span>」嗎？此操作無法復原。
           </p>
           <div className="flex justify-end gap-2 mt-4">
             <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
