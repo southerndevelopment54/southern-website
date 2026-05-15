@@ -7,8 +7,10 @@ import com.securityco.model.EnterpriseType;
 import com.securityco.repository.ClientRepository;
 import com.securityco.repository.EnterpriseTypeRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -63,7 +65,7 @@ public class ClientService {
         if (Boolean.TRUE.equals(request.getIsFeatured())) {
             long featuredCount = clientRepository.countByIsFeaturedTrueAndIsActiveTrue();
             if (featuredCount >= MAX_FEATURED_CLIENTS) {
-                throw new RuntimeException("Maximum of " + MAX_FEATURED_CLIENTS + " featured clients allowed");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Maximum of " + MAX_FEATURED_CLIENTS + " featured clients allowed");
             }
         }
 
@@ -93,7 +95,7 @@ public class ClientService {
         if (becomingFeatured) {
             long featuredCount = clientRepository.countByIsFeaturedTrueAndIsActiveTrue();
             if (featuredCount >= MAX_FEATURED_CLIENTS) {
-                throw new RuntimeException("Maximum of " + MAX_FEATURED_CLIENTS + " featured clients allowed");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Maximum of " + MAX_FEATURED_CLIENTS + " featured clients allowed");
             }
         }
 

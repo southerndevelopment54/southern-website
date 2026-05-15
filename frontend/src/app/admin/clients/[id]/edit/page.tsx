@@ -10,6 +10,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 import OrderSlider from "@/components/OrderSlider";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { compressImage } from "@/lib/image";
 
 interface EnterpriseType {
   id: number;
@@ -29,6 +31,8 @@ export default function EditClientPage() {
   const router = useRouter();
   const { id } = useParams();
   const [types, setTypes] = useState<EnterpriseType[]>([]);
+  const [featuredCount, setFeaturedCount] = useState(0);
+  const [showWarning, setShowWarning] = useState(false);
   const [form, setForm] = useState<ClientForm>({
     name: "",
     logoKey: "",
@@ -41,6 +45,11 @@ export default function EditClientPage() {
 
   useEffect(() => {
     api.get("/enterprise-types").then((res) => setTypes(res.data));
+    api.get("/admin/clients").then((res) => {
+      const list = res.data || [];
+      const current = list.find((c: { id: number }) => String(c.id) === id);
+      setFeaturedCount(list.filter((c: { id: number; isFeatured: boolean }) => c.isFeatured && (!current || c.id !== current.id)).length);
+    });
     api.get(`/admin/clients/${id}`).then((res) => {
       const c = res.data;
       setForm({
@@ -58,17 +67,17 @@ export default function EditClientPage() {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("folder", "clients");
     try {
-      const res = await api.post("/admin/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const compressed = await compressImage(file);
+      const formData = new FormData();
+      formData.append("file", compressed);
+      formData.append("folder", "clients");
+      const res = await api.post("/admin/upload", formData);
       setForm({ ...form, logoKey: res.data.imageKey });
       toast({ title: "圖片上傳成功" });
-    } catch {
-      toast({ title: "圖片上傳失敗", variant: "destructive" });
+    } catch (err) {
+      const e = err as { response?: { data?: { error?: string } } };
+      toast({ title: "圖片上傳失敗", description: e.response?.data?.error || "請稍後再試", variant: "destructive" });
     }
   };
 
@@ -132,7 +141,19 @@ export default function EditClientPage() {
         </div>
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-2">
-            <input type="checkbox" id="featured" checked={form.isFeatured} onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })} />
+            <input
+              type="checkbox"
+              id="featured"
+              checked={form.isFeatured}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                if (checked && featuredCount >= 8) {
+                  setShowWarning(true);
+                } else {
+                  setForm({ ...form, isFeatured: checked });
+                }
+              }}
+            />
             <Label htmlFor="featured">精選客戶（首頁展示）</Label>
           </div>
           <div className="flex items-center gap-2">
@@ -145,6 +166,22 @@ export default function EditClientPage() {
           <Button type="submit">儲存</Button>
         </div>
       </form>
+
+      <Dialog open={showWarning} onOpenChange={setShowWarning}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>精選客戶數量警告</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-gray-600">
+            目前已有 <strong>{featuredCount}</strong> 個精選客戶，已達到上限（最多 8 個）。請先取消其他客戶的精選狀態，再將此客戶設為精選。
+          </p>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setShowWarning(false)}>
+              了解
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

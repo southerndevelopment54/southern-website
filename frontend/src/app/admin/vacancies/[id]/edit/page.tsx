@@ -10,6 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
+import { compressImage } from "@/lib/image";
 
 interface VacancyForm {
   title: string;
@@ -101,16 +102,16 @@ export default function EditVacancyPage() {
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    const formData = new FormData();
-    formData.append("file", file);
     try {
-      const res = await api.post("/admin/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const compressed = await compressImage(file);
+      const formData = new FormData();
+      formData.append("file", compressed);
+      const res = await api.post("/admin/upload", formData);
       setForm({ ...form, imageKey: res.data.imageKey });
       toast({ title: "圖片上傳成功" });
-    } catch {
-      toast({ title: "圖片上傳失敗", variant: "destructive" });
+    } catch (err) {
+      const e = err as { response?: { data?: { error?: string } } };
+      toast({ title: "圖片上傳失敗", description: e.response?.data?.error || "請稍後再試", variant: "destructive" });
     }
   };
 

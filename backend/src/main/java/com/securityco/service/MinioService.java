@@ -9,13 +9,14 @@ import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MinioService {
@@ -23,25 +24,33 @@ public class MinioService {
     private final MinioClient minioClient;
     private final MinioConfig minioConfig;
 
-    @SneakyThrows
-    public String uploadFile(MultipartFile file, String folder) {
-        if (!minioClient.bucketExists(BucketExistsArgs.builder().bucket(minioConfig.getBucketName()).build())) {
-            minioClient.makeBucket(MakeBucketArgs.builder().bucket(minioConfig.getBucketName()).build());
+    public String uploadFile(MultipartFile file, String folder) throws Exception {
+        String bucket = minioConfig.getBucketName();
+        log.info("Uploading file to MinIO. Bucket={}, folder={}, filename={}", bucket, folder, file.getOriginalFilename());
+
+        boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucket).build());
+        log.debug("Bucket exists: {}", exists);
+        if (!exists) {
+            log.info("Creating bucket: {}", bucket);
+            minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucket).build());
         }
+
         String objectName = folder + "/" + UUID.randomUUID() + "-" + file.getOriginalFilename();
+        log.info("Storing object: {}", objectName);
+
         minioClient.putObject(
                 PutObjectArgs.builder()
-                        .bucket(minioConfig.getBucketName())
+                        .bucket(bucket)
                         .object(objectName)
                         .stream(file.getInputStream(), file.getSize(), -1)
                         .contentType(file.getContentType())
                         .build()
         );
+        log.info("Upload successful: {}", objectName);
         return objectName;
     }
 
-    @SneakyThrows
-    public String getPresignedUrl(String objectName) {
+    public String getPresignedUrl(String objectName) throws Exception {
         String url = minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                         .method(Method.GET)
@@ -50,16 +59,13 @@ public class MinioService {
                         .expiry(7, TimeUnit.DAYS)
                         .build()
         );
-        // If an external endpoint is configured (e.g., for Docker setups),
-        // replace the internal endpoint host so browsers can resolve the URL.
         if (minioConfig.getExternalEndpoint() != null && !minioConfig.getExternalEndpoint().isBlank()) {
             url = url.replace(minioConfig.getEndpoint(), minioConfig.getExternalEndpoint());
         }
         return url;
     }
 
-    @SneakyThrows
-    public byte[] getObjectBytes(String objectName) {
+    public byte[] getObjectBytes(String objectName) throws Exception {
         try (var stream = minioClient.getObject(
                 GetObjectArgs.builder()
                         .bucket(minioConfig.getBucketName())

@@ -6,15 +6,15 @@ const baseURL = API_URL ? `${API_URL}/api` : "/api";
 
 export const api = axios.create({
   baseURL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
   if (token && !config.url?.includes("/auth/refresh")) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  if (config.data && !(config.data instanceof FormData)) {
+    config.headers["Content-Type"] = "application/json";
   }
   return config;
 });
