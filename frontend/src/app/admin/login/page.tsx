@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import { Button } from "@/components/ui/button";
@@ -12,8 +12,14 @@ import { toast } from "@/hooks/use-toast";
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const { login } = useAuthStore();
+  const { login, isAuthenticated, hydrated } = useAuthStore();
   const router = useRouter();
+
+  useEffect(() => {
+    if (hydrated && isAuthenticated) {
+      router.push("/admin/dashboard");
+    }
+  }, [hydrated, isAuthenticated, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
