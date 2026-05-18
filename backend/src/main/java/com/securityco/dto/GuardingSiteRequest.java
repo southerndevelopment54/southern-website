@@ -16,7 +16,7 @@ public class GuardingSiteRequest {
     private String address;
 
     @NotBlank(message = "Category is required")
-    @Pattern(regexp = "commercial|residential|events", message = "Category must be commercial, residential, or events")
+    @Pattern(regexp = "commercial|residential|other", message = "Category must be commercial, residential, or other")
     private String category;
 
     private Boolean isFeatured;

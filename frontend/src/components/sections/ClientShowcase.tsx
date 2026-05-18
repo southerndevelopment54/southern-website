@@ -21,7 +21,7 @@ interface GuardingSite {
   isFeatured: boolean;
 }
 
-type SiteFilter = "featured" | "commercial" | "residential" | "events";
+type SiteFilter = "featured" | "commercial" | "residential" | "other";
 
 export default function ClientShowcase() {
   const { t } = useI18n();
@@ -39,7 +39,7 @@ export default function ClientShowcase() {
     const filter = params.get("filter") as SiteFilter | null;
 
     if (tab === "sites") setActiveTab("sites");
-    if (filter && ["featured", "commercial", "residential", "events"].includes(filter)) {
+    if (filter && ["featured", "commercial", "residential", "other"].includes(filter)) {
       setSiteFilter(filter);
     }
   }, []);
@@ -84,8 +84,33 @@ export default function ClientShowcase() {
     { id: "featured" as const, label: t.clientShowcase.tabKey },
     { id: "commercial" as const, label: t.clientShowcase.tabCommercial },
     { id: "residential" as const, label: t.clientShowcase.tabResidential },
-    { id: "events" as const, label: t.clientShowcase.tabEvents },
+    { id: "other" as const, label: t.clientShowcase.tabOthers },
   ];
+
+  const featuredSites = sites.filter((s) => s.isFeatured);
+  const nonFeaturedSites = sites.filter((s) => !s.isFeatured);
+
+  const renderSiteCard = (site: GuardingSite, compact = false) => (
+    <div
+      key={site.id}
+      className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
+    >
+      <div className={`overflow-hidden ${compact ? "aspect-[16/10]" : "aspect-[16/10]"}`}>
+        <img
+          src={site.imageUrl || "/images/placeholder.jpg"}
+          alt={site.name}
+          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+        />
+      </div>
+      <div className={compact ? "p-4" : "p-6"}>
+        <h3 className={`font-bold text-dark mb-1 ${compact ? "text-base" : "text-lg"}`}>{site.name}</h3>
+        <p className="text-sm text-gray-500 flex items-center gap-1.5">
+          <Building2 className={`text-primary ${compact ? "w-3 h-3" : "w-3.5 h-3.5"}`} />
+          {site.address || "-"}
+        </p>
+      </div>
+    </div>
+  );
 
   return (
     <section className="py-20 md:py-28 bg-light min-h-screen">
@@ -190,28 +215,41 @@ export default function ClientShowcase() {
                 <p className="text-gray-400 text-lg">載入中...</p>
               </div>
             ) : sites.length > 0 ? (
-              <div key={siteFilter} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                {sites.map((site) => (
-                  <div
-                    key={site.id}
-                    className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
-                  >
-                    <div className="aspect-[16/10] overflow-hidden">
-                      <img
-                        src={site.imageUrl || "/images/placeholder.jpg"}
-                        alt={site.name}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <h3 className="font-bold text-dark text-lg mb-1">{site.name}</h3>
-                      <p className="text-sm text-gray-500 flex items-center gap-1.5">
-                        <Building2 className="w-3.5 h-3.5 text-primary" />
-                        {site.address || "-"}
-                      </p>
-                    </div>
+              <div key={siteFilter}>
+                {/* Featured tab — single grid */}
+                {siteFilter === "featured" && (
+                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {sites.map((site) => renderSiteCard(site))}
                   </div>
-                ))}
+                )}
+
+                {/* Category tabs — featured on top (3 col), non-featured below (4 col smaller) */}
+                {siteFilter !== "featured" && (
+                  <div className="space-y-10">
+                    {featuredSites.length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-bold text-dark mb-4 flex items-center gap-2">
+                          <Star className="w-5 h-5 text-amber-500" />
+                          精選項目
+                        </h3>
+                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                          {featuredSites.map((site) => renderSiteCard(site))}
+                        </div>
+                      </div>
+                    )}
+
+                    {nonFeaturedSites.length > 0 && (
+                      <div>
+                        {featuredSites.length > 0 && (
+                          <h3 className="text-base font-semibold text-gray-500 mb-4">其他項目</h3>
+                        )}
+                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                          {nonFeaturedSites.map((site) => renderSiteCard(site, true))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-20">

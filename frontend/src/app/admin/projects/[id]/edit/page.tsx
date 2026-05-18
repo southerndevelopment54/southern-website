@@ -114,7 +114,7 @@ export default function EditProjectPage() {
             <SelectContent>
               <SelectItem value="commercial">商場大廈</SelectItem>
               <SelectItem value="residential">住宅</SelectItem>
-              <SelectItem value="events">大型活動</SelectItem>
+              <SelectItem value="other">其他</SelectItem>
             </SelectContent>
           </Select>
         </div>
