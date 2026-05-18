@@ -27,6 +27,7 @@ interface Inquiry {
 export default function AdminInquiriesPage() {
   const [inquiries, setInquiries] = useState<Inquiry[]>([]);
   const [selected, setSelected] = useState<Inquiry | null>(null);
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const { sortedItems, sortKey, direction, requestSort } = useSortable(inquiries);
 
   const fetchInquiries = () => {
@@ -54,16 +55,19 @@ export default function AdminInquiriesPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("確定要刪除此查詢？")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
     try {
-      await api.delete(`/admin/inquiries/${id}`);
+      await api.delete(`/admin/inquiries/${deleteId}`);
       toast({ title: "已刪除" });
+      setDeleteId(null);
       fetchInquiries();
     } catch {
-      toast({ title: "錯誤", variant: "destructive" });
+      toast({ title: "錯誤", description: "刪除失敗", variant: "destructive" });
     }
   };
+
+  const pendingInquiry = inquiries.find((q) => q.id === deleteId);
 
   return (
     <div>
@@ -110,7 +114,7 @@ export default function AdminInquiriesPage() {
                         標記已讀
                       </Button>
                     )}
-                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(q.id)}>
+                    <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => setDeleteId(q.id)}>
                       刪除
                     </Button>
                   </div>
@@ -161,12 +165,27 @@ export default function AdminInquiriesPage() {
                     標記已讀
                   </Button>
                 )}
-                <Button size="sm" variant="destructive" onClick={() => { handleDelete(selected.id); setSelected(null); }}>
+                <Button size="sm" variant="destructive" onClick={() => { setDeleteId(selected.id); setSelected(null); }}>
                   刪除
                 </Button>
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>確認刪除</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-slate-600">
+            確定要刪除查詢「<span className="font-semibold text-slate-900">{pendingInquiry?.name}</span>」嗎？此操作無法復原。
+          </p>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
+            <Button variant="destructive" onClick={handleDelete}>確認刪除</Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

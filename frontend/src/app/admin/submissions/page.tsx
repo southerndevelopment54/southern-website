@@ -24,6 +24,7 @@ export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selected, setSelected] = useState<Submission | null>(null);
   const [adminNotes, setAdminNotes] = useState("");
+  const [deleteId, setDeleteId] = useState<number | null>(null);
   const { sortedItems, sortKey, direction, requestSort } = useSortable(submissions);
 
   const fetchSubmissions = () => {
@@ -48,16 +49,19 @@ export default function AdminSubmissionsPage() {
     }
   };
 
-  const handleDelete = async (id: number) => {
-    if (!confirm("確定要刪除此申請？")) return;
+  const handleDelete = async () => {
+    if (!deleteId) return;
     try {
-      await api.delete(`/admin/submissions/${id}`);
+      await api.delete(`/admin/submissions/${deleteId}`);
       toast({ title: "已刪除" });
+      setDeleteId(null);
       fetchSubmissions();
     } catch {
-      toast({ title: "錯誤", variant: "destructive" });
+      toast({ title: "錯誤", description: "刪除失敗", variant: "destructive" });
     }
   };
+
+  const pendingSubmission = submissions.find((s) => s.id === deleteId);
 
   return (
     <div>
@@ -93,7 +97,7 @@ export default function AdminSubmissionsPage() {
                       <Button size="sm" variant="ghost" className="h-8 px-2.5 text-slate-600 hover:text-slate-900 hover:bg-slate-100" onClick={() => { setSelected(s); setAdminNotes(s.adminNotes || ""); }}>
                         查看
                       </Button>
-                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => handleDelete(s.id)}>
+                      <Button size="sm" variant="ghost" className="h-8 px-2.5 text-red-500 hover:text-red-700 hover:bg-red-50" onClick={() => setDeleteId(s.id)}>
                         刪除
                       </Button>
                     </div>
@@ -152,9 +156,25 @@ export default function AdminSubmissionsPage() {
                 <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "contacted")}>標記已聯絡</Button>
                 <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "hired")}>標記已聘用</Button>
                 <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "rejected")}>標記已拒絕</Button>
+                <Button size="sm" variant="destructive" onClick={() => { setDeleteId(selected.id); setSelected(null); }}>刪除</Button>
               </div>
             </div>
           )}
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={deleteId !== null} onOpenChange={() => setDeleteId(null)}>
+        <DialogContent className="max-w-sm">
+          <DialogHeader>
+            <DialogTitle>確認刪除</DialogTitle>
+          </DialogHeader>
+          <p className="text-sm text-slate-600">
+            確定要刪除申請「<span className="font-semibold text-slate-900">{pendingSubmission?.firstName} {pendingSubmission?.lastName}</span>」嗎？此操作無法復原。
+          </p>
+          <div className="flex justify-end gap-2 mt-4">
+            <Button variant="outline" onClick={() => setDeleteId(null)}>取消</Button>
+            <Button variant="destructive" onClick={handleDelete}>確認刪除</Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

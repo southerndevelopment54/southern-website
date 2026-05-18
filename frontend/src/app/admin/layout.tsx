@@ -43,14 +43,31 @@ export default function AdminLayout({
         <header className="bg-white border-b px-6 py-3 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <span className="font-bold text-lg text-slate-900">後台管理</span>
-            <nav className="flex gap-4 text-sm">
-              <Link href="/admin/dashboard" className="text-slate-700 hover:text-slate-900">儀表板</Link>
-              <Link href="/admin/vacancies" className="text-slate-700 hover:text-slate-900">職位空缺</Link>
-              <Link href="/admin/submissions" className="text-slate-700 hover:text-slate-900">申請紀錄</Link>
-              <Link href="/admin/inquiries" className="text-slate-700 hover:text-slate-900">服務查詢</Link>
-              <Link href="/admin/clients" className="text-slate-700 hover:text-slate-900">合作客戶</Link>
-              <Link href="/admin/projects" className="text-slate-700 hover:text-slate-900">合作項目</Link>
-              <Link href="/admin/tier-limits" className="text-slate-700 hover:text-slate-900">精選上限</Link>
+            <nav className="flex gap-1 text-sm">
+              {[
+                { href: "/admin/dashboard", label: "儀表板" },
+                { href: "/admin/vacancies", label: "職位空缺" },
+                { href: "/admin/submissions", label: "申請紀錄" },
+                { href: "/admin/inquiries", label: "服務查詢" },
+                { href: "/admin/clients", label: "合作客戶" },
+                { href: "/admin/projects", label: "合作項目" },
+                { href: "/admin/tier-limits", label: "精選上限" },
+              ].map((link) => {
+                const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
+                return (
+                  <Link
+                    key={link.href}
+                    href={link.href}
+                    className={`px-3 py-1.5 rounded-md transition-colors ${
+                      isActive
+                        ? "bg-slate-100 text-slate-900 font-semibold"
+                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-50"
+                    }`}
+                  >
+                    {link.label}
+                  </Link>
+                );
+              })}
             </nav>
           </div>
           <Button variant="default" size="sm" className="bg-slate-800 text-white hover:bg-slate-700" onClick={logout}>
