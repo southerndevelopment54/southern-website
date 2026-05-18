@@ -26,10 +26,6 @@ public class Client {
     @Column(name = "logo_key", length = 255)
     private String logoKey;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "enterprise_type_id")
-    private EnterpriseType enterpriseType;
-
     @Column(name = "is_featured")
     private Boolean isFeatured;
 

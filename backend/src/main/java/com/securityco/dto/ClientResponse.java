@@ -11,8 +11,6 @@ public class ClientResponse {
     private String name;
     private String logoKey;
     private String logoUrl;
-    private Integer enterpriseTypeId;
-    private String enterpriseTypeName;
     private Boolean isFeatured;
     private Integer displayOrder;
     private Boolean isActive;

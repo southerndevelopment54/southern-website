@@ -12,8 +12,6 @@ public class ClientRequest {
 
     private String logoKey;
 
-    private Integer enterpriseTypeId;
-
     private Boolean isFeatured;
 
     private Integer displayOrder;

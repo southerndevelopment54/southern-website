@@ -9,7 +9,6 @@ interface Client {
   id: number;
   name: string;
   logoUrl: string;
-  enterpriseTypeName: string;
 }
 
 interface GuardingSite {
@@ -194,8 +193,7 @@ export default function ClientShowcase() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1 truncate">{client.name}</h3>
-                  <p className="text-sm text-gray-400">{client.enterpriseTypeName || ""}</p>
+                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1">{client.name}</h3>
                 </div>
               </div>
             ))}
@@ -228,10 +226,6 @@ export default function ClientShowcase() {
                   <div className="space-y-10">
                     {featuredSites.length > 0 && (
                       <div>
-                        <h3 className="text-lg font-bold text-dark mb-4 flex items-center gap-2">
-                          <Star className="w-5 h-5 text-amber-500" />
-                          精選項目
-                        </h3>
                         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
                           {featuredSites.map((site) => renderSiteCard(site))}
                         </div>
@@ -240,9 +234,6 @@ export default function ClientShowcase() {
 
                     {nonFeaturedSites.length > 0 && (
                       <div>
-                        {featuredSites.length > 0 && (
-                          <h3 className="text-base font-semibold text-gray-500 mb-4">其他項目</h3>
-                        )}
                         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
                           {nonFeaturedSites.map((site) => renderSiteCard(site, true))}
                         </div>

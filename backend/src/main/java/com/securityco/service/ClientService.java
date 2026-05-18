@@ -3,9 +3,7 @@ package com.securityco.service;
 import com.securityco.dto.ClientRequest;
 import com.securityco.dto.ClientResponse;
 import com.securityco.model.Client;
-import com.securityco.model.EnterpriseType;
 import com.securityco.repository.ClientRepository;
-import com.securityco.repository.EnterpriseTypeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -19,7 +17,6 @@ import java.util.List;
 public class ClientService {
 
     private final ClientRepository clientRepository;
-    private final EnterpriseTypeRepository enterpriseTypeRepository;
     private final MinioService minioService;
 
     private static final int MAX_FEATURED_CLIENTS = 8;
@@ -76,12 +73,6 @@ public class ClientService {
         client.setDisplayOrder(request.getDisplayOrder());
         client.setIsActive(request.getIsActive());
 
-        if (request.getEnterpriseTypeId() != null) {
-            EnterpriseType type = enterpriseTypeRepository.findById(request.getEnterpriseTypeId())
-                    .orElseThrow(() -> new RuntimeException("Enterprise type not found"));
-            client.setEnterpriseType(type);
-        }
-
         Client saved = clientRepository.save(client);
         return toResponse(saved);
     }
@@ -105,14 +96,6 @@ public class ClientService {
         client.setDisplayOrder(request.getDisplayOrder());
         client.setIsActive(request.getIsActive());
 
-        if (request.getEnterpriseTypeId() != null) {
-            EnterpriseType type = enterpriseTypeRepository.findById(request.getEnterpriseTypeId())
-                    .orElseThrow(() -> new RuntimeException("Enterprise type not found"));
-            client.setEnterpriseType(type);
-        } else {
-            client.setEnterpriseType(null);
-        }
-
         Client saved = clientRepository.save(client);
         return toResponse(saved);
     }
@@ -131,10 +114,6 @@ public class ClientService {
         response.setLogoKey(client.getLogoKey());
         if (client.getLogoKey() != null && !client.getLogoKey().isBlank()) {
             response.setLogoUrl(minioService.getPublicUrl(client.getLogoKey()));
-        }
-        if (client.getEnterpriseType() != null) {
-            response.setEnterpriseTypeId(client.getEnterpriseType().getId());
-            response.setEnterpriseTypeName(client.getEnterpriseType().getTypeName());
         }
         response.setIsFeatured(client.getIsFeatured());
         response.setDisplayOrder(client.getDisplayOrder());

@@ -6,22 +6,15 @@ import { api } from "@/lib/api";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
 import OrderSlider from "@/components/OrderSlider";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { compressImage } from "@/lib/image";
 
-interface EnterpriseType {
-  id: number;
-  typeName: string;
-}
-
 interface ClientForm {
   name: string;
   logoKey: string;
-  enterpriseTypeId: string;
   isFeatured: boolean;
   displayOrder: string;
   isActive: boolean;
@@ -30,13 +23,11 @@ interface ClientForm {
 export default function EditClientPage() {
   const router = useRouter();
   const { id } = useParams();
-  const [types, setTypes] = useState<EnterpriseType[]>([]);
   const [featuredCount, setFeaturedCount] = useState(0);
   const [showWarning, setShowWarning] = useState(false);
   const [form, setForm] = useState<ClientForm>({
     name: "",
     logoKey: "",
-    enterpriseTypeId: "",
     isFeatured: false,
     displayOrder: "",
     isActive: true,
@@ -44,7 +35,6 @@ export default function EditClientPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    api.get("/enterprise-types").then((res) => setTypes(res.data));
     api.get("/admin/clients").then((res) => {
       const list = res.data || [];
       const current = list.find((c: { id: number }) => String(c.id) === id);
@@ -55,7 +45,6 @@ export default function EditClientPage() {
       setForm({
         name: c.name || "",
         logoKey: c.logoKey || "",
-        enterpriseTypeId: c.enterpriseTypeId ? String(c.enterpriseTypeId) : "",
         isFeatured: c.isFeatured || false,
         displayOrder: c.displayOrder != null ? String(c.displayOrder) : "",
         isActive: c.isActive != null ? c.isActive : true,
@@ -91,7 +80,6 @@ export default function EditClientPage() {
       await api.put(`/admin/clients/${id}`, {
         name: form.name,
         logoKey: form.logoKey || null,
-        enterpriseTypeId: form.enterpriseTypeId ? Number(form.enterpriseTypeId) : null,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
         isActive: form.isActive,
@@ -117,15 +105,6 @@ export default function EditClientPage() {
         <div>
           <Label>名稱</Label>
           <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
-        </div>
-        <div>
-          <Label>企業類型</Label>
-          <Select value={form.enterpriseTypeId} onValueChange={(v) => setForm({ ...form, enterpriseTypeId: v })}>
-            <SelectTrigger><SelectValue placeholder="選擇類型（可選）" /></SelectTrigger>
-            <SelectContent>
-              {types.map((t) => <SelectItem key={t.id} value={String(t.id)}>{t.typeName}</SelectItem>)}
-            </SelectContent>
-          </Select>
         </div>
         <div>
           <Label>客戶商標</Label>

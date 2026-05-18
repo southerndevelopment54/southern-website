@@ -15,7 +15,6 @@ interface Client {
   name: string;
   logoKey: string;
   logoUrl: string;
-  enterpriseTypeName: string;
   isFeatured: boolean;
   displayOrder: number;
   isActive: boolean;
@@ -65,7 +64,6 @@ export default function AdminClientsPage() {
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="名稱" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
-              <SortHeader label="企業類型" sortKey="enterpriseTypeName" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="精選" sortKey="isFeatured" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="排序" sortKey="displayOrder" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
@@ -90,7 +88,6 @@ export default function AdminClientsPage() {
                     <span className="font-medium text-slate-900">{c.name}</span>
                   </div>
                 </td>
-                <td className="px-5 py-4 text-slate-500">{c.enterpriseTypeName || "—"}</td>
                 <td className="px-5 py-4">
                   {c.isFeatured ? (
                     <Badge className="bg-amber-50 text-amber-700 hover:bg-amber-50 border-amber-200 whitespace-nowrap">精選</Badge>
@@ -122,7 +119,7 @@ export default function AdminClientsPage() {
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={7} className="px-5 py-12 text-center text-slate-400 text-sm">
+                <td colSpan={6} className="px-5 py-12 text-center text-slate-400 text-sm">
                   暫無客戶
                 </td>
               </tr>

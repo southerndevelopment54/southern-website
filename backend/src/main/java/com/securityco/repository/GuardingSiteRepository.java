@@ -18,4 +18,6 @@ public interface GuardingSiteRepository extends JpaRepository<GuardingSite, Inte
     List<GuardingSite> findActiveFeaturedOrdered();
 
     long countByCategoryAndIsActiveTrue(String category);
+
+    long countByCategoryAndIsFeaturedTrueAndIsActiveTrue(String category);
 }

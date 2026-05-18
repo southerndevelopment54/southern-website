@@ -75,7 +75,9 @@ public class GuardingSiteService {
 
     @Transactional
     public GuardingSiteResponse create(GuardingSiteRequest request) {
-        validateCategoryLimit(request.getCategory(), null);
+        if (Boolean.TRUE.equals(request.getIsFeatured())) {
+            validateFeaturedLimit(request.getCategory(), null);
+        }
 
         GuardingSite site = new GuardingSite();
         site.setName(request.getName());
@@ -96,9 +98,10 @@ public class GuardingSiteService {
                 .orElseThrow(() -> new EntityNotFoundException("Guarding site not found"));
 
         boolean categoryChanged = !site.getCategory().equals(request.getCategory());
+        boolean featuredChangedToTrue = Boolean.TRUE.equals(request.getIsFeatured()) && !Boolean.TRUE.equals(site.getIsFeatured());
         boolean activating = Boolean.TRUE.equals(request.getIsActive()) && !Boolean.TRUE.equals(site.getIsActive());
-        if (categoryChanged || activating) {
-            validateCategoryLimit(request.getCategory(), id);
+        if (Boolean.TRUE.equals(request.getIsFeatured()) && (categoryChanged || featuredChangedToTrue || activating)) {
+            validateFeaturedLimit(request.getCategory(), id);
         }
 
         site.setName(request.getName());
@@ -120,23 +123,24 @@ public class GuardingSiteService {
         guardingSiteRepository.delete(site);
     }
 
-    private void validateCategoryLimit(String category, Integer excludeId) {
+    private void validateFeaturedLimit(String category, Integer excludeId) {
         int maxCount = tierLimitRepository.findByCategoryAndTier(category, 1)
                 .map(TierLimit::getMaxCount)
-                .orElse(200);
+                .orElse(9);
 
-        long currentCount = guardingSiteRepository.countByCategoryAndIsActiveTrue(category);
+        long currentCount = guardingSiteRepository.countByCategoryAndIsFeaturedTrueAndIsActiveTrue(category);
         if (excludeId != null) {
             Optional<GuardingSite> excluded = guardingSiteRepository.findById(excludeId);
             if (excluded.isPresent()
                     && excluded.get().getCategory().equals(category)
+                    && Boolean.TRUE.equals(excluded.get().getIsFeatured())
                     && Boolean.TRUE.equals(excluded.get().getIsActive())) {
                 currentCount--;
             }
         }
 
         if (currentCount >= maxCount) {
-            throw new IllegalArgumentException("Category limit reached for '" + category
+            throw new IllegalArgumentException("Featured limit reached for '" + category
                     + "'. Maximum allowed: " + maxCount);
         }
     }
