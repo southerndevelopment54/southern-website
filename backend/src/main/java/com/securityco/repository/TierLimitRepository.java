@@ -8,5 +8,5 @@ import java.util.Optional;
 
 @Repository
 public interface TierLimitRepository extends JpaRepository<TierLimit, Integer> {
-    Optional<TierLimit> findByCategoryAndTier(String category, Integer tier);
+    Optional<TierLimit> findByCategory(String category);
 }

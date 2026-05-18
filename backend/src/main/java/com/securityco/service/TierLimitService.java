@@ -37,7 +37,6 @@ public class TierLimitService {
                 .orElseThrow(() -> new RuntimeException("Tier limit not found"));
 
         limit.setCategory(request.getCategory());
-        limit.setTier(request.getTier());
         limit.setMaxCount(request.getMaxCount());
 
         TierLimit saved = tierLimitRepository.save(limit);
@@ -48,7 +47,6 @@ public class TierLimitService {
         TierLimitResponse response = new TierLimitResponse();
         response.setId(limit.getId());
         response.setCategory(limit.getCategory());
-        response.setTier(limit.getTier());
         response.setMaxCount(limit.getMaxCount());
         response.setCreatedAt(limit.getCreatedAt());
         response.setUpdatedAt(limit.getUpdatedAt());

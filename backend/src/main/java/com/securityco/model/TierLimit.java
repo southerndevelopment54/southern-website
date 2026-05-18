@@ -20,11 +20,8 @@ public class TierLimit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 20, unique = true)
     private String category;
-
-    @Column(nullable = false)
-    private Integer tier;
 
     @Column(name = "max_count", nullable = false)
     private Integer maxCount;

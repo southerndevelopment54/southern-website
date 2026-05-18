@@ -50,7 +50,7 @@ export default function AdminLayout({
               <Link href="/admin/inquiries" className="text-slate-700 hover:text-slate-900">服務查詢</Link>
               <Link href="/admin/clients" className="text-slate-700 hover:text-slate-900">合作客戶</Link>
               <Link href="/admin/projects" className="text-slate-700 hover:text-slate-900">合作項目</Link>
-              <Link href="/admin/tier-limits" className="text-slate-700 hover:text-slate-900">層級限制</Link>
+              <Link href="/admin/tier-limits" className="text-slate-700 hover:text-slate-900">精選上限</Link>
             </nav>
           </div>
           <Button variant="default" size="sm" className="bg-slate-800 text-white hover:bg-slate-700" onClick={logout}>

@@ -38,7 +38,7 @@ public class AdminTierLimitController {
             HttpServletRequest httpRequest) {
         TierLimitResponse response = tierLimitService.update(id, request);
         auditLogService.log("UPDATE", "tier_limit", id,
-                Map.of("category", request.getCategory(), "tier", request.getTier(), "maxCount", request.getMaxCount()),
+                Map.of("category", request.getCategory(), "maxCount", request.getMaxCount()),
                 getIp(httpRequest));
         return ResponseEntity.ok(response);
     }

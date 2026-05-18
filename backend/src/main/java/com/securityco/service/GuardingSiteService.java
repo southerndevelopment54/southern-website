@@ -124,7 +124,7 @@ public class GuardingSiteService {
     }
 
     private void validateFeaturedLimit(String category, Integer excludeId) {
-        int maxCount = tierLimitRepository.findByCategoryAndTier(category, 1)
+        int maxCount = tierLimitRepository.findByCategory(category)
                 .map(TierLimit::getMaxCount)
                 .orElse(9);
 
