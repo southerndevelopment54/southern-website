@@ -9,6 +9,7 @@ public class ClientResponse {
 
     private Integer id;
     private String name;
+    private String nameEn;
     private String logoKey;
     private String logoUrl;
     private Boolean isFeatured;

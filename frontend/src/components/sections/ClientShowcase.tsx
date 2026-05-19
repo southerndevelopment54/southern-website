@@ -8,14 +8,17 @@ import { useI18n } from "@/components/I18nProvider";
 interface Client {
   id: number;
   name: string;
+  nameEn?: string;
   logoUrl: string;
 }
 
 interface GuardingSite {
   id: number;
   name: string;
+  nameEn?: string;
   imageUrl: string;
   address: string;
+  addressEn?: string;
   category: string;
   isFeatured: boolean;
 }
@@ -23,7 +26,7 @@ interface GuardingSite {
 type SiteFilter = "featured" | "commercial" | "residential" | "other";
 
 export default function ClientShowcase() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
   const [siteFilter, setSiteFilter] = useState<SiteFilter>("featured");
@@ -118,10 +121,10 @@ export default function ClientShowcase() {
         />
       </div>
       <div className={compact ? "p-4" : "p-6"}>
-        <h3 className={`font-bold text-dark mb-1 ${compact ? "text-base" : "text-lg"}`}>{site.name}</h3>
+        <h3 className={`font-bold text-dark mb-1 ${compact ? "text-base" : "text-lg"}`}>{locale === "en" && site.nameEn ? site.nameEn : site.name}</h3>
         <p className="text-sm text-gray-500 flex items-center gap-1.5">
           <Building2 className={`text-primary ${compact ? "w-3 h-3" : "w-3.5 h-3.5"}`} />
-          {site.address || "-"}
+          {(locale === "en" && site.addressEn ? site.addressEn : site.address) || "-"}
         </p>
       </div>
     </div>
@@ -209,7 +212,7 @@ export default function ClientShowcase() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1">{formatClientName(client.name)}</h3>
+                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1">{formatClientName(locale === "en" && client.nameEn ? client.nameEn : client.name)}</h3>
                 </div>
               </div>
             ))}

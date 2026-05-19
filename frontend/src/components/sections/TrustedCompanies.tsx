@@ -7,6 +7,7 @@ import { useI18n } from "@/components/I18nProvider";
 interface Client {
   id: number;
   name: string;
+  nameEn?: string;
   logoUrl: string;
   isFeatured?: boolean;
 }
@@ -19,31 +20,32 @@ function chunkArray<T>(arr: T[], size: number): T[][] {
   return chunks;
 }
 
-function ClientCard({ company }: { company: Client }) {
+function ClientCard({ company, locale }: { company: Client; locale: string }) {
+  const displayName = locale === "en" && company.nameEn ? company.nameEn : company.name;
   return (
     <div className="bg-white hover:bg-gray-50 border border-gray-200 rounded-xl p-5 md:p-6 flex flex-col items-center justify-center transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 w-40 md:w-48 h-44 md:h-52">
       <div className="w-16 h-16 md:w-20 md:h-20 rounded-xl overflow-hidden bg-white flex items-center justify-center mb-3 p-2 border border-gray-100">
         {company.logoUrl ? (
           <img
             src={company.logoUrl}
-            alt={company.name}
+            alt={displayName}
             className="w-full h-full object-contain"
           />
         ) : (
           <span className="text-xl md:text-2xl font-bold text-gray-400">
-            {company.name.charAt(0)}
+            {displayName.charAt(0)}
           </span>
         )}
       </div>
       <div className="text-xs md:text-sm text-gray-800 text-center font-semibold leading-tight line-clamp-2">
-        {company.name}
+        {displayName}
       </div>
     </div>
   );
 }
 
 export default function TrustedCompanies() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [clients, setClients] = useState<Client[]>([]);
   const trackRef = useRef<HTMLDivElement>(null);
   const firstGroupRef = useRef<HTMLDivElement>(null);
@@ -99,7 +101,7 @@ export default function TrustedCompanies() {
         className="flex flex-col gap-4 md:gap-5 shrink-0 pr-6 md:pr-8"
       >
         {group.map((company) => (
-          <ClientCard key={`${company.id}-${prefix}-${i}`} company={company} />
+          <ClientCard key={`${company.id}-${prefix}-${i}`} company={company} locale={locale} />
         ))}
         {group.length === 1 && (
           <div className="invisible w-40 md:w-48 h-44 md:h-52" aria-hidden="true" />

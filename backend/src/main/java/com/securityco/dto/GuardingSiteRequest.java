@@ -11,9 +11,13 @@ public class GuardingSiteRequest {
     @NotBlank(message = "Name is required")
     private String name;
 
+    private String nameEn;
+
     private String imageKey;
 
     private String address;
+
+    private String addressEn;
 
     @NotBlank(message = "Category is required")
     @Pattern(regexp = "commercial|residential|other", message = "Category must be commercial, residential, or other")

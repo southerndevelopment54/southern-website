@@ -14,8 +14,10 @@ import { compressImage } from "@/lib/image";
 
 interface SiteForm {
   name: string;
+  nameEn: string;
   imageKey: string;
   address: string;
+  addressEn: string;
   category: string;
   isFeatured: boolean;
   displayOrder: string;
@@ -26,8 +28,10 @@ export default function NewProjectPage() {
   const router = useRouter();
   const [form, setForm] = useState<SiteForm>({
     name: "",
+    nameEn: "",
     imageKey: "",
     address: "",
+    addressEn: "",
     category: "commercial",
     isFeatured: false,
     displayOrder: "1",
@@ -60,8 +64,10 @@ export default function NewProjectPage() {
     try {
       await api.post("/admin/projects", {
         name: form.name,
+        nameEn: form.nameEn || null,
         imageKey: form.imageKey || null,
         address: form.address || null,
+        addressEn: form.addressEn || null,
         category: form.category,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
@@ -84,8 +90,12 @@ export default function NewProjectPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border shadow-sm">
         <div>
-          <Label>名稱</Label>
+          <Label>名稱（中文）</Label>
           <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+        </div>
+        <div>
+          <Label>名稱（English）</Label>
+          <Input value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
         </div>
         <div>
           <Label>類別</Label>
@@ -103,8 +113,12 @@ export default function NewProjectPage() {
           <Label htmlFor="featured">精選項目</Label>
         </div>
         <div>
-          <Label>地址</Label>
+          <Label>地址（中文）</Label>
           <Input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
+        </div>
+        <div>
+          <Label>地址（English）</Label>
+          <Input value={form.addressEn} onChange={(e) => setForm({ ...form, addressEn: e.target.value })} />
         </div>
         <div>
           <Label>項目圖片</Label>

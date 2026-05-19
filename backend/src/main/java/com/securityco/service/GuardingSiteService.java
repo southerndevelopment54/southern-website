@@ -81,8 +81,10 @@ public class GuardingSiteService {
 
         GuardingSite site = new GuardingSite();
         site.setName(request.getName());
+        site.setNameEn(request.getNameEn());
         site.setImageKey(request.getImageKey());
         site.setAddress(request.getAddress());
+        site.setAddressEn(request.getAddressEn());
         site.setCategory(request.getCategory());
         site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
@@ -105,8 +107,10 @@ public class GuardingSiteService {
         }
 
         site.setName(request.getName());
+        site.setNameEn(request.getNameEn());
         site.setImageKey(request.getImageKey());
         site.setAddress(request.getAddress());
+        site.setAddressEn(request.getAddressEn());
         site.setCategory(request.getCategory());
         site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
@@ -149,11 +153,13 @@ public class GuardingSiteService {
         GuardingSiteResponse response = new GuardingSiteResponse();
         response.setId(site.getId());
         response.setName(site.getName());
+        response.setNameEn(site.getNameEn());
         response.setImageKey(site.getImageKey());
         if (site.getImageKey() != null && !site.getImageKey().isBlank()) {
             response.setImageUrl(minioService.getPublicUrl(site.getImageKey()));
         }
         response.setAddress(site.getAddress());
+        response.setAddressEn(site.getAddressEn());
         response.setCategory(site.getCategory());
         response.setIsFeatured(site.getIsFeatured());
         response.setDisplayOrder(site.getDisplayOrder());

@@ -68,6 +68,7 @@ public class ClientService {
 
         Client client = new Client();
         client.setName(request.getName());
+        client.setNameEn(request.getNameEn());
         client.setLogoKey(request.getLogoKey());
         client.setIsFeatured(request.getIsFeatured());
         client.setDisplayOrder(request.getDisplayOrder());
@@ -91,6 +92,7 @@ public class ClientService {
         }
 
         client.setName(request.getName());
+        client.setNameEn(request.getNameEn());
         client.setLogoKey(request.getLogoKey());
         client.setIsFeatured(request.getIsFeatured());
         client.setDisplayOrder(request.getDisplayOrder());
@@ -111,6 +113,7 @@ public class ClientService {
         ClientResponse response = new ClientResponse();
         response.setId(client.getId());
         response.setName(client.getName());
+        response.setNameEn(client.getNameEn());
         response.setLogoKey(client.getLogoKey());
         if (client.getLogoKey() != null && !client.getLogoKey().isBlank()) {
             response.setLogoUrl(minioService.getPublicUrl(client.getLogoKey()));

@@ -9,9 +9,11 @@ public class GuardingSiteResponse {
 
     private Integer id;
     private String name;
+    private String nameEn;
     private String imageKey;
     private String imageUrl;
     private String address;
+    private String addressEn;
     private String category;
     private Boolean isFeatured;
     private Integer displayOrder;

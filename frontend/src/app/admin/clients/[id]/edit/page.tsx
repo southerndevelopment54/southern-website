@@ -14,6 +14,7 @@ import { compressImage } from "@/lib/image";
 
 interface ClientForm {
   name: string;
+  nameEn: string;
   logoKey: string;
   isFeatured: boolean;
   displayOrder: string;
@@ -27,6 +28,7 @@ export default function EditClientPage() {
   const [showWarning, setShowWarning] = useState(false);
   const [form, setForm] = useState<ClientForm>({
     name: "",
+    nameEn: "",
     logoKey: "",
     isFeatured: false,
     displayOrder: "",
@@ -44,6 +46,7 @@ export default function EditClientPage() {
       const c = res.data;
       setForm({
         name: c.name || "",
+        nameEn: c.nameEn || "",
         logoKey: c.logoKey || "",
         isFeatured: c.isFeatured || false,
         displayOrder: c.displayOrder != null ? String(c.displayOrder) : "",
@@ -79,6 +82,7 @@ export default function EditClientPage() {
     try {
       await api.put(`/admin/clients/${id}`, {
         name: form.name,
+        nameEn: form.nameEn || null,
         logoKey: form.logoKey || null,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
@@ -103,8 +107,12 @@ export default function EditClientPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border shadow-sm">
         <div>
-          <Label>名稱</Label>
+          <Label>名稱（中文）</Label>
           <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+        </div>
+        <div>
+          <Label>名稱（English）</Label>
+          <Input value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
         </div>
         <div>
           <Label>客戶商標</Label>
