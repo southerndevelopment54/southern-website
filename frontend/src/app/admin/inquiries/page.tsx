@@ -6,9 +6,20 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
 import { useSortable } from "@/hooks/useSortable";
 import SortHeader from "@/components/SortHeader";
+import {
+  Mail,
+  Phone,
+  Building2,
+  User,
+  Wrench,
+  FileText,
+  Globe,
+  Clock,
+  CheckCircle2,
+  Circle,
+} from "lucide-react";
 
 interface Inquiry {
   id: number;
@@ -22,6 +33,26 @@ interface Inquiry {
   userAgent?: string;
   isRead: boolean;
   createdAt: string;
+}
+
+function InfoRow({ icon: Icon, label, children }: { icon: React.ElementType; label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <Icon className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
+      <div>
+        <div className="text-xs text-slate-500">{label}</div>
+        <div className="text-sm font-medium text-slate-800">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-3">
+      {children}
+    </div>
+  );
 }
 
 export default function AdminInquiriesPage() {
@@ -132,44 +163,113 @@ export default function AdminInquiriesPage() {
         </table>
       </div>
 
+      {/* Detail Dialog */}
       <Dialog open={!!selected} onOpenChange={() => setSelected(null)}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>查詢詳情 #{selected?.id}</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
           {selected && (
-            <div className="space-y-3 text-sm">
-              <div className="grid grid-cols-2 gap-2">
-                <p><strong>姓名:</strong> {selected.name}</p>
-                <p><strong>電郵:</strong> {selected.email}</p>
-                <p><strong>公司:</strong> {selected.company || "—"}</p>
-                <p><strong>電話:</strong> {selected.phone || "—"}</p>
-                <p><strong>服務類型:</strong> {selected.serviceType || "—"}</p>
-                <p><strong>時間:</strong> {new Date(selected.createdAt).toLocaleString("zh-HK")}</p>
+            <>
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b">
+                <DialogHeader className="mb-1">
+                  <div className="flex items-center gap-3">
+                    <DialogTitle className="text-lg">查詢詳情 #{selected.id}</DialogTitle>
+                    {selected.isRead ? (
+                      <Badge variant="outline" className="text-slate-400 border-slate-200">
+                        <CheckCircle2 className="w-3 h-3 mr-1" />
+                        已讀
+                      </Badge>
+                    ) : (
+                      <Badge className="bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200">
+                        <Circle className="w-3 h-3 mr-1" />
+                        未讀
+                      </Badge>
+                    )}
+                  </div>
+                </DialogHeader>
+                <p className="text-xs text-slate-500">
+                  提交時間: {new Date(selected.createdAt).toLocaleString("zh-HK")}
+                </p>
               </div>
-              <div className="pt-2 border-t">
-                <Label>訊息內容</Label>
-                <div className="mt-1 p-3 bg-slate-50 rounded text-sm whitespace-pre-wrap">
-                  {selected.message}
+
+              <div className="px-6 py-5 space-y-6">
+                {/* Contact Info */}
+                <section>
+                  <SectionTitle>
+                    <User className="w-4 h-4 text-primary" />
+                    查詢人資料
+                  </SectionTitle>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                    <InfoRow icon={User} label="姓名">
+                      {selected.name}
+                    </InfoRow>
+                    <InfoRow icon={Mail} label="電郵地址">
+                      {selected.email}
+                    </InfoRow>
+                    <InfoRow icon={Building2} label="公司名稱">
+                      {selected.company || "—"}
+                    </InfoRow>
+                    <InfoRow icon={Phone} label="聯絡電話">
+                      {selected.phone || "—"}
+                    </InfoRow>
+                    <InfoRow icon={Wrench} label="查詢服務類型">
+                      {selected.serviceType || "—"}
+                    </InfoRow>
+                    <InfoRow icon={Clock} label="提交時間">
+                      {new Date(selected.createdAt).toLocaleString("zh-HK")}
+                    </InfoRow>
+                  </div>
+                </section>
+
+                {/* Message */}
+                <section>
+                  <SectionTitle>
+                    <FileText className="w-4 h-4 text-primary" />
+                    查詢內容
+                  </SectionTitle>
+                  <div className="bg-slate-50 border rounded-lg p-4 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+                    {selected.message}
+                  </div>
+                </section>
+
+                {/* System Info */}
+                <section>
+                  <SectionTitle>
+                    <Globe className="w-4 h-4 text-primary" />
+                    系統資訊
+                  </SectionTitle>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                    <div>
+                      <span className="text-slate-500">IP 地址:</span>{" "}
+                      <span className="text-slate-700 font-mono">{selected.ipAddress || "—"}</span>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <span className="text-slate-500 text-sm">User-Agent:</span>{" "}
+                    <span className="text-xs text-muted-foreground break-all">{selected.userAgent || "—"}</span>
+                  </div>
+                </section>
+
+                {/* Actions */}
+                <div className="pt-4 border-t flex flex-wrap gap-2">
+                  {!selected.isRead && (
+                    <Button
+                      size="sm"
+                      onClick={() => { handleMarkRead(selected.id); setSelected(null); }}
+                    >
+                      <CheckCircle2 className="w-4 h-4 mr-1.5" />
+                      標記已讀
+                    </Button>
+                  )}
+                  <Button
+                    size="sm"
+                    variant="destructive"
+                    onClick={() => { setDeleteId(selected.id); setSelected(null); }}
+                  >
+                    刪除
+                  </Button>
                 </div>
               </div>
-              <p className="text-xs text-muted-foreground">
-                <strong>IP:</strong> {selected.ipAddress || "—"}
-              </p>
-              <p className="text-xs text-muted-foreground break-all">
-                <strong>User-Agent:</strong> {selected.userAgent || "—"}
-              </p>
-              <div className="flex flex-wrap gap-2 pt-2">
-                {!selected.isRead && (
-                  <Button size="sm" onClick={() => { handleMarkRead(selected.id); setSelected(null); }}>
-                    標記已讀
-                  </Button>
-                )}
-                <Button size="sm" variant="destructive" onClick={() => { setDeleteId(selected.id); setSelected(null); }}>
-                  刪除
-                </Button>
-              </div>
-            </div>
+            </>
           )}
         </DialogContent>
       </Dialog>
