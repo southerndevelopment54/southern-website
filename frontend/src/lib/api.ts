@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useAuthStore } from "@/store/auth";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "";
-const baseURL = API_URL ? `${API_URL}/api` : "/api";
+// In browser: use same-origin `/api` (nginx proxies to backend)
+// In Docker SSR: call backend container directly
+const isServer = typeof window === "undefined";
+const baseURL = isServer ? "http://backend:8080/api" : "/api";
 
 export const api = axios.create({
   baseURL,

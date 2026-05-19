@@ -10,8 +10,7 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG API_URL
-ENV API_URL=${API_URL:-http://localhost:8080}
-ENV NEXT_PUBLIC_API_URL=http://localhost:8080
+ENV API_URL=${API_URL:-http://backend:8080}
 RUN npm run build
 
 # Run stage

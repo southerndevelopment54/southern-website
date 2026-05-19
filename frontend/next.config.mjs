@@ -2,7 +2,7 @@
 const nextConfig = {
   output: 'standalone',
   images: {
-    domains: ['localhost', 'minio.example.com'],
+    domains: [],
   },
   async rewrites() {
     return [
