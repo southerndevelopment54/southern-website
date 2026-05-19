@@ -89,6 +89,22 @@ export default function ClientShowcase() {
   const featuredSites = sites.filter((s) => s.isFeatured);
   const nonFeaturedSites = sites.filter((s) => !s.isFeatured);
 
+  const formatClientName = (name: string) => {
+    const parts = name.split("有限公司");
+    if (parts.length <= 1) return name;
+    return parts.map((part, i) => (
+      <span key={i}>
+        {part}
+        {i < parts.length - 1 && (
+          <>
+            <wbr />
+            <span className="whitespace-nowrap">有限公司</span>
+          </>
+        )}
+      </span>
+    ));
+  };
+
   const renderSiteCard = (site: GuardingSite, compact = false) => (
     <div
       key={site.id}
@@ -193,7 +209,7 @@ export default function ClientShowcase() {
                   </div>
                 )}
                 <div className="min-w-0">
-                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1">{client.name}</h3>
+                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1">{formatClientName(client.name)}</h3>
                 </div>
               </div>
             ))}
