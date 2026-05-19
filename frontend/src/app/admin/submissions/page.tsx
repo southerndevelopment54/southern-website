@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { api } from "@/lib/api";
 import { Submission } from "@/types/submission";
+import { Vacancy } from "@/types/vacancy";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/hooks/use-toast";
@@ -11,6 +12,20 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useSortable } from "@/hooks/useSortable";
 import SortHeader from "@/components/SortHeader";
+import {
+  MapPin,
+  DollarSign,
+  Clock,
+  Calendar,
+  Phone,
+  Mail,
+  ShieldCheck,
+  AlertCircle,
+  Briefcase,
+  GraduationCap,
+  FileText,
+  Globe,
+} from "lucide-react";
 
 const statusConfig: Record<string, { label: string; className: string }> = {
   new: { label: "新申請", className: "bg-blue-50 text-blue-700 hover:bg-blue-50 border-blue-200 whitespace-nowrap" },
@@ -20,9 +35,31 @@ const statusConfig: Record<string, { label: string; className: string }> = {
   rejected: { label: "已拒絕", className: "bg-red-50 text-red-700 hover:bg-red-50 border-red-200 whitespace-nowrap" },
 };
 
+function InfoRow({ icon: Icon, label, children }: { icon: React.ElementType; label: string; children: React.ReactNode }) {
+  return (
+    <div className="flex items-start gap-2.5">
+      <Icon className="w-4 h-4 text-slate-400 mt-0.5 flex-shrink-0" />
+      <div>
+        <div className="text-xs text-slate-500">{label}</div>
+        <div className="text-sm font-medium text-slate-800">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function SectionTitle({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="flex items-center gap-2 text-sm font-semibold text-slate-900 mb-3">
+      {children}
+    </div>
+  );
+}
+
 export default function AdminSubmissionsPage() {
   const [submissions, setSubmissions] = useState<Submission[]>([]);
   const [selected, setSelected] = useState<Submission | null>(null);
+  const [vacancyDetails, setVacancyDetails] = useState<Vacancy | null>(null);
+  const [vacancyLoading, setVacancyLoading] = useState(false);
   const [adminNotes, setAdminNotes] = useState("");
   const [deleteId, setDeleteId] = useState<number | null>(null);
   const { sortedItems, sortKey, direction, requestSort } = useSortable(submissions);
@@ -36,6 +73,19 @@ export default function AdminSubmissionsPage() {
   useEffect(() => {
     fetchSubmissions();
   }, []);
+
+  useEffect(() => {
+    if (selected) {
+      setVacancyLoading(true);
+      api
+        .get(`/vacancies/${selected.vacancyId}`)
+        .then((res) => setVacancyDetails(res.data))
+        .catch(() => setVacancyDetails(null))
+        .finally(() => setVacancyLoading(false));
+    } else {
+      setVacancyDetails(null);
+    }
+  }, [selected]);
 
   const handleStatus = async (id: number, status: string) => {
     try {
@@ -72,6 +122,7 @@ export default function AdminSubmissionsPage() {
             <tr>
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="姓名" sortKey="firstName" currentKey={sortKey} direction={direction} onSort={requestSort} />
+              <SortHeader label="職位編號" sortKey="vacancyId" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
               <SortHeader label="職位" sortKey="vacancyTitle" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="電話" sortKey="phoneNumber" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="狀態" sortKey="status" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-24" />
@@ -87,6 +138,7 @@ export default function AdminSubmissionsPage() {
                   <td className="px-5 py-4">
                     <span className="font-medium text-slate-900">{s.firstName} {s.lastName}</span>
                   </td>
+                  <td className="px-5 py-4 text-slate-400 tabular-nums">{s.vacancyId}</td>
                   <td className="px-5 py-4 text-slate-500">{s.vacancyTitle}</td>
                   <td className="px-5 py-4 text-slate-500">{s.phoneNumber}</td>
                   <td className="px-5 py-4">
@@ -107,7 +159,7 @@ export default function AdminSubmissionsPage() {
             })}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-12 text-center text-slate-400 text-sm">
+                <td colSpan={7} className="px-5 py-12 text-center text-slate-400 text-sm">
                   暫無申請紀錄
                 </td>
               </tr>
@@ -116,49 +168,215 @@ export default function AdminSubmissionsPage() {
         </table>
       </div>
 
+      {/* Detail Dialog */}
       <Dialog open={!!selected} onOpenChange={() => { setSelected(null); setAdminNotes(""); }}>
-        <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>申請詳情 #{selected?.id}</DialogTitle>
-          </DialogHeader>
+        <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto p-0 gap-0">
           {selected && (
-            <div className="space-y-3 text-sm">
-              <div className="grid grid-cols-2 gap-2">
-                <p><strong>姓名:</strong> {selected.firstName} {selected.lastName}</p>
-                <p><strong>電話:</strong> {selected.phoneNumber}</p>
-                <p><strong>電郵:</strong> {selected.email || "-"}</p>
-                <p><strong>職位:</strong> {selected.vacancyTitle}</p>
-                <p><strong>經驗:</strong> {selected.yearsOfExperience ?? 0} 年</p>
-                <p><strong>學歷:</strong> {selected.educationLevel || "-"}</p>
-              </div>
-              <p><strong>保安牌照:</strong> {selected.hasSecurityLicense ? "有" : "無"} {selected.licenseNumber ? `(${selected.licenseNumber})` : ""}</p>
-              <p><strong>訊息:</strong> {selected.message || "-"}</p>
-              <p><strong>狀態:</strong> {(statusConfig[selected.status] || { label: selected.status }).label}</p>
-              <p><strong>IP 地址:</strong> {selected.ipAddress || "-"}</p>
-              <p><strong>User-Agent:</strong> <span className="text-xs text-muted-foreground break-all">{selected.userAgent || "-"}</span></p>
-              {selected.reviewedAt && (
-                <p><strong>審閱時間:</strong> {selected.reviewedAt}</p>
-              )}
-
-              <div className="pt-2 border-t">
-                <Label htmlFor="adminNotes">管理員備註</Label>
-                <Textarea
-                  id="adminNotes"
-                  rows={3}
-                  value={adminNotes}
-                  onChange={(e) => setAdminNotes(e.target.value)}
-                  placeholder="輸入備註..."
-                />
+            <>
+              {/* Header */}
+              <div className="px-6 pt-6 pb-4 border-b">
+                <DialogHeader className="mb-1">
+                  <div className="flex items-center gap-3">
+                    <DialogTitle className="text-lg">申請詳情 #{selected.id}</DialogTitle>
+                    <Badge className={(statusConfig[selected.status] || { className: "" }).className}>
+                      {(statusConfig[selected.status] || { label: selected.status }).label}
+                    </Badge>
+                  </div>
+                </DialogHeader>
+                <p className="text-xs text-slate-500">
+                  提交時間: {new Date(selected.createdAt).toLocaleString("zh-HK")}
+                </p>
               </div>
 
-              <div className="flex flex-wrap gap-2 pt-2">
-                <Button size="sm" onClick={() => handleStatus(selected.id, "reviewed")}>標記已審閱</Button>
-                <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "contacted")}>標記已聯絡</Button>
-                <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "hired")}>標記已聘用</Button>
-                <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "rejected")}>標記已拒絕</Button>
-                <Button size="sm" variant="destructive" onClick={() => { setDeleteId(selected.id); setSelected(null); }}>刪除</Button>
+              <div className="px-6 py-5 space-y-6">
+                {/* Vacancy Section */}
+                <section>
+                  <SectionTitle>
+                    <Briefcase className="w-4 h-4 text-primary" />
+                    申請職位資訊
+                  </SectionTitle>
+                  {vacancyLoading ? (
+                    <div className="text-sm text-slate-400 py-4">載入職位資料中...</div>
+                  ) : vacancyDetails ? (
+                    <div className="bg-slate-50 border rounded-lg p-4 space-y-3">
+                      <div className="flex items-start justify-between gap-3">
+                        <div>
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-bold text-slate-900">{vacancyDetails.title}</h3>
+                            {vacancyDetails.isUrgent && (
+                              <Badge className="bg-red-50 text-red-700 border-red-200 text-xs">急聘</Badge>
+                            )}
+                            {vacancyDetails.isFeatured && (
+                              <Badge className="bg-amber-50 text-amber-700 border-amber-200 text-xs">精選</Badge>
+                            )}
+                          </div>
+                          <p className="text-xs text-slate-500">職位編號: #{vacancyDetails.id}</p>
+                        </div>
+                        <div className="text-right">
+                          <div className="flex items-center gap-1 text-primary font-bold text-sm">
+                            <DollarSign className="w-4 h-4" />
+                            {vacancyDetails.salaryDisplay || "面議"}
+                          </div>
+                          <p className="text-xs text-slate-500">{vacancyDetails.salaryPeriod}</p>
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-2 gap-3">
+                        <InfoRow icon={MapPin} label="地區">
+                          {vacancyDetails.district?.districtName || vacancyDetails.locationDescription || "—"}
+                        </InfoRow>
+                        <InfoRow icon={Clock} label="工作類型">
+                          {vacancyDetails.jobType || "—"}
+                        </InfoRow>
+                        <InfoRow icon={Calendar} label="開始日期">
+                          {vacancyDetails.startDate || "—"}
+                        </InfoRow>
+                        <InfoRow icon={Clock} label="工作時間">
+                          {vacancyDetails.workingHours || "—"}
+                        </InfoRow>
+                      </div>
+
+                      {vacancyDetails.requirements && vacancyDetails.requirements.length > 0 && (
+                        <div className="pt-2 border-t border-slate-200">
+                          <div className="text-xs text-slate-500 mb-1.5">入職要求</div>
+                          <ul className="space-y-1">
+                            {vacancyDetails.requirements.map((req, idx) => (
+                              <li key={idx} className="flex items-start gap-2 text-sm text-slate-700">
+                                <div className="w-1 h-1 bg-primary rounded-full mt-1.5 flex-shrink-0" />
+                                {req}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
+
+                      {(vacancyDetails.contactPhone || vacancyDetails.contactEmail) && (
+                        <div className="pt-2 border-t border-slate-200 grid grid-cols-2 gap-3">
+                          {vacancyDetails.contactPhone && (
+                            <InfoRow icon={Phone} label="聯絡電話">{vacancyDetails.contactPhone}</InfoRow>
+                          )}
+                          {vacancyDetails.contactEmail && (
+                            <InfoRow icon={Mail} label="聯絡電郵">{vacancyDetails.contactEmail}</InfoRow>
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div className="bg-slate-50 border rounded-lg p-4">
+                      <div className="flex items-center gap-2 text-amber-700 mb-1">
+                        <AlertCircle className="w-4 h-4" />
+                        <span className="font-medium text-sm">職位資料已無法載入</span>
+                      </div>
+                      <p className="text-sm text-slate-600">
+                        職位編號: <span className="font-mono">#{selected.vacancyId}</span>
+                      </p>
+                      <p className="text-sm text-slate-600">職位名稱: {selected.vacancyTitle}</p>
+                    </div>
+                  )}
+                </section>
+
+                {/* Applicant Section */}
+                <section>
+                  <SectionTitle>
+                    <GraduationCap className="w-4 h-4 text-primary" />
+                    申請人資料
+                  </SectionTitle>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-3">
+                    <InfoRow icon={FileText} label="姓名">
+                      {selected.firstName} {selected.lastName}
+                    </InfoRow>
+                    <InfoRow icon={Phone} label="聯絡電話">
+                      {selected.phoneNumber}
+                    </InfoRow>
+                    <InfoRow icon={Mail} label="電郵地址">
+                      {selected.email || "—"}
+                    </InfoRow>
+                    <InfoRow icon={GraduationCap} label="學歷">
+                      {selected.educationLevel || "—"}
+                    </InfoRow>
+                    <InfoRow icon={Briefcase} label="相關經驗">
+                      {selected.yearsOfExperience != null ? `${selected.yearsOfExperience} 年` : "—"}
+                    </InfoRow>
+                    <InfoRow icon={ShieldCheck} label="保安牌照">
+                      {selected.hasSecurityLicense ? (
+                        <span className="text-emerald-700">
+                          有{selected.licenseNumber ? `（${selected.licenseNumber}）` : ""}
+                        </span>
+                      ) : (
+                        <span className="text-slate-500">無</span>
+                      )}
+                    </InfoRow>
+                  </div>
+                </section>
+
+                {/* Message Section */}
+                {selected.message && (
+                  <section>
+                    <SectionTitle>
+                      <FileText className="w-4 h-4 text-primary" />
+                      申請人訊息
+                    </SectionTitle>
+                    <div className="bg-slate-50 border rounded-lg p-4 text-sm text-slate-700 leading-relaxed whitespace-pre-wrap">
+                      {selected.message}
+                    </div>
+                  </section>
+                )}
+
+                {/* System Info */}
+                <section>
+                  <SectionTitle>
+                    <Globe className="w-4 h-4 text-primary" />
+                    系統資訊
+                  </SectionTitle>
+                  <div className="grid grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                    <div>
+                      <span className="text-slate-500">IP 地址:</span>{" "}
+                      <span className="text-slate-700 font-mono">{selected.ipAddress || "—"}</span>
+                    </div>
+                    {selected.reviewedAt && (
+                      <div>
+                        <span className="text-slate-500">審閱時間:</span>{" "}
+                        <span className="text-slate-700">{new Date(selected.reviewedAt).toLocaleString("zh-HK")}</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-2">
+                    <span className="text-slate-500 text-sm">User-Agent:</span>{" "}
+                    <span className="text-xs text-muted-foreground break-all">{selected.userAgent || "—"}</span>
+                  </div>
+                </section>
+
+                {/* Admin Notes & Actions */}
+                <div className="pt-4 border-t space-y-4">
+                  <div>
+                    <Label htmlFor="adminNotes" className="text-sm font-semibold text-slate-900 mb-1.5 block">
+                      管理員備註
+                    </Label>
+                    <Textarea
+                      id="adminNotes"
+                      rows={3}
+                      value={adminNotes}
+                      onChange={(e) => setAdminNotes(e.target.value)}
+                      placeholder="輸入備註..."
+                      className="text-sm"
+                    />
+                    {selected.adminNotes && adminNotes !== selected.adminNotes && (
+                      <p className="text-xs text-slate-500 mt-1">
+                        現有備註: {selected.adminNotes}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap gap-2">
+                    <Button size="sm" onClick={() => handleStatus(selected.id, "reviewed")}>標記已審閱</Button>
+                    <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "contacted")}>標記已聯絡</Button>
+                    <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "hired")}>標記已聘用</Button>
+                    <Button size="sm" variant="outline" onClick={() => handleStatus(selected.id, "rejected")}>標記已拒絕</Button>
+                    <Button size="sm" variant="destructive" onClick={() => { setDeleteId(selected.id); setSelected(null); }}>刪除</Button>
+                  </div>
+                </div>
               </div>
-            </div>
+            </>
           )}
         </DialogContent>
       </Dialog>

@@ -35,6 +35,6 @@ public class ReferenceDataController {
 
     @GetMapping("/education-levels")
     public ResponseEntity<List<EducationLevel>> getEducationLevels() {
-        return ResponseEntity.ok(educationLevelRepository.findAll());
+        return ResponseEntity.ok(educationLevelRepository.findAllByOrderByDisplayOrderAsc());
     }
 }

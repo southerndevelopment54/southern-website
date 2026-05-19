@@ -5,6 +5,7 @@ import { MapPin, Clock, DollarSign, ChevronRight, ShieldCheck } from "lucide-rea
 import Link from "next/link";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
+import VacancyApplyDialog from "@/components/VacancyApplyDialog";
 
 interface Vacancy {
   id: number;
@@ -22,6 +23,8 @@ export default function VacanciesSection() {
   const { t, locale } = useI18n();
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
+  const [applyVacancy, setApplyVacancy] = useState<Vacancy | null>(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
     api
@@ -126,8 +129,11 @@ export default function VacanciesSection() {
                   )}
 
                   {/* Button */}
-                  <Link
-                    href={`/${locale}/contact#contact`}
+                  <button
+                    onClick={() => {
+                      setApplyVacancy(job);
+                      setDialogOpen(true);
+                    }}
                     className={`inline-flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold text-sm transition-all duration-200 ${
                       job.isUrgent
                         ? "bg-primary hover:bg-primary-light text-white"
@@ -136,7 +142,7 @@ export default function VacanciesSection() {
                   >
                     {t.vacancies.applyNow}
                     <ChevronRight className="w-4 h-4" />
-                  </Link>
+                  </button>
                 </div>
               </div>
             ))}
@@ -164,6 +170,13 @@ export default function VacanciesSection() {
           </Link>
         </div>
       </div>
+
+      <VacancyApplyDialog
+        vacancy={applyVacancy}
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+        translations={t.vacancies.applyForm}
+      />
     </section>
   );
 }
