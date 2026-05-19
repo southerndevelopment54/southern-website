@@ -142,7 +142,7 @@ export default function EditVacancyPage() {
       toast({ title: "錯誤", description: "請填寫所有必填欄位", variant: "destructive" });
       return;
     }
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Hong_Kong" });
     if (form.startDate <= today) {
       toast({ title: "錯誤", description: "開始日期必須晚於今天", variant: "destructive" });
       return;
@@ -181,8 +181,8 @@ export default function EditVacancyPage() {
       });
       toast({ title: "職位空缺已更新" });
       router.push("/admin/vacancies");
-    } catch {
-      toast({ title: "錯誤", description: "更新失敗", variant: "destructive" });
+    } catch (err: any) {
+      toast({ title: "錯誤", description: err?.response?.data?.message || "更新失敗", variant: "destructive" });
     }
   };
 

@@ -80,7 +80,8 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
         message: "",
       });
     } catch (err) {
-      const e = err as { response?: { status?: number } };
+      const e = err as { response?: { status?: number; data?: { message?: string } } };
+      const backendMsg = e.response?.data?.message;
       if (e.response?.status === 429) {
         toast({
           title: "提交過於頻繁",
@@ -90,7 +91,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
       } else {
         toast({
           title: "提交失敗",
-          description: "請稍後再試。",
+          description: backendMsg || "請稍後再試。",
           variant: "destructive",
         });
       }

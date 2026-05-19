@@ -109,11 +109,13 @@ export default function NewVacancyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log("[Vacancy New] handleSubmit called", form);
     if (!form.title || !form.guardTypeId || !form.districtId || !form.startDate || !form.contactPhone || !form.contactEmail || !form.expiresAt) {
+      console.log("[Vacancy New] validation failed: missing required fields");
       toast({ title: "錯誤", description: "請填寫所有必填欄位", variant: "destructive" });
       return;
     }
-    const today = new Date().toISOString().split("T")[0];
+    const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Hong_Kong" });
     if (form.startDate <= today) {
       toast({ title: "錯誤", description: "開始日期必須晚於今天", variant: "destructive" });
       return;
@@ -129,31 +131,36 @@ export default function NewVacancyPage() {
 
     const requirementsArray = form.requirements.map((s) => s.trim()).filter((s) => s.length > 0);
 
+    const payload = {
+      title: form.title,
+      guardTypeId: Number(form.guardTypeId),
+      districtId: form.districtId === "0" ? null : Number(form.districtId),
+      locationDescription: form.locationDescription,
+      startDate: form.startDate,
+      salaryMin: form.salaryMin || null,
+      salaryMax: form.salaryMax || null,
+      salaryPeriod: form.salaryPeriod,
+      employmentType: form.employmentType,
+      requirements: requirementsArray,
+      description: form.description,
+      contactPhone: form.contactPhone,
+      contactEmail: form.contactEmail,
+      isActive: form.isActive,
+      isFeatured: form.isFeatured,
+      isUrgent: form.isUrgent,
+      expiresAt: form.expiresAt,
+      imageKey: form.imageKey,
+    };
+    console.log("[Vacancy New] submitting payload:", payload);
+
     try {
-      await api.post("/admin/vacancies", {
-        title: form.title,
-        guardTypeId: Number(form.guardTypeId),
-        districtId: form.districtId === "0" ? null : Number(form.districtId),
-        locationDescription: form.locationDescription,
-        startDate: form.startDate,
-        salaryMin: form.salaryMin || null,
-        salaryMax: form.salaryMax || null,
-        salaryPeriod: form.salaryPeriod,
-        employmentType: form.employmentType,
-        requirements: requirementsArray,
-        description: form.description,
-        contactPhone: form.contactPhone,
-        contactEmail: form.contactEmail,
-        isActive: form.isActive,
-        isFeatured: form.isFeatured,
-        isUrgent: form.isUrgent,
-        expiresAt: form.expiresAt,
-        imageKey: form.imageKey,
-      });
+      const res = await api.post("/admin/vacancies", payload);
+      console.log("[Vacancy New] success:", res.data);
       toast({ title: "職位空缺已建立" });
       router.push("/admin/vacancies");
-    } catch {
-      toast({ title: "錯誤", description: "建立失敗", variant: "destructive" });
+    } catch (err: any) {
+      console.error("[Vacancy New] error:", err);
+      toast({ title: "錯誤", description: err?.response?.data?.message || "建立失敗", variant: "destructive" });
     }
   };
 

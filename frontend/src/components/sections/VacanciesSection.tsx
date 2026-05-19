@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { MapPin, Clock, DollarSign, ChevronRight, ShieldCheck } from "lucide-react";
+import Link from "next/link";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 
@@ -18,7 +19,7 @@ interface Vacancy {
 }
 
 export default function VacanciesSection() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -125,8 +126,8 @@ export default function VacanciesSection() {
                   )}
 
                   {/* Button */}
-                  <a
-                    href="#contact"
+                  <Link
+                    href={`/${locale}/contact#contact`}
                     className={`inline-flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold text-sm transition-all duration-200 ${
                       job.isUrgent
                         ? "bg-primary hover:bg-primary-light text-white"
@@ -135,7 +136,7 @@ export default function VacanciesSection() {
                   >
                     {t.vacancies.applyNow}
                     <ChevronRight className="w-4 h-4" />
-                  </a>
+                  </Link>
                 </div>
               </div>
             ))}
@@ -154,13 +155,13 @@ export default function VacanciesSection() {
           <p className="text-gray-500 text-sm mb-4">
             {t.vacancies.noSuitable}
           </p>
-          <a
-            href="#contact"
+          <Link
+            href={`/${locale}/contact#contact`}
             className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
           >
             {t.vacancies.contactUs}
             <ChevronRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
       </div>
     </section>

@@ -5,6 +5,7 @@ import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/auth";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { Toaster } from "@/components/ui/toaster";
 
 export default function AdminLayout({
   children,
@@ -76,6 +77,7 @@ export default function AdminLayout({
         </header>
       )}
       <main className="p-6 max-w-7xl mx-auto">{children}</main>
+      <Toaster />
     </div>
   );
 }
