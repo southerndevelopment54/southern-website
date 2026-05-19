@@ -65,6 +65,10 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!form.name.trim() || !form.phone.trim() || !form.email.trim() || !form.company.trim() || !form.serviceType.trim() || !form.message.trim()) {
+      toast({ title: "錯誤", description: "請填寫所有欄位", variant: "destructive" });
+      return;
+    }
     try {
       await api.post("/contact", form);
       toast({
@@ -175,12 +179,13 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
                 {/* Company */}
                 <div className="space-y-2">
-                  <Label htmlFor="company">{t.contact.company}</Label>
+                  <Label htmlFor="company">{t.contact.company} <span className="text-red-500">*</span></Label>
                   <Input
                     id="company"
                     value={form.company}
                     onChange={(e) => handleChange("company", e.target.value)}
                     placeholder={t.contact.companyPlaceholder}
+                    required
                   />
                 </div>
 
@@ -213,7 +218,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
               {/* Service Type */}
               <div className="space-y-2">
-                <Label htmlFor="serviceType">{t.contact.serviceType}</Label>
+                <Label htmlFor="serviceType">{t.contact.serviceType} <span className="text-red-500">*</span></Label>
                 <Select
                   value={form.serviceType}
                   onValueChange={(value) => handleChange("serviceType", value)}

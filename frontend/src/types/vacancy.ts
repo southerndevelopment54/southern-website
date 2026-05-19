@@ -23,7 +23,6 @@ export interface Vacancy {
   salaryPeriod: string;
   employmentType: string;
   jobType: string;
-  workingHours: string;
   requirements: string[];
   description: string;
   contactPhone: string;

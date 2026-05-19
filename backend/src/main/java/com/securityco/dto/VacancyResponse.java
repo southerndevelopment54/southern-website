@@ -22,7 +22,6 @@ public class VacancyResponse {
     private String salaryPeriod;
     private String employmentType;
     private String jobType;
-    private String workingHours;
     private List<String> requirements;
     private String description;
     private String contactPhone;

@@ -231,9 +231,6 @@ export default function AdminSubmissionsPage() {
                         <InfoRow icon={Calendar} label="開始日期">
                           {vacancyDetails.startDate || "—"}
                         </InfoRow>
-                        <InfoRow icon={Clock} label="工作時間">
-                          {vacancyDetails.workingHours || "—"}
-                        </InfoRow>
                       </div>
 
                       {vacancyDetails.requirements && vacancyDetails.requirements.length > 0 && (

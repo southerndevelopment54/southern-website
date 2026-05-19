@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/hooks/use-toast";
 import Link from "next/link";
-import { compressImage } from "@/lib/image";
+
 
 interface VacancyForm {
   title: string;
@@ -30,7 +30,6 @@ interface VacancyForm {
   isFeatured: boolean;
   isUrgent: boolean;
   expiresAt: string;
-  imageKey: string;
 }
 
 const SALARY_MAX = 100000;
@@ -62,29 +61,12 @@ export default function NewVacancyPage() {
     isFeatured: false,
     isUrgent: false,
     expiresAt: "",
-    imageKey: "",
   });
 
   useEffect(() => {
     api.get("/vacancies/districts").then((res) => setDistricts(res.data));
     api.get("/vacancies/guard-types").then((res) => setGuardTypes(res.data));
   }, []);
-
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    try {
-      const compressed = await compressImage(file);
-      const formData = new FormData();
-      formData.append("file", compressed);
-      const res = await api.post("/admin/upload", formData);
-      setForm({ ...form, imageKey: res.data.imageKey });
-      toast({ title: "圖片上傳成功" });
-    } catch (err) {
-      const e = err as { response?: { data?: { error?: string } } };
-      toast({ title: "圖片上傳失敗", description: e.response?.data?.error || "請稍後再試", variant: "destructive" });
-    }
-  };
 
   const addRequirement = () => {
     setForm({ ...form, requirements: [...form.requirements, ""] });
@@ -149,7 +131,6 @@ export default function NewVacancyPage() {
       isFeatured: form.isFeatured,
       isUrgent: form.isUrgent,
       expiresAt: form.expiresAt,
-      imageKey: form.imageKey,
     };
     console.log("[Vacancy New] submitting payload:", payload);
 
@@ -158,9 +139,10 @@ export default function NewVacancyPage() {
       console.log("[Vacancy New] success:", res.data);
       toast({ title: "職位空缺已建立" });
       router.push("/admin/vacancies");
-    } catch (err: any) {
+    } catch (err) {
+      const e = err as { response?: { data?: { message?: string } } };
       console.error("[Vacancy New] error:", err);
-      toast({ title: "錯誤", description: err?.response?.data?.message || "建立失敗", variant: "destructive" });
+      toast({ title: "錯誤", description: e.response?.data?.message || "建立失敗", variant: "destructive" });
     }
   };
 
@@ -328,11 +310,6 @@ export default function NewVacancyPage() {
         <div>
           <h2 className="text-sm font-semibold text-slate-500 mb-3">設定</h2>
           <div className="space-y-3">
-            <div>
-              <Label>職位圖片</Label>
-              <Input type="file" accept="image/*" onChange={handleImageUpload} />
-              {form.imageKey && <p className="text-sm text-muted-foreground mt-1">已上傳: {form.imageKey}</p>}
-            </div>
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-2">
                 <input type="checkbox" id="active" checked={form.isActive} onChange={(e) => setForm({ ...form, isActive: e.target.checked })} />

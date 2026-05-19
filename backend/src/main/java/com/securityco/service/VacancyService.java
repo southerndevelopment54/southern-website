@@ -175,7 +175,6 @@ public class VacancyService {
         response.setSalaryPeriod(vacancy.getSalaryPeriod());
         response.setEmploymentType(vacancy.getEmploymentType());
         response.setJobType(vacancy.getJobType());
-        response.setWorkingHours(vacancy.getWorkingHours());
         response.setRequirements(vacancy.getRequirements());
         response.setDescription(vacancy.getDescription());
         response.setContactPhone(vacancy.getContactPhone());

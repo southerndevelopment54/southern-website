@@ -63,9 +63,6 @@ public class Vacancy {
     @Column(name = "job_type", length = 50)
     private String jobType;
 
-    @Column(name = "working_hours", length = 100)
-    private String workingHours;
-
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "requirements")
     private List<String> requirements;
