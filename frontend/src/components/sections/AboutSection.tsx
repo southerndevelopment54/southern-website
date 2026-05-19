@@ -34,7 +34,7 @@ export default function AboutSection() {
           {/* Right - Content */}
           <div>
             <div className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-sm font-semibold rounded-full mb-6">
-              {locale === "zh" ? "關於南方保安" : "About Southern Security"}
+              {locale === "zh" ? "關於南方" : "About Southern"}
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-dark mb-6 leading-tight">
               {t.about.title}
@@ -43,7 +43,7 @@ export default function AboutSection() {
               <p>
                 {locale === "zh"
                   ? "本公司於一九九七年成立迄今已逾二十載，所有管理階層均為資深保安從業員。現僱用約500名保安人員，為尊貴客戶在商業大廈、屋苑、學校、廠房、商場、物流倉庫、建築地盤及展覽盛事場地提供專業警衛服務。"
-                  : "Southern was established in 1997 in Hong Kong, with its Headquarters at New Treasure Centre, Sanpokong, Kowloon. We specialize in professional Security Services including Security Guarding, Gurkha Guarding, Key Holding, Mobile Patrolling, Close Protection, Body Guard, and Car Pick-up & Transit. At present, we have about 500 security personnel posted at various locations including high-class residential buildings, commercial complexes, schools, factories, shopping malls, logistics warehouses, construction sites, and event venues."}
+                  : "Southern was established in 1997 in Hong Kong, with its Headquarters at New Treasure Centre, Sanpokong, Kowloon. We specialize in professional security services including guarding, Gurkha guarding, key holding, mobile patrolling, close protection, body guard, and car pick-up & transit. At present, we have about 500 personnel posted at various locations including high-class residential buildings, commercial complexes, schools, factories, shopping malls, logistics warehouses, construction sites, and event venues."}
               </p>
               <p>
                 {locale === "zh"

@@ -165,7 +165,7 @@ export const translations = {
   },
   en: {
     header: {
-      companyName: "Southern Security Services Ltd.",
+      companyName: "Southern Services Ltd.",
       nav: {
         about: "About Us",
         services: "Services",
@@ -219,7 +219,7 @@ export const translations = {
     whyChooseUs: {
       badge: "Why Choose Us",
       title: "Our Advantages",
-      description: "Southern Security is renowned for professionalism, reliability, and innovation, committed to delivering the finest security service experience.",
+      description: "Southern is renowned for professionalism, reliability, and innovation, committed to delivering the finest security service experience.",
       features: [
         "Licensed Professional Security Team",
         "24-Hour Control Centre Support",
@@ -236,7 +236,7 @@ export const translations = {
     clientShowcase: {
       badge: "Our Track Record",
       title: "Clients & Partner Projects",
-      description: "Over the years, Southern Security has provided professional security services for numerous renowned enterprises and landmark projects, earning wide recognition in the industry.",
+      description: "Over the years, Southern has provided professional security services for numerous renowned enterprises and landmark projects, earning wide recognition in the industry.",
       tabClients: "Partner Clients",
       tabSites: "Partner Projects",
       tabAll: "All",
@@ -248,7 +248,7 @@ export const translations = {
     careers: {
       badge: "Join Us",
       title: "Build the Future With Us",
-      description: "Southern Security values talent and believes every employee is the company's most important asset. Join us for professional training and excellent career advancement opportunities.",
+      description: "Southern values talent and believes every employee is the company's most important asset. Join us for professional training and excellent career advancement opportunities.",
       benefitsTitle: "Employee Benefits",
       benefits: [
         "Competitive Remuneration",
@@ -260,7 +260,7 @@ export const translations = {
     },
     vacancies: {
       badge: "Job Vacancies",
-      title: "Join the Southern Security Team",
+      title: "Join the Southern Team",
       description: "We are recruiting professionals aspiring to grow in the security industry. Offering competitive remuneration, comprehensive training, and excellent promotion opportunities.",
       requirements: "Requirements:",
       applyNow: "Apply Now",

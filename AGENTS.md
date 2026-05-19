@@ -1,6 +1,6 @@
-# Southern Security Services — Agent Guide
+# Southern Services — Agent Guide
 
-> A full-stack web application for a Hong Kong security company (南方保安服務). This is a monorepo containing a Spring Boot REST API and a Next.js frontend application.
+> A full-stack web application for a Hong Kong security company (南方警衛及管業). This is a monorepo containing a Spring Boot REST API and a Next.js frontend application.
 
 ## Project Overview
 
