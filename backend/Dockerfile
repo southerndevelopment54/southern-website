@@ -2,8 +2,13 @@
 FROM maven:3.9-eclipse-temurin-21-alpine AS builder
 WORKDIR /app
 COPY pom.xml .
+# Download dependencies into a cached layer so rebuilds are faster
+# and so we can reuse them with --mount=type=cache
+RUN --mount=type=cache,target=/root/.m2 \
+    mvn dependency:go-offline -B || true
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 \
+    mvn clean package -DskipTests
 
 # Run stage
 FROM eclipse-temurin:21-jre-alpine
