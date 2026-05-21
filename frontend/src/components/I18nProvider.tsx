@@ -29,7 +29,12 @@ export function I18nProvider({
   const [locale, setLocaleState] = useState<Locale>(initialLocale);
 
   useEffect(() => {
-    document.documentElement.lang = locale === "zh" ? "zh-Hant" : "en";
+    const langMap: Record<string, string> = {
+      zh: "zh-Hant",
+      cn: "zh-Hans",
+      en: "en",
+    };
+    document.documentElement.lang = langMap[locale] || "en";
   }, [locale]);
 
   const setLocale = (newLocale: Locale) => {

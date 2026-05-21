@@ -8,7 +8,7 @@ export default function LanguageSwitcher() {
   const router = useRouter();
   const pathname = usePathname();
 
-  const switchLocale = (newLocale: "zh" | "en") => {
+  const switchLocale = (newLocale: "zh" | "en" | "cn") => {
     if (newLocale === locale) return;
 
     setLocale(newLocale);
@@ -27,9 +27,21 @@ export default function LanguageSwitcher() {
             ? "text-white bg-primary"
             : "text-dark/60 hover:text-dark"
         }`}
-        aria-label="Switch to Chinese"
+        aria-label="Switch to Traditional Chinese"
       >
-        中文
+        繁
+      </button>
+      <span className="text-dark/20 text-xs">|</span>
+      <button
+        onClick={() => switchLocale("cn")}
+        className={`px-2 py-1 text-sm font-medium transition-colors duration-200 rounded ${
+          locale === "cn"
+            ? "text-white bg-primary"
+            : "text-dark/60 hover:text-dark"
+        }`}
+        aria-label="Switch to Simplified Chinese"
+      >
+        简
       </button>
       <span className="text-dark/20 text-xs">|</span>
       <button
