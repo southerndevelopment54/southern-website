@@ -5,6 +5,7 @@ export const translations = {
     header: {
       companyName: "南方(警衛及管業)有限公司",
       nav: {
+        home: "首頁",
         about: "關於我們",
         services: "服務範圍",
         clients: "客戶及項目",
@@ -220,6 +221,7 @@ export const translations = {
     header: {
       companyName: "Southern Services Ltd.",
       nav: {
+        home: "Home",
         about: "About Us",
         services: "Services",
         clients: "Clients & Projects",

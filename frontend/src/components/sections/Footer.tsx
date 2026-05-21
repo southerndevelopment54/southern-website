@@ -14,7 +14,7 @@ export default function Footer() {
   }, []);
 
   const companyLinks = [
-    { label: t.header.nav.about, href: `/${locale}/` },
+    { label: t.header.nav.about, href: `/${locale}/about` },
     { label: t.header.nav.services, href: `/${locale}/services` },
     { label: t.header.nav.clients, href: `/${locale}/clients` },
     { label: t.header.nav.careers, href: `/${locale}/careers` },
