@@ -266,7 +266,7 @@ export default function VacancyApplyDialog({
                 <SelectTrigger id="education">
                   <SelectValue placeholder={t.educationPlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="max-h-[200px] overflow-y-auto">
                   {educationLevels.map((level) => (
                     <SelectItem key={level.id} value={String(level.id)}>
                       {level.levelName}

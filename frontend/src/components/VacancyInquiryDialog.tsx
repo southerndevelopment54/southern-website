@@ -268,7 +268,7 @@ export default function VacancyInquiryDialog({
                 <SelectTrigger id="inq-education">
                   <SelectValue placeholder={t.educationPlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="max-h-[200px] overflow-y-auto">
                   {educationLevels.map((level) => (
                     <SelectItem key={level.id} value={String(level.id)}>
                       {level.levelName}
@@ -314,7 +314,7 @@ export default function VacancyInquiryDialog({
                 <SelectTrigger id="inq-serviceType">
                   <SelectValue placeholder={t.servicePlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="max-h-[200px] overflow-y-auto">
                   {SERVICE_TYPES_ZH.map((s) => (
                     <SelectItem key={s.value} value={s.value}>
                       {s.label}
@@ -332,7 +332,7 @@ export default function VacancyInquiryDialog({
                 <SelectTrigger id="inq-district">
                   <SelectValue placeholder={t.districtPlaceholder} />
                 </SelectTrigger>
-                <SelectContent>
+                <SelectContent position="popper" className="max-h-[200px] overflow-y-auto">
                   {districts.map((d) => (
                     <SelectItem key={d.id} value={d.districtName}>
                       {d.districtName}
