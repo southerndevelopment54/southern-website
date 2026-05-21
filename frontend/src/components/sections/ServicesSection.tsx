@@ -18,7 +18,7 @@ const images = [
 
 // Which service indices are clickable and where they link to
 const clickableLinks: Record<number, string> = {
-  0: "commercial", // 商業大廈保安 → 商場大廈
+  0: "commercial", // 商業大廈保安 → 商廈/商場
   1: "residential", // 住宅保安服務 → 住宅
 };
 

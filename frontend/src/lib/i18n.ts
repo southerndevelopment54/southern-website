@@ -67,7 +67,7 @@ export const translations = {
       tabSites: "合作項目",
       tabAll: "全部",
       tabKey: "重點項目",
-      tabCommercial: "商場大廈",
+      tabCommercial: "商廈/商場",
       tabResidential: "住宅",
       tabOthers: "其他",
     },

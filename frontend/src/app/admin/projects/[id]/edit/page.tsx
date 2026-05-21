@@ -124,7 +124,7 @@ export default function EditProjectPage() {
           <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
             <SelectTrigger><SelectValue /></SelectTrigger>
             <SelectContent>
-              <SelectItem value="commercial">商場大廈</SelectItem>
+              <SelectItem value="commercial">商廈/商場</SelectItem>
               <SelectItem value="residential">住宅</SelectItem>
               <SelectItem value="other">其他</SelectItem>
             </SelectContent>

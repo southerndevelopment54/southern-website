@@ -16,7 +16,7 @@ interface TierLimit {
 
 const categoryLabel = (c: string) => {
   switch (c) {
-    case "commercial": return "商場大廈";
+    case "commercial": return "商廈/商場";
     case "residential": return "住宅";
     case "other": return "其他";
     default: return c;

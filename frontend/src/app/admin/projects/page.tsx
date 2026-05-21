@@ -30,7 +30,7 @@ interface CategoryConfig {
 }
 
 const CATEGORIES: CategoryConfig[] = [
-  { key: "commercial", label: "商場大廈", badgeColor: "bg-blue-50 text-blue-700 border-blue-200", dotColor: "bg-blue-500" },
+  { key: "commercial", label: "商廈/商場", badgeColor: "bg-blue-50 text-blue-700 border-blue-200", dotColor: "bg-blue-500" },
   { key: "residential", label: "住宅", badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200", dotColor: "bg-emerald-500" },
   { key: "other", label: "其他", badgeColor: "bg-indigo-50 text-indigo-700 border-indigo-200", dotColor: "bg-indigo-500" },
 ];

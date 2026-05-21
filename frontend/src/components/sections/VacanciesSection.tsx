@@ -50,7 +50,7 @@ export default function VacanciesSection() {
   };
 
   return (
-    <section className="py-20 md:py-28 bg-white">
+    <section id="vacancies" className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-16">
@@ -130,6 +130,7 @@ export default function VacanciesSection() {
 
                   {/* Button */}
                   <button
+                    type="button"
                     onClick={() => {
                       setApplyVacancy(job);
                       setDialogOpen(true);

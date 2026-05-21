@@ -34,13 +34,19 @@ export default function CareersSection() {
                 ))}
               </div>
 
-              <a
-                href={`/${locale}/careers`}
+              <button
+                type="button"
+                onClick={() => {
+                  const el = document.getElementById("vacancies");
+                  if (el) {
+                    el.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }
+                }}
                 className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white px-8 py-3.5 rounded font-semibold transition-colors duration-200 w-fit"
               >
                 {t.careers.cta}
                 <ArrowRight className="w-4 h-4" />
-              </a>
+              </button>
             </div>
 
             {/* Right - Image */}
