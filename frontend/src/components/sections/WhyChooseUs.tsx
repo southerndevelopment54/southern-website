@@ -1,10 +1,11 @@
 "use client";
 
 import { Check } from "lucide-react";
+import Link from "next/link";
 import { useI18n } from "@/components/I18nProvider";
 
 export default function WhyChooseUs() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
 
   return (
     <section className="py-20 md:py-28 bg-white">
@@ -47,12 +48,12 @@ export default function WhyChooseUs() {
               ))}
             </ul>
 
-            <a
-              href="#contact"
+            <Link
+              href={`/${locale}/contact`}
               className="inline-flex items-center gap-2 bg-primary hover:bg-primary-light text-white px-8 py-3.5 rounded font-semibold transition-colors duration-200"
             >
               {t.header.nav.contact}
-            </a>
+            </Link>
           </div>
         </div>
       </div>

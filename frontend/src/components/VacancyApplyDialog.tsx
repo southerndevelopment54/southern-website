@@ -135,6 +135,14 @@ export default function VacancyApplyDialog({
       });
       return;
     }
+    if (!form.licenseNumber.trim()) {
+      toast({
+        title: t.submitFailed,
+        description: t.licenseNumberRequired || "請輸入牌照號碼。",
+        variant: "destructive",
+      });
+      return;
+    }
 
     setSubmitting(true);
     try {
@@ -280,25 +288,17 @@ export default function VacancyApplyDialog({
           </div>
 
           {/* Security License */}
-          <div className="space-y-2">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                className="h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary"
-                checked={form.hasSecurityLicense}
-                onChange={(e) => handleChange("hasSecurityLicense", e.target.checked)}
-              />
-              <span className="text-sm font-medium">{t.hasSecurityLicense}</span>
-            </label>
-            {form.hasSecurityLicense && (
-              <div className="pl-6">
-                <Input
-                  value={form.licenseNumber}
-                  onChange={(e) => handleChange("licenseNumber", e.target.value)}
-                  placeholder={t.licenseNumberPlaceholder}
-                />
-              </div>
-            )}
+          <div className="space-y-1.5">
+            <Label htmlFor="licenseNumber">
+              {t.licenseNumber} <span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="licenseNumber"
+              value={form.licenseNumber}
+              onChange={(e) => handleChange("licenseNumber", e.target.value)}
+              placeholder={t.licenseNumberPlaceholder}
+              required
+            />
           </div>
 
           {/* Message */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { Shield, Award, Users, Clock } from "lucide-react";
+import Link from "next/link";
 import { useI18n } from "@/components/I18nProvider";
 
 export default function AboutSection() {
@@ -51,12 +52,12 @@ export default function AboutSection() {
                   : "All security personnel employed receive stringent trainings from government-recognized institutions and hold valid training certificates and security permits. Our Control Room operates 24 hours daily with senior officers monitoring all posts. We are committed to being our clients' most trusted long-term partner through the most professional service at the most reasonable prices."}
               </p>
             </div>
-            <a
-              href="#contact"
+            <Link
+              href={`/${locale}/contact`}
               className="inline-flex items-center gap-2 bg-dark hover:bg-dark-gray text-white px-8 py-3.5 rounded font-semibold transition-colors duration-200"
             >
               {t.header.nav.contact}
-            </a>
+            </Link>
           </div>
         </div>
 
