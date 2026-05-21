@@ -13,28 +13,26 @@ export default function Footer() {
     setYear(new Date().getFullYear());
   }, []);
 
-  const footerLinks = {
-    [t.footer.companyInfo]: [
-      { label: t.header.nav.about, href: `/${locale}/` },
-      { label: t.header.nav.services, href: `/${locale}/services` },
-      { label: t.header.nav.careers, href: `/${locale}/careers` },
-      { label: t.header.nav.contact, href: `/${locale}/contact` },
-    ],
-    [t.footer.serviceTypes]: [
-      { label: t.services.items[0]?.title ?? "", href: `/${locale}/#services` },
-      { label: t.services.items[1]?.title ?? "", href: `/${locale}/#services` },
-      { label: t.services.items[2]?.title ?? "", href: `/${locale}/#services` },
-      { label: t.services.items[3]?.title ?? "", href: `/${locale}/#services` },
-    ],
-  };
+  const companyLinks = [
+    { label: t.header.nav.about, href: `/${locale}/` },
+    { label: t.header.nav.services, href: `/${locale}/services` },
+    { label: t.header.nav.clients, href: `/${locale}/clients` },
+    { label: t.header.nav.careers, href: `/${locale}/careers` },
+    { label: t.header.nav.contact, href: `/${locale}/contact` },
+  ];
+
+  const serviceLinks = t.services.items.map((item) => ({
+    label: item.title,
+    href: `/${locale}/services`,
+  }));
 
   return (
     <footer className="bg-dark text-white">
       {/* Main Footer */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-12">
+        <div className="flex flex-col lg:flex-row lg:justify-between gap-8 lg:gap-3">
           {/* Company Info */}
-          <div className="lg:col-span-1">
+          <div className="lg:max-w-[260px]">
             <div className="flex items-center gap-3 mb-6">
               <Image
                 src="/white-ssl-logo-transparent-bg.png"
@@ -64,27 +62,42 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
-              <h3 className="font-semibold text-white mb-4">{title}</h3>
-              <ul className="space-y-3">
-                {links.map((link) => (
-                  <li key={link.label}>
-                    <a
-                      href={link.href}
-                      className="text-sm text-white/60 hover:text-primary transition-colors"
-                    >
-                      {link.label}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Company Links */}
+          <div className="lg:max-w-[140px]">
+            <h3 className="font-semibold text-white mb-4">{t.footer.companyInfo}</h3>
+            <ul className="space-y-3">
+              {companyLinks.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-white/60 hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Service Types */}
+          <div className="lg:max-w-[280px]">
+            <h3 className="font-semibold text-white mb-4">{t.footer.serviceTypes}</h3>
+            <ul className="grid grid-cols-2 gap-x-4 gap-y-2">
+              {serviceLinks.map((link) => (
+                <li key={link.label}>
+                  <a
+                    href={link.href}
+                    className="text-sm text-white/60 hover:text-primary transition-colors"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* License Info */}
-          <div>
+          <div className="lg:max-w-[220px]">
             <h3 className="font-semibold text-white mb-4">{t.footer.licenseTitle}</h3>
             <div className="bg-white/5 rounded-lg p-4 border border-white/10">
               <p className="text-sm text-white/60 leading-relaxed">
