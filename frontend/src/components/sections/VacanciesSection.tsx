@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 import VacancyApplyDialog from "@/components/VacancyApplyDialog";
+import VacancyInquiryDialog from "@/components/VacancyInquiryDialog";
 
 interface Vacancy {
   id: number;
@@ -25,6 +26,7 @@ export default function VacanciesSection() {
   const [loading, setLoading] = useState(true);
   const [applyVacancy, setApplyVacancy] = useState<Vacancy | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   useEffect(() => {
     api
@@ -162,13 +164,14 @@ export default function VacanciesSection() {
           <p className="text-gray-500 text-sm mb-4">
             {t.vacancies.noSuitable}
           </p>
-          <Link
-            href={`/${locale}/contact#contact`}
+          <button
+            type="button"
+            onClick={() => setInquiryOpen(true)}
             className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
           >
             {t.vacancies.contactUs}
             <ChevronRight className="w-4 h-4" />
-          </Link>
+          </button>
         </div>
       </div>
 
@@ -177,6 +180,11 @@ export default function VacanciesSection() {
         open={dialogOpen}
         onOpenChange={setDialogOpen}
         translations={t.vacancies.applyForm}
+      />
+      <VacancyInquiryDialog
+        open={inquiryOpen}
+        onOpenChange={setInquiryOpen}
+        translations={t.vacancies.contactUsInquiry}
       />
     </section>
   );

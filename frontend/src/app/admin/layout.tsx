@@ -50,6 +50,7 @@ export default function AdminLayout({
                 { href: "/admin/vacancies", label: "職位空缺" },
                 { href: "/admin/submissions", label: "申請紀錄" },
                 { href: "/admin/inquiries", label: "服務查詢" },
+                { href: "/admin/vacancy-inquiries", label: "職位查詢" },
                 { href: "/admin/clients", label: "合作客戶" },
                 { href: "/admin/projects", label: "合作項目" },
                 { href: "/admin/tier-limits", label: "精選上限" },

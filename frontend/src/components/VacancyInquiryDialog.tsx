@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Send } from "lucide-react";
+import { Send, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { api } from "@/lib/api";
 import {
@@ -23,16 +23,10 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-interface Vacancy {
+interface District {
   id: number;
-  title: string;
-  salaryDisplay: string;
-  jobType: string;
-  district: { districtName: string } | null;
-  locationDescription: string;
-  requirements: string[];
-  isUrgent: boolean;
-  isFeatured: boolean;
+  districtName: string;
+  region: string;
 }
 
 interface EducationLevel {
@@ -40,25 +34,27 @@ interface EducationLevel {
   levelName: string;
 }
 
-interface VacancyApplyDialogProps {
-  vacancy: Vacancy | null;
+interface VacancyInquiryDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   translations: {
     title: string;
     subtitle: string;
-    position: string;
     firstName: string;
     lastName: string;
     phone: string;
+    phonePlaceholder: string;
     email: string;
+    emailPlaceholder: string;
     education: string;
     educationPlaceholder: string;
     yearsOfExperience: string;
-    hasSecurityLicense: string;
     licenseNumber: string;
     licenseNumberPlaceholder: string;
-    licenseNumberRequired: string;
+    serviceType: string;
+    servicePlaceholder: string;
+    districtPreference: string;
+    districtPlaceholder: string;
     message: string;
     messagePlaceholder: string;
     submit: string;
@@ -71,30 +67,40 @@ interface VacancyApplyDialogProps {
   };
 }
 
-export default function VacancyApplyDialog({
-  vacancy,
+const SERVICE_TYPES_ZH = [
+  { value: "住宅", label: "住宅" },
+  { value: "商廈/商場", label: "商廈/商場" },
+  { value: "其他", label: "其他" },
+];
+
+export default function VacancyInquiryDialog({
   open,
   onOpenChange,
   translations: t,
-}: VacancyApplyDialogProps) {
+}: VacancyInquiryDialogProps) {
   const { toast } = useToast();
+  const [districts, setDistricts] = useState<District[]>([]);
   const [educationLevels, setEducationLevels] = useState<EducationLevel[]>([]);
   const [submitting, setSubmitting] = useState(false);
 
   const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    phoneNumber: "",
+    phone: "",
     email: "",
     educationLevelId: "",
     yearsOfExperience: "",
-    hasSecurityLicense: false,
     licenseNumber: "",
+    serviceType: "",
+    districtPreference: "",
     message: "",
   });
 
   useEffect(() => {
     if (open) {
+      api.get("/vacancies/districts").then((res) => {
+        setDistricts(res.data || []);
+      });
       api.get("/education-levels").then((res) => {
         setEducationLevels(res.data || []);
       });
@@ -105,12 +111,13 @@ export default function VacancyApplyDialog({
     setForm({
       firstName: "",
       lastName: "",
-      phoneNumber: "",
+      phone: "",
       email: "",
       educationLevelId: "",
       yearsOfExperience: "",
-      hasSecurityLicense: false,
       licenseNumber: "",
+      serviceType: "",
+      districtPreference: "",
       message: "",
     });
   };
@@ -120,15 +127,20 @@ export default function VacancyApplyDialog({
     onOpenChange(value);
   };
 
-  const handleChange = (field: string, value: string | boolean) => {
+  const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!vacancy) return;
 
-    if (!form.firstName.trim() || !form.lastName.trim() || !form.phoneNumber.trim()) {
+    if (
+      !form.firstName.trim() ||
+      !form.lastName.trim() ||
+      !form.phone.trim() ||
+      !form.email.trim() ||
+      !form.serviceType.trim()
+    ) {
       toast({
         title: t.submitFailed,
         description: t.fieldRequired,
@@ -136,27 +148,19 @@ export default function VacancyApplyDialog({
       });
       return;
     }
-    if (!form.licenseNumber.trim()) {
-      toast({
-        title: t.submitFailed,
-        description: t.licenseNumberRequired || "請輸入牌照號碼。",
-        variant: "destructive",
-      });
-      return;
-    }
 
     setSubmitting(true);
     try {
-      await api.post("/submissions", {
-        vacancyId: vacancy.id,
+      await api.post("/vacancy-inquiries", {
         firstName: form.firstName.trim(),
         lastName: form.lastName.trim(),
-        phoneNumber: form.phoneNumber.trim(),
-        email: form.email.trim() || undefined,
+        phone: form.phone.trim(),
+        email: form.email.trim(),
         educationLevelId: form.educationLevelId ? parseInt(form.educationLevelId) : undefined,
         yearsOfExperience: form.yearsOfExperience ? parseInt(form.yearsOfExperience) : undefined,
-        hasSecurityLicense: form.hasSecurityLicense,
-        licenseNumber: form.hasSecurityLicense ? form.licenseNumber.trim() || undefined : undefined,
+        licenseNumber: form.licenseNumber.trim() || undefined,
+        serviceType: form.serviceType,
+        districtPreference: form.districtPreference || undefined,
         message: form.message.trim() || undefined,
       });
       toast({
@@ -185,44 +189,37 @@ export default function VacancyApplyDialog({
     }
   };
 
-  if (!vacancy) return null;
-
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <DialogTitle>{t.title}</DialogTitle>
+          <DialogTitle className="flex items-center gap-2">
+            <MessageCircle className="w-5 h-5 text-primary" />
+            {t.title}
+          </DialogTitle>
           <DialogDescription>{t.subtitle}</DialogDescription>
         </DialogHeader>
 
         <form onSubmit={handleSubmit} className="space-y-4 mt-2">
-          {/* Position (read-only) */}
-          <div className="space-y-1.5">
-            <Label>{t.position}</Label>
-            <div className="text-sm font-semibold text-dark bg-slate-50 border rounded-md px-3 py-2">
-              {vacancy.title}
-            </div>
-          </div>
-
           {/* Name row */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="firstName">
+              <Label htmlFor="inq-firstName">
                 {t.firstName} <span className="text-red-500">*</span>
               </Label>
               <Input
-                id="firstName"
+                id="inq-firstName"
                 value={form.firstName}
                 onChange={(e) => handleChange("firstName", e.target.value)}
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="lastName">
+              <Label htmlFor="inq-lastName">
                 {t.lastName} <span className="text-red-500">*</span>
               </Label>
               <Input
-                id="lastName"
+                id="inq-lastName"
                 value={form.lastName}
                 onChange={(e) => handleChange("lastName", e.target.value)}
                 required
@@ -233,24 +230,29 @@ export default function VacancyApplyDialog({
           {/* Phone & Email */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="phoneNumber">
+              <Label htmlFor="inq-phone">
                 {t.phone} <span className="text-red-500">*</span>
               </Label>
               <Input
-                id="phoneNumber"
+                id="inq-phone"
                 type="tel"
-                value={form.phoneNumber}
-                onChange={(e) => handleChange("phoneNumber", e.target.value)}
+                value={form.phone}
+                onChange={(e) => handleChange("phone", e.target.value)}
+                placeholder={t.phonePlaceholder}
                 required
               />
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="email">{t.email}</Label>
+              <Label htmlFor="inq-email">
+                {t.email} <span className="text-red-500">*</span>
+              </Label>
               <Input
-                id="email"
+                id="inq-email"
                 type="email"
                 value={form.email}
                 onChange={(e) => handleChange("email", e.target.value)}
+                placeholder={t.emailPlaceholder}
+                required
               />
             </div>
           </div>
@@ -258,12 +260,12 @@ export default function VacancyApplyDialog({
           {/* Education & Experience */}
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="education">{t.education}</Label>
+              <Label htmlFor="inq-education">{t.education}</Label>
               <Select
                 value={form.educationLevelId}
                 onValueChange={(value) => handleChange("educationLevelId", value)}
               >
-                <SelectTrigger id="education">
+                <SelectTrigger id="inq-education">
                   <SelectValue placeholder={t.educationPlaceholder} />
                 </SelectTrigger>
                 <SelectContent>
@@ -276,9 +278,9 @@ export default function VacancyApplyDialog({
               </Select>
             </div>
             <div className="space-y-1.5">
-              <Label htmlFor="yearsOfExperience">{t.yearsOfExperience}</Label>
+              <Label htmlFor="inq-yearsOfExperience">{t.yearsOfExperience}</Label>
               <Input
-                id="yearsOfExperience"
+                id="inq-yearsOfExperience"
                 type="number"
                 min={0}
                 max={50}
@@ -288,29 +290,68 @@ export default function VacancyApplyDialog({
             </div>
           </div>
 
-          {/* Security License */}
+          {/* License Number */}
           <div className="space-y-1.5">
-            <Label htmlFor="licenseNumber">
-              {t.licenseNumber} <span className="text-red-500">*</span>
-            </Label>
+            <Label htmlFor="inq-licenseNumber">{t.licenseNumber}</Label>
             <Input
-              id="licenseNumber"
+              id="inq-licenseNumber"
               value={form.licenseNumber}
               onChange={(e) => handleChange("licenseNumber", e.target.value)}
               placeholder={t.licenseNumberPlaceholder}
-              required
             />
+          </div>
+
+          {/* Service Type & District */}
+          <div className="grid grid-cols-2 gap-4">
+            <div className="space-y-1.5">
+              <Label htmlFor="inq-serviceType">
+                {t.serviceType} <span className="text-red-500">*</span>
+              </Label>
+              <Select
+                value={form.serviceType}
+                onValueChange={(value) => handleChange("serviceType", value)}
+              >
+                <SelectTrigger id="inq-serviceType">
+                  <SelectValue placeholder={t.servicePlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {SERVICE_TYPES_ZH.map((s) => (
+                    <SelectItem key={s.value} value={s.value}>
+                      {s.label}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="inq-district">{t.districtPreference}</Label>
+              <Select
+                value={form.districtPreference}
+                onValueChange={(value) => handleChange("districtPreference", value)}
+              >
+                <SelectTrigger id="inq-district">
+                  <SelectValue placeholder={t.districtPlaceholder} />
+                </SelectTrigger>
+                <SelectContent>
+                  {districts.map((d) => (
+                    <SelectItem key={d.id} value={d.districtName}>
+                      {d.districtName}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
           </div>
 
           {/* Message */}
           <div className="space-y-1.5">
-            <Label htmlFor="message">{t.message}</Label>
+            <Label htmlFor="inq-message">{t.message}</Label>
             <Textarea
-              id="message"
+              id="inq-message"
               value={form.message}
               onChange={(e) => handleChange("message", e.target.value)}
               placeholder={t.messagePlaceholder}
-              rows={3}
+              rows={4}
             />
           </div>
 
