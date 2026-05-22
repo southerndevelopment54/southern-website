@@ -1,2 +1,0 @@
-ALTER TABLE guarding_sites ADD COLUMN IF NOT EXISTS name_cn VARCHAR(200);
-ALTER TABLE guarding_sites ADD COLUMN IF NOT EXISTS address_cn VARCHAR(255);

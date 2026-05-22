@@ -1,1 +1,0 @@
-ALTER TABLE clients ADD COLUMN name_en VARCHAR(200);

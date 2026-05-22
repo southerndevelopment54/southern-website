@@ -1,7 +1,0 @@
-ALTER TABLE vacancy_inquiries
-    DROP COLUMN IF EXISTS name,
-    ADD COLUMN IF NOT EXISTS first_name VARCHAR(100) NOT NULL DEFAULT '',
-    ADD COLUMN IF NOT EXISTS last_name VARCHAR(100) NOT NULL DEFAULT '',
-    ADD COLUMN IF NOT EXISTS education_level_id INTEGER REFERENCES education_levels(id),
-    ADD COLUMN IF NOT EXISTS years_of_experience INTEGER,
-    ADD COLUMN IF NOT EXISTS license_number VARCHAR(50);

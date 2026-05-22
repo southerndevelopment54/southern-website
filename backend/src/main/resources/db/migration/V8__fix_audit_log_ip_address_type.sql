@@ -1,1 +1,0 @@
-ALTER TABLE audit_log ALTER COLUMN ip_address TYPE VARCHAR(45);
