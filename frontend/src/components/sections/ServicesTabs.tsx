@@ -4,15 +4,15 @@ import { useState, useEffect } from "react";
 import { useI18n } from "@/components/I18nProvider";
 
 const serviceImages = [
-  "/images/shopping_mall.png",
-  "/images/shopping_mall.png",
-  "/images/shopping_mall.png",
-  "/images/shopping_mall.png",
-  "/images/shopping_mall.png",
-  "/images/shopping_mall.png",
+  "/images/commercial_guard_description.png",
+  "/images/security_on_residential_building.png",
+  "/images/event_indoor.png",
+  "/images/hotel_renaissance.png",
+  "/images/airport_warehouse.png",
+  "/images/personal_security_guard.png",
   "/images/CNT_alert_image.png",
-  "/images/shopping_mall.png",
-  "/images/shopping_mall.png",
+  "/images/ssl_fleet.png",
+  "/images/security_report.png",
 ];
 
 export default function ServicesTabs() {
