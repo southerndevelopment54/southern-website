@@ -14,6 +14,9 @@ public interface GuardingSiteRepository extends JpaRepository<GuardingSite, Inte
     @Query("SELECT s FROM GuardingSite s WHERE s.category = :category AND s.isActive = true ORDER BY s.isFeatured DESC, s.displayOrder ASC")
     List<GuardingSite> findActiveByCategoryOrdered(@Param("category") String category);
 
+    @Query("SELECT s FROM GuardingSite s WHERE s.category = :category AND s.district = :district AND s.isActive = true ORDER BY s.isFeatured DESC, s.displayOrder ASC")
+    List<GuardingSite> findActiveByCategoryAndDistrictOrdered(@Param("category") String category, @Param("district") String district);
+
     @Query("SELECT s FROM GuardingSite s WHERE s.isFeatured = true AND s.isActive = true ORDER BY s.displayOrder ASC")
     List<GuardingSite> findActiveFeaturedOrdered();
 

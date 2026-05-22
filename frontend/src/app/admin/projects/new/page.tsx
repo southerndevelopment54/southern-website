@@ -21,6 +21,7 @@ interface SiteForm {
   addressEn: string;
   addressCn: string;
   category: string;
+  district: string;
   isFeatured: boolean;
   displayOrder: string;
   isActive: boolean;
@@ -37,6 +38,7 @@ export default function NewProjectPage() {
     addressEn: "",
     addressCn: "",
     category: "commercial",
+    district: "",
     isFeatured: false,
     displayOrder: "1",
     isActive: true,
@@ -75,6 +77,7 @@ export default function NewProjectPage() {
         addressEn: form.addressEn || null,
         addressCn: form.addressCn || null,
         category: form.category,
+        district: form.district || null,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
         isActive: form.isActive,
@@ -118,6 +121,19 @@ export default function NewProjectPage() {
             </SelectContent>
           </Select>
         </div>
+        {form.category === "residential" && (
+          <div>
+            <Label>地區</Label>
+            <Select value={form.district} onValueChange={(v) => setForm({ ...form, district: v })}>
+              <SelectTrigger><SelectValue placeholder="請選擇地區" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="香港">香港</SelectItem>
+                <SelectItem value="九龍">九龍</SelectItem>
+                <SelectItem value="新界">新界</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
         <div className="flex items-center gap-2">
           <input type="checkbox" id="featured" checked={form.isFeatured} onChange={(e) => setForm({ ...form, isFeatured: e.target.checked })} />
           <Label htmlFor="featured">精選項目</Label>

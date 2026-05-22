@@ -1,0 +1,1 @@
+ALTER TABLE guarding_sites ADD COLUMN IF NOT EXISTS district VARCHAR(20);

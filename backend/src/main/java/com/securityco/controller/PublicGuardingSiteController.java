@@ -21,10 +21,15 @@ public class PublicGuardingSiteController {
     @GetMapping
     public ResponseEntity<?> getSites(
             @RequestParam(required = false) String category,
+            @RequestParam(required = false) String district,
             @RequestParam(required = false) Boolean featured) {
 
         if (Boolean.TRUE.equals(featured)) {
             return ResponseEntity.ok(guardingSiteService.getFeatured());
+        }
+
+        if (category != null && district != null) {
+            return ResponseEntity.ok(guardingSiteService.getByCategoryAndDistrict(category, district));
         }
 
         if (category != null) {

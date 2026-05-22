@@ -27,6 +27,9 @@ public class GuardingSiteRequest {
     @Pattern(regexp = "commercial|residential|other", message = "Category must be commercial, residential, or other")
     private String category;
 
+    @Pattern(regexp = "|香港|九龍|新界", message = "District must be 香港, 九龍, or 新界")
+    private String district;
+
     private Boolean isFeatured;
 
     private Integer displayOrder;

@@ -44,6 +44,9 @@ public class GuardingSite {
     @Column(nullable = false, length = 20)
     private String category;
 
+    @Column(length = 20)
+    private String district;
+
     @Column(name = "is_featured")
     private Boolean isFeatured;
 

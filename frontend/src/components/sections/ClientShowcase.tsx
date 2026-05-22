@@ -23,10 +23,13 @@ interface GuardingSite {
   addressEn?: string;
   addressCn?: string;
   category: string;
+  district?: string;
   isFeatured: boolean;
 }
 
 type SiteFilter = "featured" | "commercial" | "residential" | "other";
+
+const DISTRICT_ORDER = ["香港", "九龍", "新界"];
 
 export default function ClientShowcase() {
   const { t, locale } = useI18n();
@@ -94,6 +97,20 @@ export default function ClientShowcase() {
 
   const featuredSites = sites.filter((s) => s.isFeatured);
   const nonFeaturedSites = sites.filter((s) => !s.isFeatured);
+
+  const groupSitesByDistrict = (sitesList: GuardingSite[]) => {
+    const grouped: Record<string, GuardingSite[]> = {};
+    const noDistrict: GuardingSite[] = [];
+    for (const site of sitesList) {
+      if (site.district && DISTRICT_ORDER.includes(site.district)) {
+        if (!grouped[site.district]) grouped[site.district] = [];
+        grouped[site.district].push(site);
+      } else {
+        noDistrict.push(site);
+      }
+    }
+    return { grouped, noDistrict };
+  };
 
   const formatClientName = (name: string) => {
     const parts = name.split("有限公司");
@@ -247,8 +264,75 @@ export default function ClientShowcase() {
                   </div>
                 )}
 
-                {/* Category tabs — featured on top (3 col), non-featured below (4 col smaller) */}
-                {siteFilter !== "featured" && (
+                {/* Residential tab — grouped by district */}
+                {siteFilter === "residential" && (
+                  <div className="space-y-12">
+                    {(() => {
+                      const { grouped, noDistrict } = groupSitesByDistrict(sites);
+                      return (
+                        <>
+                          {DISTRICT_ORDER.map((district) => {
+                            const districtSites = grouped[district] || [];
+                            if (districtSites.length === 0) return null;
+                            const districtFeatured = districtSites.filter((s) => s.isFeatured);
+                            const districtNonFeatured = districtSites.filter((s) => !s.isFeatured);
+                            return (
+                              <div key={district}>
+                                <h3 className="text-xl font-bold text-dark mb-6 flex items-center gap-2">
+                                  <span className="w-1.5 h-6 bg-primary rounded-full" />
+                                  {district}
+                                </h3>
+                                <div className="space-y-8">
+                                  {districtFeatured.length > 0 && (
+                                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                      {districtFeatured.map((site) => renderSiteCard(site))}
+                                    </div>
+                                  )}
+                                  {districtNonFeatured.length > 0 && (
+                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                      {districtNonFeatured.map((site) => renderSiteCard(site, true))}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                            );
+                          })}
+                          {noDistrict.length > 0 && (
+                            <div>
+                              <h3 className="text-xl font-bold text-dark mb-6 flex items-center gap-2">
+                                <span className="w-1.5 h-6 bg-gray-400 rounded-full" />
+                                其他
+                              </h3>
+                              <div className="space-y-8">
+                                {(() => {
+                                  const nf = noDistrict.filter((s) => s.isFeatured);
+                                  const nnf = noDistrict.filter((s) => !s.isFeatured);
+                                  return (
+                                    <>
+                                      {nf.length > 0 && (
+                                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                          {nf.map((site) => renderSiteCard(site))}
+                                        </div>
+                                      )}
+                                      {nnf.length > 0 && (
+                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                                          {nnf.map((site) => renderSiteCard(site, true))}
+                                        </div>
+                                      )}
+                                    </>
+                                  );
+                                })()}
+                              </div>
+                            </div>
+                          )}
+                        </>
+                      );
+                    })()}
+                  </div>
+                )}
+
+                {/* Other category tabs — featured on top (3 col), non-featured below (4 col smaller) */}
+                {siteFilter !== "featured" && siteFilter !== "residential" && (
                   <div className="space-y-10">
                     {featuredSites.length > 0 && (
                       <div>

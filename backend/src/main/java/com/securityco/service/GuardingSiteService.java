@@ -67,6 +67,15 @@ public class GuardingSiteService {
     }
 
     @Transactional(readOnly = true)
+    public List<GuardingSiteResponse> getByCategoryAndDistrict(String category, String district) {
+        return guardingSiteRepository
+                .findActiveByCategoryAndDistrictOrdered(category, district)
+                .stream()
+                .map(this::toResponse)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
     public GuardingSiteResponse getById(Integer id) {
         GuardingSite site = guardingSiteRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Guarding site not found"));
@@ -88,6 +97,7 @@ public class GuardingSiteService {
         site.setAddressEn(request.getAddressEn());
         site.setAddressCn(request.getAddressCn());
         site.setCategory(request.getCategory());
+        site.setDistrict(request.getDistrict());
         site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
         site.setIsActive(request.getIsActive());
@@ -116,6 +126,7 @@ public class GuardingSiteService {
         site.setAddressEn(request.getAddressEn());
         site.setAddressCn(request.getAddressCn());
         site.setCategory(request.getCategory());
+        site.setDistrict(request.getDistrict());
         site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
         site.setIsActive(request.getIsActive());
@@ -167,6 +178,7 @@ public class GuardingSiteService {
         response.setAddressEn(site.getAddressEn());
         response.setAddressCn(site.getAddressCn());
         response.setCategory(site.getCategory());
+        response.setDistrict(site.getDistrict());
         response.setIsFeatured(site.getIsFeatured());
         response.setDisplayOrder(site.getDisplayOrder());
         response.setIsActive(site.getIsActive());
