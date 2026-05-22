@@ -152,6 +152,25 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
           </div>
         </div>
 
+        {/* Map Section */}
+        <div className="mb-20">
+          <h3 className="text-2xl md:text-3xl font-bold text-dark mb-6 text-center">
+            {t.contact.ourLocation}
+          </h3>
+          <div className="aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+            <iframe
+              src="https://maps.google.com/maps?q=22.33794902448044,114.19973059717107&t=&z=17&ie=UTF8&iwloc=&output=embed"
+              width="100%"
+              height="100%"
+              style={{ border: 0 }}
+              allowFullScreen
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              title="Office Location"
+            />
+          </div>
+        </div>
+
         {/* Bottom Section: Inquiry Form */}
         {showForm && (
         <div className="max-w-4xl mx-auto">
