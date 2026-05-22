@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronRight } from "lucide-react";
@@ -8,8 +8,9 @@ import { useI18n } from "@/components/I18nProvider";
 
 export default function HeroCarousel() {
   const { t } = useI18n();
+  const autoplayRef = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ delay: 5000, stopOnInteraction: false }),
+    autoplayRef.current,
   ]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
@@ -63,9 +64,22 @@ export default function HeroCarousel() {
   }, [emblaApi, onSelect]);
 
   const scrollTo = useCallback(
-    (index: number) => emblaApi && emblaApi.scrollTo(index),
+    (index: number) => {
+      if (!emblaApi) return;
+      emblaApi.scrollTo(index);
+      autoplayRef.current?.reset();
+    },
     [emblaApi]
   );
+
+  useEffect(() => {
+    if (!emblaApi) return;
+    const resetAutoplay = () => autoplayRef.current?.reset();
+    emblaApi.on("pointerDown", resetAutoplay);
+    return () => {
+      emblaApi.off("pointerDown", resetAutoplay);
+    };
+  }, [emblaApi]);
 
   return (
     <section className="relative mt-32">
