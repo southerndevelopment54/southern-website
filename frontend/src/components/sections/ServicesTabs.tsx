@@ -3,6 +3,18 @@
 import { useState, useEffect } from "react";
 import { useI18n } from "@/components/I18nProvider";
 
+const serviceImages = [
+  "/images/shopping_mall.png",
+  "/images/shopping_mall.png",
+  "/images/shopping_mall.png",
+  "/images/shopping_mall.png",
+  "/images/shopping_mall.png",
+  "/images/shopping_mall.png",
+  "/images/CNT_alert_image.png",
+  "/images/shopping_mall.png",
+  "/images/shopping_mall.png",
+];
+
 export default function ServicesTabs() {
   const { t } = useI18n();
   const services = t.services.items;
@@ -61,19 +73,36 @@ export default function ServicesTabs() {
                 <h2 className="text-2xl font-bold text-dark mb-4">
                   {services[activeIndex].title}
                 </h2>
-                <p className="text-gray-600 leading-relaxed text-base">
+                <p className="text-gray-600 leading-relaxed text-base whitespace-pre-line">
                   {(services[activeIndex] as unknown as { detail: string }).detail}
                 </p>
               </div>
               {/* Image */}
               <div className="md:w-2/5">
                 <img
-                  src="/images/shopping_mall.png"
+                  src={serviceImages[activeIndex]}
                   alt={services[activeIndex].title}
                   className="w-full rounded-lg object-cover"
                 />
               </div>
             </div>
+
+            {/* Reference Experience — only for Security System Services */}
+            {activeIndex === 6 && (
+              <div className="mt-12">
+                <h3 className="text-xl font-bold text-dark mb-6">
+                  {t.services.referenceExperience}
+                </h3>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {Array.from({ length: 6 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg aspect-[4/3]"
+                    />
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>
