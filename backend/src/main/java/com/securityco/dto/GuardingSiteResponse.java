@@ -10,10 +10,12 @@ public class GuardingSiteResponse {
     private Integer id;
     private String name;
     private String nameEn;
+    private String nameCn;
     private String imageKey;
     private String imageUrl;
     private String address;
     private String addressEn;
+    private String addressCn;
     private String category;
     private Boolean isFeatured;
     private Integer displayOrder;

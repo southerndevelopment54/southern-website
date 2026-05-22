@@ -12,6 +12,8 @@ public class ClientRequest {
 
     private String nameEn;
 
+    private String nameCn;
+
     private String logoKey;
 
     private Boolean isFeatured;

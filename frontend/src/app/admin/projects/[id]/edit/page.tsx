@@ -15,9 +15,11 @@ import { compressImage } from "@/lib/image";
 interface SiteForm {
   name: string;
   nameEn: string;
+  nameCn: string;
   imageKey: string;
   address: string;
   addressEn: string;
+  addressCn: string;
   category: string;
   isFeatured: boolean;
   displayOrder: string;
@@ -30,9 +32,11 @@ export default function EditProjectPage() {
   const [form, setForm] = useState<SiteForm>({
     name: "",
     nameEn: "",
+    nameCn: "",
     imageKey: "",
     address: "",
     addressEn: "",
+    addressCn: "",
     category: "commercial",
     isFeatured: false,
     displayOrder: "",
@@ -46,9 +50,11 @@ export default function EditProjectPage() {
       setForm({
         name: s.name || "",
         nameEn: s.nameEn || "",
+        nameCn: s.nameCn || "",
         imageKey: s.imageKey || "",
         address: s.address || "",
         addressEn: s.addressEn || "",
+        addressCn: s.addressCn || "",
         category: s.category || "commercial",
         isFeatured: s.isFeatured ?? false,
         displayOrder: s.displayOrder != null ? String(s.displayOrder) : "",
@@ -85,9 +91,11 @@ export default function EditProjectPage() {
       await api.put(`/admin/projects/${id}`, {
         name: form.name,
         nameEn: form.nameEn || null,
+        nameCn: form.nameCn || null,
         imageKey: form.imageKey || null,
         address: form.address || null,
         addressEn: form.addressEn || null,
+        addressCn: form.addressCn || null,
         category: form.category,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
@@ -120,6 +128,10 @@ export default function EditProjectPage() {
           <Input value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
         </div>
         <div>
+          <Label>名稱（简体中文）</Label>
+          <Input value={form.nameCn} onChange={(e) => setForm({ ...form, nameCn: e.target.value })} />
+        </div>
+        <div>
           <Label>類別</Label>
           <Select value={form.category} onValueChange={(v) => setForm({ ...form, category: v })}>
             <SelectTrigger><SelectValue /></SelectTrigger>
@@ -141,6 +153,10 @@ export default function EditProjectPage() {
         <div>
           <Label>地址（English）</Label>
           <Input value={form.addressEn} onChange={(e) => setForm({ ...form, addressEn: e.target.value })} />
+        </div>
+        <div>
+          <Label>地址（简体中文）</Label>
+          <Input value={form.addressCn} onChange={(e) => setForm({ ...form, addressCn: e.target.value })} />
         </div>
         <div>
           <Label>項目圖片</Label>

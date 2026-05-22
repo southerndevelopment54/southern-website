@@ -13,6 +13,8 @@ import SortHeader from "@/components/SortHeader";
 interface GuardingSite {
   id: number;
   name: string;
+  nameEn?: string;
+  nameCn?: string;
   imageKey: string;
   imageUrl: string;
   address: string;

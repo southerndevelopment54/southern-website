@@ -15,6 +15,7 @@ import { compressImage } from "@/lib/image";
 interface ClientForm {
   name: string;
   nameEn: string;
+  nameCn: string;
   logoKey: string;
   isFeatured: boolean;
   displayOrder: string;
@@ -28,6 +29,7 @@ export default function NewClientPage() {
   const [form, setForm] = useState<ClientForm>({
     name: "",
     nameEn: "",
+    nameCn: "",
     logoKey: "",
     isFeatured: false,
     displayOrder: "1",
@@ -68,6 +70,7 @@ export default function NewClientPage() {
       await api.post("/admin/clients", {
         name: form.name,
         nameEn: form.nameEn || null,
+        nameCn: form.nameCn || null,
         logoKey: form.logoKey || null,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
@@ -96,6 +99,10 @@ export default function NewClientPage() {
         <div>
           <Label>名稱（English）</Label>
           <Input value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
+        </div>
+        <div>
+          <Label>名稱（简体中文）</Label>
+          <Input value={form.nameCn} onChange={(e) => setForm({ ...form, nameCn: e.target.value })} />
         </div>
         <div>
           <Label>客戶商標</Label>

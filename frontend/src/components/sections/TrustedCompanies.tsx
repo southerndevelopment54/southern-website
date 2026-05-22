@@ -8,6 +8,7 @@ interface Client {
   id: number;
   name: string;
   nameEn?: string;
+  nameCn?: string;
   logoUrl: string;
   isFeatured?: boolean;
 }
@@ -38,7 +39,7 @@ function formatCompanyName(name: string) {
 }
 
 function ClientCard({ company, locale }: { company: Client; locale: string }) {
-  const displayName = locale === "en" && company.nameEn ? company.nameEn : company.name;
+  const displayName = locale === "en" && company.nameEn ? company.nameEn : locale === "cn" && company.nameCn ? company.nameCn : company.name;
   return (
     <div className="bg-white hover:bg-gray-50 border border-gray-200 rounded-xl flex flex-col items-center transition-all duration-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 w-40 h-40 md:w-48 md:h-48 overflow-hidden">
       {/* Logo area — 60% height */}
