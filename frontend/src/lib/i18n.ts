@@ -17,6 +17,7 @@ export const translations = {
       slide1: { title: "專業保安服務", description: "我們提供頂級的商業及住宅保安解決方案，確保您的財產和人員安全無虞。", button: "了解更多" },
       slide2: { title: "活動安全保障", description: "為各類大型活動提供全面的安全規劃及執行，讓活動順利進行。", button: "查詢服務" },
       slide3: { title: "個人安全護衛", description: "專業護衛團隊為您提供貼身保護，確保您在任何場合都能安心無憂。", button: "立即預約" },
+      slide4: { title: "保安系統服務", description: "我們提供先進的保安系統設計及安裝服務，包括閉路電視、門禁系統、警報系統等，為您的物業提供全天候的智能安全保護。", button: "了解更多" },
     },
     about: {
       title: "值得信賴的保安服務夥伴",
@@ -234,6 +235,7 @@ export const translations = {
       slide1: { title: "专业保安服务", description: "我们提供顶级的商业及住宅保安解决方案，确保您的财产和人员安全无虞。", button: "了解更多" },
       slide2: { title: "活动安全保障", description: "为各类大型活动提供全面的安全规划及执行，让活动顺利进行。", button: "查询服务" },
       slide3: { title: "个人安全护卫", description: "专业护卫团队为您提供贴身保护，确保您在任何场合都能安心无忧。", button: "立即预约" },
+      slide4: { title: "保安系统服务", description: "我们提供先进的保安系统设计及安装服务，包括闭路电视、门禁系统、警报系统等，为您的物业提供全天候的智能安全保护。", button: "了解更多" },
     },
     about: {
       title: "值得信赖的保安服务伙伴",
@@ -462,6 +464,11 @@ export const translations = {
         title: "Personal Protection",
         description: "Our professional protection team provides close security to keep you safe and worry-free in any situation.",
         button: "Book Now",
+      },
+      slide4: {
+        title: "Security System Services",
+        description: "We provide advanced security system design and installation services, including CCTV, access control, alarm systems, and more, offering round-the-clock intelligent protection for your property.",
+        button: "Learn More",
       },
     },
     about: {

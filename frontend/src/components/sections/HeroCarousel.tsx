@@ -38,6 +38,14 @@ export default function HeroCarousel() {
       buttonText: t.hero.slide3.button,
       buttonHref: "#contact",
     },
+    {
+      id: 4,
+      image: "",
+      title: t.hero.slide4.title,
+      description: t.hero.slide4.description,
+      buttonText: t.hero.slide4.button,
+      buttonHref: "#services",
+    },
   ];
 
   const onSelect = useCallback(() => {
@@ -67,10 +75,14 @@ export default function HeroCarousel() {
             <div key={slide.id} className="embla__slide relative">
               <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
                 {/* Background Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${slide.image})` }}
-                />
+                {slide.image ? (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center"
+                    style={{ backgroundImage: `url(${slide.image})` }}
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-dark" />
+                )}
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
                 
