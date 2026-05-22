@@ -25,7 +25,7 @@ export default function HeroCarousel() {
     },
     {
       id: 2,
-      image: "/images/Event.png",
+      image: "/images/event_outdoor.png",
       title: t.hero.slide2.title,
       description: t.hero.slide2.description,
       buttonText: t.hero.slide2.button,
@@ -41,7 +41,7 @@ export default function HeroCarousel() {
     },
     {
       id: 4,
-      image: "",
+      image: "/images/cctv_camera_cut.png",
       title: t.hero.slide4.title,
       description: t.hero.slide4.description,
       buttonText: t.hero.slide4.button,
