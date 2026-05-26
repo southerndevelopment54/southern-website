@@ -22,6 +22,7 @@ interface SiteForm {
   addressCn: string;
   category: string;
   district: string;
+  subCategory: string;
   isFeatured: boolean;
   displayOrder: string;
   isActive: boolean;
@@ -40,6 +41,7 @@ export default function EditProjectPage() {
     addressCn: "",
     category: "commercial",
     district: "",
+    subCategory: "",
     isFeatured: false,
     displayOrder: "",
     isActive: true,
@@ -59,6 +61,7 @@ export default function EditProjectPage() {
         addressCn: s.addressCn || "",
         category: s.category || "commercial",
         district: s.district || "",
+        subCategory: s.subCategory || "",
         isFeatured: s.isFeatured ?? false,
         displayOrder: s.displayOrder != null ? String(s.displayOrder) : "",
         isActive: s.isActive != null ? s.isActive : true,
@@ -101,6 +104,7 @@ export default function EditProjectPage() {
         addressCn: form.addressCn || null,
         category: form.category,
         district: form.district || null,
+        subCategory: form.subCategory || null,
         isFeatured: form.isFeatured,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
         isActive: form.isActive,
@@ -155,6 +159,20 @@ export default function EditProjectPage() {
                 <SelectItem value="香港">香港</SelectItem>
                 <SelectItem value="九龍">九龍</SelectItem>
                 <SelectItem value="新界">新界</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        )}
+        {form.category === "other" && (
+          <div>
+            <Label>分類</Label>
+            <Select value={form.subCategory} onValueChange={(v) => setForm({ ...form, subCategory: v })}>
+              <SelectTrigger><SelectValue placeholder="請選擇分類" /></SelectTrigger>
+              <SelectContent>
+                <SelectItem value="hotel">酒店</SelectItem>
+                <SelectItem value="serviced_apartment">服務式住宅</SelectItem>
+                <SelectItem value="large_event">大型活動</SelectItem>
+                <SelectItem value="retail_shop">零售店</SelectItem>
               </SelectContent>
             </Select>
           </div>

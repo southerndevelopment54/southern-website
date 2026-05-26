@@ -24,10 +24,13 @@ interface GuardingSite {
   addressCn?: string;
   category: string;
   district?: string;
+  subCategory?: string;
   isFeatured: boolean;
 }
 
 type SiteFilter = "featured" | "commercial" | "residential" | "other";
+type DistrictSubFilter = "all" | "香港" | "九龍" | "新界";
+type OtherSubFilter = "all" | "hotel" | "serviced_apartment" | "large_event" | "retail_shop";
 
 const DISTRICT_ORDER = ["香港", "九龍", "新界"];
 
@@ -36,6 +39,8 @@ export default function ClientShowcase() {
 
   const [activeTab, setActiveTab] = useState<"clients" | "sites">("clients");
   const [siteFilter, setSiteFilter] = useState<SiteFilter>("featured");
+  const [districtSubFilter, setDistrictSubFilter] = useState<DistrictSubFilter>("all");
+  const [otherSubFilter, setOtherSubFilter] = useState<OtherSubFilter>("all");
   const [clients, setClients] = useState<Client[]>([]);
   const [sites, setSites] = useState<GuardingSite[]>([]);
   const [loadingSites, setLoadingSites] = useState(false);
@@ -95,22 +100,30 @@ export default function ClientShowcase() {
     { id: "other" as const, label: t.clientShowcase.tabOthers },
   ];
 
-  const featuredSites = sites.filter((s) => s.isFeatured);
-  const nonFeaturedSites = sites.filter((s) => !s.isFeatured);
+  const districtSubFilters: { id: DistrictSubFilter; label: string }[] = [
+    { id: "all", label: t.clientShowcase.tabAll },
+    { id: "香港", label: t.clientShowcase.districtHK },
+    { id: "九龍", label: t.clientShowcase.districtKLN },
+    { id: "新界", label: t.clientShowcase.districtNT },
+  ];
 
-  const groupSitesByDistrict = (sitesList: GuardingSite[]) => {
-    const grouped: Record<string, GuardingSite[]> = {};
-    const noDistrict: GuardingSite[] = [];
-    for (const site of sitesList) {
-      if (site.district && DISTRICT_ORDER.includes(site.district)) {
-        if (!grouped[site.district]) grouped[site.district] = [];
-        grouped[site.district].push(site);
-      } else {
-        noDistrict.push(site);
-      }
-    }
-    return { grouped, noDistrict };
-  };
+  const otherSubFilters: { id: OtherSubFilter; label: string }[] = [
+    { id: "all", label: t.clientShowcase.tabAll },
+    { id: "hotel", label: t.clientShowcase.tabHotel },
+    { id: "serviced_apartment", label: t.clientShowcase.tabServicedApartment },
+    { id: "large_event", label: t.clientShowcase.tabLargeEvent },
+    { id: "retail_shop", label: t.clientShowcase.tabRetailShop },
+  ];
+
+  const filteredResidentialSites =
+    siteFilter === "residential" && districtSubFilter !== "all"
+      ? sites.filter((s) => s.district === districtSubFilter)
+      : sites;
+
+  const filteredOtherSites =
+    siteFilter === "other" && otherSubFilter !== "all"
+      ? sites.filter((s) => s.subCategory === otherSubFilter)
+      : sites;
 
   const formatClientName = (name: string) => {
     const parts = name.split("有限公司");
@@ -152,6 +165,25 @@ export default function ClientShowcase() {
     </div>
   );
 
+  const renderSitesGrid = (sitesToRender: GuardingSite[]) => {
+    const featured = sitesToRender.filter((s) => s.isFeatured);
+    const nonFeatured = sitesToRender.filter((s) => !s.isFeatured);
+    return (
+      <div className="space-y-10">
+        {featured.length > 0 && (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {featured.map((site) => renderSiteCard(site))}
+          </div>
+        )}
+        {nonFeatured.length > 0 && (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {nonFeatured.map((site) => renderSiteCard(site, true))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
   return (
     <section className="py-20 md:py-28 bg-light min-h-screen">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -191,12 +223,16 @@ export default function ClientShowcase() {
 
         {/* Site Filter Tabs */}
         {activeTab === "sites" && (
-          <div className="flex justify-center mb-12">
+          <div className="flex justify-center mb-8">
             <div className="inline-flex bg-white rounded-lg p-1 border border-gray-100">
               {siteFilters.map((filter) => (
                 <button
                   key={filter.id}
-                  onClick={() => setSiteFilter(filter.id)}
+                  onClick={() => {
+                    setSiteFilter(filter.id);
+                    setDistrictSubFilter("all");
+                    setOtherSubFilter("all");
+                  }}
                   className={`px-4 py-2 rounded-md text-sm font-medium transition-all duration-200 ${
                     siteFilter === filter.id
                       ? "bg-primary text-white shadow-sm"
@@ -256,99 +292,77 @@ export default function ClientShowcase() {
                 <p className="text-gray-400 text-lg">載入中...</p>
               </div>
             ) : sites.length > 0 ? (
-              <div key={siteFilter}>
-                {/* Featured tab — single grid */}
-                {siteFilter === "featured" && (
-                  <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {sites.map((site) => renderSiteCard(site))}
-                  </div>
+              <div key={siteFilter + districtSubFilter + otherSubFilter}>
+                {/* Featured / Commercial — simple grid */}
+                {(siteFilter === "featured" || siteFilter === "commercial") && (
+                  renderSitesGrid(siteFilter === "featured" ? sites : sites)
                 )}
 
-                {/* Residential tab — grouped by district */}
+                {/* Residential — sidebar + grid */}
                 {siteFilter === "residential" && (
-                  <div className="space-y-12">
-                    {(() => {
-                      const { grouped, noDistrict } = groupSitesByDistrict(sites);
-                      return (
-                        <>
-                          {DISTRICT_ORDER.map((district) => {
-                            const districtSites = grouped[district] || [];
-                            if (districtSites.length === 0) return null;
-                            const districtFeatured = districtSites.filter((s) => s.isFeatured);
-                            const districtNonFeatured = districtSites.filter((s) => !s.isFeatured);
-                            return (
-                              <div key={district}>
-                                <h3 className="text-xl font-bold text-dark mb-6 flex items-center gap-2">
-                                  <span className="w-1.5 h-6 bg-primary rounded-full" />
-                                  {district}
-                                </h3>
-                                <div className="space-y-8">
-                                  {districtFeatured.length > 0 && (
-                                    <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                                      {districtFeatured.map((site) => renderSiteCard(site))}
-                                    </div>
-                                  )}
-                                  {districtNonFeatured.length > 0 && (
-                                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                      {districtNonFeatured.map((site) => renderSiteCard(site, true))}
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
-                          {noDistrict.length > 0 && (
-                            <div>
-                              <h3 className="text-xl font-bold text-dark mb-6 flex items-center gap-2">
-                                <span className="w-1.5 h-6 bg-gray-400 rounded-full" />
-                                其他
-                              </h3>
-                              <div className="space-y-8">
-                                {(() => {
-                                  const nf = noDistrict.filter((s) => s.isFeatured);
-                                  const nnf = noDistrict.filter((s) => !s.isFeatured);
-                                  return (
-                                    <>
-                                      {nf.length > 0 && (
-                                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                                          {nf.map((site) => renderSiteCard(site))}
-                                        </div>
-                                      )}
-                                      {nnf.length > 0 && (
-                                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                                          {nnf.map((site) => renderSiteCard(site, true))}
-                                        </div>
-                                      )}
-                                    </>
-                                  );
-                                })()}
-                              </div>
-                            </div>
-                          )}
-                        </>
-                      );
-                    })()}
+                  <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Left sidebar */}
+                    <div className="lg:w-56 shrink-0">
+                      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        {districtSubFilters.map((sub) => (
+                          <button
+                            key={sub.id}
+                            onClick={() => setDistrictSubFilter(sub.id)}
+                            className={`w-full text-left px-5 py-3.5 text-sm font-medium transition-all duration-200 border-b border-gray-100 last:border-0 ${
+                              districtSubFilter === sub.id
+                                ? "bg-primary text-white"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Right content */}
+                    <div className="flex-1 min-w-0">
+                      {filteredResidentialSites.length > 0 ? (
+                        renderSitesGrid(filteredResidentialSites)
+                      ) : (
+                        <div className="text-center py-20">
+                          <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 
-                {/* Other category tabs — featured on top (3 col), non-featured below (4 col smaller) */}
-                {siteFilter !== "featured" && siteFilter !== "residential" && (
-                  <div className="space-y-10">
-                    {featuredSites.length > 0 && (
-                      <div>
-                        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                          {featuredSites.map((site) => renderSiteCard(site))}
-                        </div>
+                {/* Other — sidebar + grid */}
+                {siteFilter === "other" && (
+                  <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Left sidebar */}
+                    <div className="lg:w-56 shrink-0">
+                      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        {otherSubFilters.map((sub) => (
+                          <button
+                            key={sub.id}
+                            onClick={() => setOtherSubFilter(sub.id)}
+                            className={`w-full text-left px-5 py-3.5 text-sm font-medium transition-all duration-200 border-b border-gray-100 last:border-0 ${
+                              otherSubFilter === sub.id
+                                ? "bg-primary text-white"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            {sub.label}
+                          </button>
+                        ))}
                       </div>
-                    )}
-
-                    {nonFeaturedSites.length > 0 && (
-                      <div>
-                        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                          {nonFeaturedSites.map((site) => renderSiteCard(site, true))}
+                    </div>
+                    {/* Right content */}
+                    <div className="flex-1 min-w-0">
+                      {filteredOtherSites.length > 0 ? (
+                        renderSitesGrid(filteredOtherSites)
+                      ) : (
+                        <div className="text-center py-20">
+                          <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
                         </div>
-                      </div>
-                    )}
+                      )}
+                    </div>
                   </div>
                 )}
               </div>

@@ -20,6 +20,7 @@ interface GuardingSite {
   address: string;
   category: string;
   district?: string;
+  subCategory?: string;
   isFeatured: boolean;
   displayOrder: number;
   isActive: boolean;
@@ -65,6 +66,7 @@ function CategorySection({
               <SortHeader label="編號" sortKey="id" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-16" />
               <SortHeader label="名稱" sortKey="name" currentKey={sortKey} direction={direction} onSort={requestSort} />
               <SortHeader label="地區" sortKey="district" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
+              <SortHeader label="分類" sortKey="subCategory" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-24" />
               <SortHeader label="排序" sortKey="displayOrder" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
               <SortHeader label="狀態" sortKey="isActive" currentKey={sortKey} direction={direction} onSort={requestSort} className="w-20" />
               <th scope="col" className="px-5 py-3.5 text-right text-xs font-semibold text-slate-500 uppercase tracking-wider whitespace-nowrap w-28">操作</th>
@@ -94,6 +96,7 @@ function CategorySection({
                   </div>
                 </td>
                 <td className="px-5 py-4 text-slate-500 whitespace-nowrap">{s.district || "—"}</td>
+                <td className="px-5 py-4 text-slate-500 whitespace-nowrap">{s.subCategory || "—"}</td>
                 <td className="px-5 py-4 text-slate-400 tabular-nums">{s.displayOrder ?? "—"}</td>
                 <td className="px-5 py-4">
                   {s.isActive ? (
@@ -118,7 +121,7 @@ function CategorySection({
             ))}
             {sortedItems.length === 0 && (
               <tr>
-                <td colSpan={6} className="px-5 py-12 text-center text-slate-400 text-sm">
+                <td colSpan={7} className="px-5 py-12 text-center text-slate-400 text-sm">
                   暫無{cat.label}
                 </td>
               </tr>

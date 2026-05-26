@@ -18,6 +18,7 @@ public class GuardingSiteResponse {
     private String addressCn;
     private String category;
     private String district;
+    private String subCategory;
     private Boolean isFeatured;
     private Integer displayOrder;
     private Boolean isActive;

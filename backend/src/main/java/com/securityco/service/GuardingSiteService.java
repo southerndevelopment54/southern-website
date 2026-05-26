@@ -98,6 +98,7 @@ public class GuardingSiteService {
         site.setAddressCn(request.getAddressCn());
         site.setCategory(request.getCategory());
         site.setDistrict(request.getDistrict());
+        site.setSubCategory(request.getSubCategory());
         site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
         site.setIsActive(request.getIsActive());
@@ -127,6 +128,7 @@ public class GuardingSiteService {
         site.setAddressCn(request.getAddressCn());
         site.setCategory(request.getCategory());
         site.setDistrict(request.getDistrict());
+        site.setSubCategory(request.getSubCategory());
         site.setIsFeatured(request.getIsFeatured());
         site.setDisplayOrder(request.getDisplayOrder());
         site.setIsActive(request.getIsActive());
@@ -179,6 +181,7 @@ public class GuardingSiteService {
         response.setAddressCn(site.getAddressCn());
         response.setCategory(site.getCategory());
         response.setDistrict(site.getDistrict());
+        response.setSubCategory(site.getSubCategory());
         response.setIsFeatured(site.getIsFeatured());
         response.setDisplayOrder(site.getDisplayOrder());
         response.setIsActive(site.getIsActive());

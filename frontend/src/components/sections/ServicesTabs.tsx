@@ -5,7 +5,7 @@ import { useI18n } from "@/components/I18nProvider";
 
 const serviceImages = [
   "/images/commercial_guard_description.png",
-  "/images/security_on_residential_building.png",
+  "/images/security_guard_in_residential_building.png",
   "/images/event_indoor.png",
   "/images/hotel_renaissance.png",
   "/images/airport_warehouse.png",

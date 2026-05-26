@@ -150,6 +150,7 @@ CREATE TABLE IF NOT EXISTS guarding_sites (
     address_cn VARCHAR(255),
     category VARCHAR(20) NOT NULL,
     district VARCHAR(20),
+    sub_category VARCHAR(20),
     is_featured BOOLEAN DEFAULT false,
     display_order INTEGER DEFAULT 0,
     is_active BOOLEAN DEFAULT true,
