@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useI18n } from "@/components/I18nProvider";
+import { api } from "@/lib/api";
 
 const serviceImages = [
   "/images/commercial_guard_description.png",
@@ -15,10 +16,20 @@ const serviceImages = [
   "/images/security_report.png",
 ];
 
+interface SecuritySystemClient {
+  id: number;
+  name: string;
+  logoKey: string;
+  logoUrl: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
 export default function ServicesTabs() {
   const { t } = useI18n();
   const services = t.services.items;
   const [activeIndex, setActiveIndex] = useState(0);
+  const [securityClients, setSecurityClients] = useState<SecuritySystemClient[]>([]);
 
   useEffect(() => {
     const hash = window.location.hash.replace("#", "");
@@ -27,6 +38,14 @@ export default function ServicesTabs() {
       setActiveIndex(index);
     }
   }, [services.length]);
+
+  useEffect(() => {
+    if (activeIndex === 6) {
+      api.get("/security-system-clients")
+        .then((res) => setSecurityClients(res.data))
+        .catch(() => setSecurityClients([]));
+    }
+  }, [activeIndex]);
 
   return (
     <section className="pt-28 md:pt-36 pb-20 bg-off-white">
@@ -93,13 +112,32 @@ export default function ServicesTabs() {
                 <h3 className="text-xl font-bold text-dark mb-6">
                   {t.services.referenceExperience}
                 </h3>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {Array.from({ length: 6 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg aspect-[4/3]"
-                    />
-                  ))}
+                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
+                  {securityClients.length > 0 ? (
+                    securityClients.map((client) => (
+                      <div
+                        key={client.id}
+                        className="bg-white border border-gray-200 rounded-lg aspect-[4/3] flex items-center justify-center p-3 overflow-hidden"
+                      >
+                        {client.logoUrl ? (
+                          <img
+                            src={client.logoUrl}
+                            alt={client.name}
+                            className="w-full h-full object-contain"
+                          />
+                        ) : (
+                          <span className="text-xs text-gray-400">{client.name}</span>
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    Array.from({ length: 6 }).map((_, i) => (
+                      <div
+                        key={i}
+                        className="bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg aspect-[4/3]"
+                      />
+                    ))
+                  )}
                 </div>
               </div>
             )}
