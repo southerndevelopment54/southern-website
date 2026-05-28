@@ -66,7 +66,7 @@ export default function ServicesTabs() {
         {/* Tabs Layout */}
         <div className="flex flex-col lg:flex-row gap-8">
           {/* Tab List — Left */}
-          <div className="lg:w-1/3">
+          <div className="lg:w-[28%]">
             <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
               {services.map((service, index) => (
                 <button
@@ -85,10 +85,10 @@ export default function ServicesTabs() {
           </div>
 
           {/* Tab Content — Right (no card styling) */}
-          <div className="lg:w-2/3">
+          <div className="lg:w-[72%]">
             <div className="flex flex-col md:flex-row gap-8 items-start">
               {/* Description */}
-              <div className="md:w-3/5">
+              <div className="md:w-[70%]">
                 <h2 className="text-2xl font-bold text-dark mb-4">
                   {services[activeIndex].title}
                 </h2>
@@ -97,7 +97,7 @@ export default function ServicesTabs() {
                 </p>
               </div>
               {/* Image */}
-              <div className="md:w-2/5">
+              <div className="md:w-[30%]">
                 <img
                   src={serviceImages[activeIndex]}
                   alt={services[activeIndex].title}
