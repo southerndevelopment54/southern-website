@@ -51,7 +51,7 @@ export default function AdminSecuritySystemClientsPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">保安系統服務合作客戶</h1>
+        <h1 className="text-2xl font-bold text-slate-900">CNT 合作客戶</h1>
         <Link href="/admin/security-system-clients/new">
           <Button>新增客戶</Button>
         </Link>

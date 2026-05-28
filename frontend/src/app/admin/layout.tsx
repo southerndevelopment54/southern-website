@@ -53,7 +53,7 @@ export default function AdminLayout({
                 { href: "/admin/vacancy-inquiries", label: "職位查詢" },
                 { href: "/admin/clients", label: "合作客戶" },
                 { href: "/admin/projects", label: "合作項目" },
-                { href: "/admin/security-system-clients", label: "保安系統客戶" },
+                { href: "/admin/security-system-clients", label: "CNT 合作客戶" },
                 { href: "/admin/tier-limits", label: "精選上限" },
               ].map((link) => {
                 const isActive = pathname === link.href || pathname.startsWith(link.href + "/");
