@@ -57,7 +57,7 @@ export default function Footer() {
               </div>
               <div className="flex items-start gap-2 text-sm text-white/60">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
-                <span>新蒲崗五芳街10號新寶中心19樓1907室</span>
+                <span>{t.contact.addressValue}</span>
               </div>
             </div>
           </div>

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { MapPin, Clock, DollarSign, ChevronRight, ShieldCheck } from "lucide-react";
-import Link from "next/link";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 import VacancyApplyDialog from "@/components/VacancyApplyDialog";
@@ -21,7 +20,7 @@ interface Vacancy {
 }
 
 export default function VacanciesSection() {
-  const { t, locale } = useI18n();
+  const { t } = useI18n();
   const [vacancies, setVacancies] = useState<Vacancy[]>([]);
   const [loading, setLoading] = useState(true);
   const [applyVacancy, setApplyVacancy] = useState<Vacancy | null>(null);

@@ -46,7 +46,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
     {
       icon: MapPin,
       label: t.contact.address,
-      value: "新蒲崗五芳街10號新寶中心19樓1907室",
+      value: t.contact.addressValue,
       href: "#",
     },
     {

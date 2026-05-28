@@ -4,7 +4,7 @@ import { Briefcase, ArrowRight } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 
 export default function CareersSection() {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
 
   return (
     <section id="careers" className="py-20 md:py-28 bg-off-white">

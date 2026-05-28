@@ -44,7 +44,7 @@ export default function AboutSection() {
               <p>
                 {locale !== "en"
                   ? "本公司於一九九七年成立迄今已逾二十載，所有管理階層均為資深保安從業員。現僱用約500名保安人員，為尊貴客戶在商業大廈、屋苑、學校、廠房、商場、物流倉庫、建築地盤及展覽盛事場地提供專業警衛服務。"
-                  : "Southern was established in 1997 in Hong Kong, with its Headquarters at New Treasure Centre, Sanpokong, Kowloon. We specialize in professional security services including guarding, Gurkha guarding, key holding, mobile patrolling, close protection, body guard, and car pick-up & transit. At present, we have about 500 personnel posted at various locations including high-class residential buildings, commercial complexes, schools, factories, shopping malls, logistics warehouses, construction sites, and event venues."}
+                  : "Southern was established in 1997 in Hong Kong, with its Headquarters at Room 5-7, 21/F, New Treasure Centre, 10 Ng Fong Street, San Po Kong, Kowloon. We specialize in professional security services including guarding, Gurkha guarding, key holding, mobile patrolling, close protection, body guard, and car pick-up & transit. At present, we have about 500 personnel posted at various locations including high-class residential buildings, commercial complexes, schools, factories, shopping malls, logistics warehouses, construction sites, and event venues."}
               </p>
               <p>
                 {locale !== "en"

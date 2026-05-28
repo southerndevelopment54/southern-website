@@ -32,7 +32,6 @@ type SiteFilter = "featured" | "commercial" | "residential" | "other";
 type DistrictSubFilter = "all" | "香港" | "九龍" | "新界";
 type OtherSubFilter = "all" | "hotel" | "serviced_apartment" | "large_event" | "retail_shop";
 
-const DISTRICT_ORDER = ["香港", "九龍", "新界"];
 
 export default function ClientShowcase() {
   const { t, locale } = useI18n();
