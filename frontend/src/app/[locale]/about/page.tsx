@@ -1,23 +1,40 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Header, Footer } from "@/components/sections";
 import { useI18n } from "@/components/I18nProvider";
+import { api } from "@/lib/api";
 import {
   Dialog,
   DialogContent,
   DialogTitle,
 } from "@/components/ui/dialog";
 
+interface AppreciationLetter {
+  id: number;
+  date: string;
+  imageKey: string;
+  imageUrl: string;
+  displayOrder: number;
+  isActive: boolean;
+}
+
 export default function AboutPage() {
   const { t } = useI18n();
-  const [selectedLetter, setSelectedLetter] = useState<number | null>(null);
+  const [letters, setLetters] = useState<AppreciationLetter[]>([]);
+  const [selectedLetter, setSelectedLetter] = useState<AppreciationLetter | null>(null);
 
   const regionImages = [
     { src: "/images/hongkongislandlogo.png", color: "bg-blue-50 text-blue-700 border-blue-200" },
     { src: "/images/kowloonlogo.png", color: "bg-amber-50 text-amber-700 border-amber-200" },
     { src: "/images/newterriorylogo.png", color: "bg-emerald-50 text-emerald-700 border-emerald-200" },
   ];
+
+  useEffect(() => {
+    api.get("/appreciation-letters")
+      .then((res) => setLetters(res.data))
+      .catch(() => setLetters([]));
+  }, []);
 
   return (
     <main className="min-h-screen">
@@ -120,24 +137,30 @@ export default function AboutPage() {
                 {t.about.letters.title}
               </h2>
             </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-              {Array.from({ length: 19 }).map((_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setSelectedLetter(i + 1)}
-                  className="group relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary/50"
-                >
-                  <div className="aspect-[3/4] p-3">
-                    <img
-                      src={`/images/appreciation_letters/${i + 1}.png`}
-                      alt={`Appreciation letter ${i + 1}`}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
-                </button>
-              ))}
-            </div>
+            {letters.length > 0 ? (
+              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                {letters.map((letter) => (
+                  <button
+                    key={letter.id}
+                    onClick={() => setSelectedLetter(letter)}
+                    className="group relative bg-gray-50 rounded-lg border border-gray-200 overflow-hidden hover:shadow-md transition-all duration-200 hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-primary/50"
+                  >
+                    <div className="aspect-[3/4] p-3">
+                      <img
+                        src={letter.imageUrl}
+                        alt={letter.date}
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-200" />
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center text-gray-400 py-12">
+                {t.about.letters.title}
+              </div>
+            )}
           </div>
         </div>
       </section>
@@ -145,12 +168,12 @@ export default function AboutPage() {
       <Dialog open={selectedLetter !== null} onOpenChange={() => setSelectedLetter(null)}>
         <DialogContent className="max-w-4xl w-[95vw] p-2 bg-white border-0">
           <DialogTitle className="sr-only">
-            {t.about.letters.title} {selectedLetter}
+            {selectedLetter?.date}
           </DialogTitle>
           {selectedLetter !== null && (
             <img
-              src={`/images/appreciation_letters/${selectedLetter}.png`}
-              alt={`Appreciation letter ${selectedLetter}`}
+              src={selectedLetter.imageUrl}
+              alt={selectedLetter.date}
               className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
             />
           )}
