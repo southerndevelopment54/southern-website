@@ -33,7 +33,9 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return api(originalRequest);
       }
-      window.location.href = "/admin/login";
+      if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
+        window.location.href = "/admin/login";
+      }
     }
     return Promise.reject(error);
   }

@@ -49,10 +49,14 @@ export default function ClientShowcase() {
     const params = new URLSearchParams(window.location.search);
     const tab = params.get("tab");
     const filter = params.get("filter") as SiteFilter | null;
+    const subFilter = params.get("subFilter") as OtherSubFilter | null;
 
     if (tab === "sites") setActiveTab("sites");
     if (filter && ["featured", "commercial", "residential", "other"].includes(filter)) {
       setSiteFilter(filter);
+    }
+    if (subFilter && ["hotel", "serviced_apartment", "large_event", "retail_shop"].includes(subFilter)) {
+      setOtherSubFilter(subFilter);
     }
   }, []);
 

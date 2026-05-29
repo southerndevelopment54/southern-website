@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ChevronRight } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 
@@ -12,7 +13,7 @@ const serviceImages = [
   "/images/airport_warehouse.png",
   "/images/personal_security_guard.png",
   "/images/CNT_services.png",
-  "/images/ssl_fleet.png",
+  "/images/ssl_fleet1.png",
   "/images/security_report.png",
 ];
 
@@ -26,7 +27,7 @@ interface SecuritySystemClient {
 }
 
 export default function ServicesTabs() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const services = t.services.items;
   const [activeIndex, setActiveIndex] = useState(0);
   const [securityClients, setSecurityClients] = useState<SecuritySystemClient[]>([]);
@@ -106,6 +107,21 @@ export default function ServicesTabs() {
                 <p className="text-gray-600 leading-relaxed text-base whitespace-pre-line">
                   {(services[activeIndex] as unknown as { detail: string }).detail}
                 </p>
+                {[0, 1, 2].includes(activeIndex) && (
+                  <a
+                    href={
+                      activeIndex === 0
+                        ? `/${locale}/clients?tab=sites&filter=commercial`
+                        : activeIndex === 1
+                        ? `/${locale}/clients?tab=sites&filter=residential`
+                        : `/${locale}/clients?tab=sites&filter=other&subFilter=large_event`
+                    }
+                    className="inline-flex items-center gap-2 mt-6 bg-primary hover:bg-primary-light text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 hover:gap-3"
+                  >
+                    相關項目
+                    <ChevronRight size={18} />
+                  </a>
+                )}
               </div>
               {/* Image */}
               <div className="md:w-[30%]">
