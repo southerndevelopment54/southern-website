@@ -25,7 +25,7 @@ export default function HeroCarousel() {
     },
     {
       id: 2,
-      image: "/images/event_outdoor.png",
+      image: "/images/security_guard_in_event.png",
       title: t.hero.slide2.title,
       description: t.hero.slide2.description,
       buttonText: t.hero.slide2.button,
