@@ -175,7 +175,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
         {/* Bottom Section: Inquiry Form */}
         {showForm && (
-        <div className="max-w-4xl mx-auto">
+        <div id="inquiry" className="max-w-4xl mx-auto scroll-mt-40">
           <div className="bg-off-white rounded-2xl p-8 md:p-12">
             <div className="text-center mb-10">
               <h3 className="text-2xl md:text-3xl font-bold text-dark mb-2">

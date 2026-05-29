@@ -7,7 +7,7 @@ import { ChevronRight } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 
 export default function HeroCarousel() {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
   const autoplayRef = useRef(Autoplay({ delay: 5000, stopOnInteraction: false }));
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
     autoplayRef.current,
@@ -29,7 +29,7 @@ export default function HeroCarousel() {
       title: t.hero.slide2.title,
       description: t.hero.slide2.description,
       buttonText: t.hero.slide2.button,
-      buttonHref: "#contact",
+      buttonHref: `/${locale}/contact#inquiry`,
     },
     {
       id: 3,
@@ -37,7 +37,7 @@ export default function HeroCarousel() {
       title: t.hero.slide3.title,
       description: t.hero.slide3.description,
       buttonText: t.hero.slide3.button,
-      buttonHref: "#contact",
+      buttonHref: `/${locale}/contact#inquiry`,
     },
     {
       id: 4,
@@ -45,7 +45,7 @@ export default function HeroCarousel() {
       title: t.hero.slide4.title,
       description: t.hero.slide4.description,
       buttonText: t.hero.slide4.button,
-      buttonHref: "#services",
+      buttonHref: `/${locale}/services#6`,
     },
   ];
 

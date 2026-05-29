@@ -32,11 +32,22 @@ export default function ServicesTabs() {
   const [securityClients, setSecurityClients] = useState<SecuritySystemClient[]>([]);
 
   useEffect(() => {
-    const hash = window.location.hash.replace("#", "");
-    const index = parseInt(hash, 10);
-    if (!isNaN(index) && index >= 0 && index < services.length) {
-      setActiveIndex(index);
-    }
+    const handleHashChange = () => {
+      const hash = window.location.hash.replace("#", "");
+      const index = parseInt(hash, 10);
+      if (!isNaN(index) && index >= 0 && index < services.length) {
+        setActiveIndex(index);
+        setTimeout(() => {
+          const section = document.getElementById("service-tabs");
+          if (section) {
+            section.scrollIntoView({ behavior: "instant", block: "start" });
+          }
+        }, 0);
+      }
+    };
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
   }, [services.length]);
 
   useEffect(() => {
@@ -48,7 +59,7 @@ export default function ServicesTabs() {
   }, [activeIndex]);
 
   return (
-    <section className="pt-28 md:pt-36 pb-20 bg-off-white">
+    <section id="service-tabs" className="pt-28 md:pt-36 pb-20 bg-off-white scroll-mt-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">

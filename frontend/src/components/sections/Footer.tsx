@@ -21,9 +21,9 @@ export default function Footer() {
     { label: t.header.nav.contact, href: `/${locale}/contact` },
   ];
 
-  const serviceLinks = t.services.items.map((item) => ({
+  const serviceLinks = t.services.items.map((item, index) => ({
     label: item.title,
-    href: `/${locale}/services`,
+    href: `/${locale}/services#${index}`,
   }));
 
   return (
@@ -41,7 +41,7 @@ export default function Footer() {
                 height={40}
                 className="w-10 h-10 object-contain"
               />
-              <span className="font-bold text-lg">{t.header.companyName}</span>
+              <span className="font-bold text-lg whitespace-nowrap">{t.header.companyName}</span>
             </div>
             <p className="text-white/60 text-sm leading-relaxed mb-6">
               {t.footer.description}
@@ -116,7 +116,7 @@ export default function Footer() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <p className="text-sm text-white/40">
-              <span>&copy; {year} {t.header.companyName}. {t.footer.copyright}</span>
+              <span className="whitespace-nowrap">&copy; {year} {t.header.companyName}.</span> <span>{t.footer.copyright}</span>
             </p>
             <div className="flex gap-6">
               <a href="#" className="text-sm text-white/40 hover:text-white/60 transition-colors">

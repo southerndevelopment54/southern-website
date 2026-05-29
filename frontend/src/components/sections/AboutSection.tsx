@@ -43,13 +43,13 @@ export default function AboutSection() {
             <div className="space-y-4 text-gray-600 leading-relaxed mb-8">
               <p>
                 {locale !== "en"
-                  ? "本公司於一九九七年成立迄今已逾二十載，所有管理階層均為資深保安從業員。現僱用約500名保安人員，為尊貴客戶在商業大廈、屋苑、學校、廠房、商場、物流倉庫、建築地盤及展覽盛事場地提供專業警衛服務。"
-                  : "Southern was established in 1997 in Hong Kong, with its Headquarters at Room 5-7, 21/F, New Treasure Centre, 10 Ng Fong Street, San Po Kong, Kowloon. We specialize in professional security services including guarding, Gurkha guarding, key holding, mobile patrolling, close protection, body guard, and car pick-up & transit. At present, we have about 500 personnel posted at various locations including high-class residential buildings, commercial complexes, schools, factories, shopping malls, logistics warehouses, construction sites, and event venues."}
+                  ? "南方(警衛及管業)有限公司自1997年創立以來，一直為香港各界提供專業可靠的綜合保安解決方案。現有逾500名持牌保安人員，服務網絡遍及商業大廈、住宅屋苑、零售商場、工業設施、物流倉庫、學校、建築地盤及大型活動場地，涵蓋門禁管理、巡邏監察、活動安保及個人護衛等多元化服務。"
+                  : "Established in 1997, Southern is a leading provider of professional security and property management solutions across Hong Kong. With over 500 licensed security professionals, we protect commercial buildings, residential estates, retail malls, industrial facilities, logistics warehouses, schools, construction sites, and major events — delivering integrated services from access control and patrol operations to event security and close protection."}
               </p>
               <p>
                 {locale !== "en"
-                  ? "本公司所聘用之保安人員均已接受政府認可機構之培訓，持有有效培訓證書及保安人員許可證，並設有24小時中央監控中心，由高級主管監察所有崗位運作。我們一直以最專業的服務、最合理的價格，成為客戶最信賴的長期合作夥伴。"
-                  : "All security personnel employed receive stringent trainings from government-recognized institutions and hold valid training certificates and security permits. Our Control Room operates 24 hours daily with senior officers monitoring all posts. We are committed to being our clients' most trusted long-term partner through the most professional service at the most reasonable prices."}
+                  ? "我們的團隊均接受政府認可機構的專業培訓，並設有24小時中央監控中心實時監察各崗位運作。憑藉逾二十年的行業經驗，南方以專業態度、創新思維及客戶為本的服務理念，持續為香港企業及社區締造更安全、更值得信賴的環境。"
+                  : "Our personnel undergo rigorous training at government-recognised institutions, supported by a 24/7 Central Monitoring Centre that oversees all operations in real time. Combining decades of expertise with innovative solutions and an unwavering client-focused philosophy, Southern continues to set the benchmark for security excellence in Hong Kong."}
               </p>
             </div>
             <Link
