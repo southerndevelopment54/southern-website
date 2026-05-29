@@ -106,7 +106,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
     <section id="contact" className="py-20 md:py-28 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section: Image + Contact Details */}
-        <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center mb-20">
+        <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${showForm ? "mb-20" : ""}`}>
           {/* Left - Image */}
           <div className="relative">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
@@ -152,24 +152,26 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
           </div>
         </div>
 
-        {/* Map Section */}
-        <div className="mb-20">
-          <h3 className="text-2xl md:text-3xl font-bold text-dark mb-6 text-center">
-            {t.contact.ourLocation}
-          </h3>
-          <div className="aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
-            <iframe
-              src="https://maps.google.com/maps?q=22.33794902448044,114.19973059717107&t=&z=17&ie=UTF8&iwloc=&output=embed"
-              width="100%"
-              height="100%"
-              style={{ border: 0 }}
-              allowFullScreen
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              title="Office Location"
-            />
+        {/* Map Section — only on Contact page */}
+        {showForm && (
+          <div className="mb-20">
+            <h3 className="text-2xl md:text-3xl font-bold text-dark mb-6 text-center">
+              {t.contact.ourLocation}
+            </h3>
+            <div className="aspect-[16/9] md:aspect-[21/9] rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+              <iframe
+                src="https://maps.google.com/maps?q=22.33794902448044,114.19973059717107&t=&z=17&ie=UTF8&iwloc=&output=embed"
+                width="100%"
+                height="100%"
+                style={{ border: 0 }}
+                allowFullScreen
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Office Location"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Bottom Section: Inquiry Form */}
         {showForm && (
