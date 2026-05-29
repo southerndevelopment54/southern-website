@@ -118,6 +118,11 @@ export default function ClientShowcase() {
     { id: "retail_shop", label: t.clientShowcase.tabRetailShop },
   ];
 
+  const filteredCommercialSites =
+    siteFilter === "commercial" && districtSubFilter !== "all"
+      ? sites.filter((s) => s.district === districtSubFilter)
+      : sites;
+
   const filteredResidentialSites =
     siteFilter === "residential" && districtSubFilter !== "all"
       ? sites.filter((s) => s.district === districtSubFilter)
@@ -296,9 +301,41 @@ export default function ClientShowcase() {
               </div>
             ) : sites.length > 0 ? (
               <div key={siteFilter + districtSubFilter + otherSubFilter}>
-                {/* Featured / Commercial — simple grid */}
-                {(siteFilter === "featured" || siteFilter === "commercial") && (
-                  renderSitesGrid(siteFilter === "featured" ? sites : sites)
+                {/* Featured — simple grid */}
+                {siteFilter === "featured" && renderSitesGrid(sites)}
+
+                {/* Commercial — sidebar + grid */}
+                {siteFilter === "commercial" && (
+                  <div className="flex flex-col lg:flex-row gap-8">
+                    {/* Left sidebar */}
+                    <div className="lg:w-56 shrink-0">
+                      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
+                        {districtSubFilters.map((sub) => (
+                          <button
+                            key={sub.id}
+                            onClick={() => setDistrictSubFilter(sub.id)}
+                            className={`w-full text-left px-5 py-3.5 text-sm font-medium transition-all duration-200 border-b border-gray-100 last:border-0 ${
+                              districtSubFilter === sub.id
+                                ? "bg-primary text-white"
+                                : "text-gray-700 hover:bg-gray-50"
+                            }`}
+                          >
+                            {sub.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    {/* Right content */}
+                    <div className="flex-1 min-w-0">
+                      {filteredCommercialSites.length > 0 ? (
+                        renderSitesGrid(filteredCommercialSites)
+                      ) : (
+                        <div className="text-center py-20">
+                          <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 )}
 
                 {/* Residential — sidebar + grid */}

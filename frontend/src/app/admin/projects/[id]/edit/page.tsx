@@ -150,7 +150,7 @@ export default function EditProjectPage() {
             </SelectContent>
           </Select>
         </div>
-        {form.category === "residential" && (
+        {(form.category === "residential" || form.category === "commercial") && (
           <div>
             <Label>地區</Label>
             <Select value={form.district} onValueChange={(v) => setForm({ ...form, district: v })}>
