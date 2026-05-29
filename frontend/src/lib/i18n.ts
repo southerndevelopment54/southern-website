@@ -24,13 +24,13 @@ export const translations = {
       title: "值得信賴的保安服務夥伴",
       pageTitle: "公司背景",
       companyName: "南方(警衛及管業)有限公司",
-      intro: "自1997年創立以來，南方始終致力為香港各界提供專業、可靠的綜合保安解決方案。",
+      intro: "自1997年創立以來，南方始終致力為香港各界提供專業、可靠的綜合保安服務。",
       description: "南方現有逾500名專業保安人員，服務網絡遍及商業大廈、住宅屋苑、工業設施、零售商場、物流倉庫、學校、建築地盤及大型活動場地。我們提供全面的保安服務，涵蓋門禁管理、巡邏監察、活動安保、個人護衛及車隊巡邏等，滿足客戶多元化的安全需求。\n\n我們的保安團隊均接受政府認可機構的專業培訓，持有有效的保安人員許可證及相關資格。除基礎培訓外，我們更提供針對性的在職訓練，確保每位人員具備應對各類場景的專業能力，持續提升服務質素。\n\n南方設有24小時運作的中央監控中心，由高級管理人員實時監察各崗位運作，並配備先進的通訊及調度系統。巡查主任定期進行突擊查察，確保服務標準貫徹執行，為客戶提供無間斷的專業支援。\n\n憑藉逾二十年的行業經驗，南方以專業態度、創新思維及客戶為本的服務理念，持續為香港企業及社區締造更安全、更值得信賴的環境。",
       imageAlt: "南方(警衛及管業)有限公司",
       vision: {
         title: "共建信任與可持續未來",
         subtitle: "Building Trust and a Sustainable Future",
-        description: "南方自1997年創立以來，始終堅持以客為本、以誠為先的經營理念。我們深信，真正的保安服務不僅僅是守護物業與人員的安全，更是與每一位客戶建立長期互信的合作關係。\n\n二十餘年來，我們以專業、誠信及創新的精神，持續提升服務質素，為社會締造更安全、更可持續的未來。無論是商業大廈、住宅屋苑、工業設施或大型活動，我們都以同樣的熱誠與專注，為客戶提供最可靠的保安解決方案。",
+        description: "南方自1997年創立以來，始終堅持以客為本、以誠為先的經營理念。我們深信，真正的保安服務不僅僅是守護物業與人員的安全，更是與每一位客戶建立長期互信的合作關係。\n\n二十餘年來，我們以專業、誠信及創新的精神，持續提升服務質素，為社會締造更安全、更可持續的未來。無論是商業大廈、住宅屋苑、工業設施或大型活動，我們都以同樣的熱誠與專注，為客戶提供最可靠的保安服務。",
       },
       letters: {
         badge: "客戶嘉許",
@@ -51,7 +51,7 @@ export const translations = {
     },
     services: {
       badge: "服務範圍",
-      title: "全面保安解決方案",
+      title: "全面保安服務",
       referenceExperience: "合作客戶",
       description: "我們提供多元化的專業保安服務，滿足不同客戶的獨特需求，為您的財產及人員提供全方位保護。",
       items: [
@@ -59,7 +59,7 @@ export const translations = {
         { title: "住宅保安服務", description: "為私人屋苑、豪宅提供住戶出入管理、訪客控制、停車場管理及緊急事故應變等專業保安服務。", detail: "我們為私人屋苑、豪宅及住宅物業提供專業的保安服務，涵蓋住戶出入管理、訪客控制、停車場管理、巡邏監察及緊急事故應變等。我們的團隊以禮貌及專業態度服務住戶，確保社區安全，同時提供24小時控制中心支援，即時處理任何突發事件。\n\n我們深明住宅保安的核心在於建立信任與和諧的社區關係。因此，我們的保安人員不僅接受嚴格的專業訓練，更注重溝通技巧及服務態度，在保障社區安全的同時，為住戶營造舒適安心的居住環境。" },
         { title: "活動保安管理", description: "為大型活動、展覽、演唱會提供人流控制、場地巡邏及緊急疏散等專業活動保安策劃及執行。", detail: "我們為各類大型活動、展覽、演唱會、體育賽事及私人宴會提供專業的保安策劃及執行服務。服務範圍包括人流控制、場地巡邏、入口安檢、緊急疏散計劃及VIP護衛等。我們的活動保安團隊經驗豐富，能夠根據活動規模及性質制定最合適的保安方案，確保活動順利進行。\n\n在活動籌備階段，我們會進行全面的風險評估及場地勘察，與主辦方緊密溝通，制定周詳的應變預案。活動當日，我們的指揮團隊會全程監控現場狀況，靈活調配人手，確保每一位參與者的安全。" },
         { title: "零售店舖及酒店保安", description: "為商場、零售店舖及酒店提供防盜監察、顧客服務、專業禮賓及人群管理服務，保障商戶財產及顧客安全，提升顧客體驗。", detail: "我們為商場、零售店舖、酒店及餐飲業提供專業的保安及禮賓服務，包括防盜監察、顧客服務、人群管理、入口控制及緊急應變等。我們的團隊不僅具備專業的保安技能，更以友善及專業的態度服務顧客，在保障商戶財產安全的同時，提升顧客的購物及入住體驗。\n\n我們深諳零售及酒店業的運作模式，能夠在不妨礙日常營運的前提下，有效防範盜竊、詐騙及破壞行為。我們的禮賓團隊更是商戶形象的重要延伸，以親切有禮的服務為顧客留下深刻印象。" },
-        { title: "工業設施保安", description: "為工廠、倉庫及物流設施提供出入管制、貨物監察及消防安全巡查等專業保安服務。", detail: "我們為工廠、倉庫、物流設施及建築地盤提供專業的保安服務，包括出入管制、貨物監察、巡邏檢查、消防安全巡查及訪客管理等。我們的團隊熟悉工業環境的運作，能夠有效防範盜竊、破壞及未經授權的出入，確保生產及物流運作順暢。\n\n我們亦會定期為客戶進行保安風險評估，識別潛在漏洞並提出改善建議，協助企業符合相關安全法規要求。從貨物進出登記到閉路電視監控，我們提供一站式工業保安解決方案，全方位保障您的資產與供應鏈安全。" },
+        { title: "工業設施保安", description: "為工廠、倉庫及物流設施提供出入管制、貨物監察及消防安全巡查等專業保安服務。", detail: "我們為工廠、倉庫、物流設施及建築地盤提供專業的保安服務，包括出入管制、貨物監察、巡邏檢查、消防安全巡查及訪客管理等。我們的團隊熟悉工業環境的運作，能夠有效防範盜竊、破壞及未經授權的出入，確保生產及物流運作順暢。\n\n我們亦會定期為客戶進行保安風險評估，識別潛在漏洞並提出改善建議，協助企業符合相關安全法規要求。從貨物進出登記到閉路電視監控，我們提供一站式工業保安服務，全方位保障您的資產與供應鏈安全。" },
         { title: "個人護衛服務", description: "為企業高管、名人及有特殊安全需要的個人提供專業貼身護衛，確保人身安全。", detail: "我們為貴賓及有特殊安全需要的個人提供專業的貼身護衛服務。我們的護衛人員均經過嚴格的專業訓練，具備敏銳的觀察力及應變能力，能夠在任何場合確保受護衛人員的人身安全，同時保持低調及專業。\n\n在每次護衛任務前，我們會進行詳盡的威脅評估及路線規劃，制定周密的應變方案。無論是日常出行、商務會議還是國際差旅，我們的護衛團隊都能提供全天候的貼身保護，讓您安心專注於重要事務。" },
         { title: "保安系統服務", description: "提供先進的保安系統設計及安裝服務，包括閉路電視、門禁系統、警報系統等，為您的物業提供全天候的智能安全保護。", detail: "我們的附屬公司國民警鐘有限公司（CNT Alarm System Company Limited）成立於1992年，總部設於香港新蒲崗五芳街10號新寶中心21樓5-7室。國民警鐘致力為客戶評估需求、提供專業建議、設計解決方案、安裝系統，並持續維護整合系統，以配合客戶的要求及預算。\n\n國民警鐘擁有逾20年業界經驗，為香港保安專業學會會員，並於1995年成為香港警務處警察總部防止罪案科認可承辦商，處理由該科轉介的服務。\n\n我們提供的保安系統服務包括：\n• 門禁管理系統\n• 閉路電視監控系統\n• 防盜警報系統\n• 中央監控系統\n• 停車場管理系統\n• 樓宇自動化系統\n• 公共廣播系統\n• 巡更系統\n• 無線射頻識別系統\n• 中央GPS/GSM監控服務\n• 數碼錄影/網絡系統/IP攝像機方案\n• 車輛追蹤系統" },
         { title: "車隊巡邏服務", description: "配備專業巡邏車隊，於指定區域進行定時及不定時巡邏，確保範圍內安全無虞。", detail: "我們配備專業的巡邏車隊，為商業區、工業區、住宅區及特定區域提供定時及不定時的巡邏服務。巡邏人員配備先進的通訊設備，與24小時控制中心保持緊密聯繫，能夠快速回應任何突發事件，確保巡邏範圍內的安全。\n\n每輛巡邏車均配備GPS定位系統及即時通訊裝置，控制中心可隨時掌握巡邏路線及位置。巡邏人員會詳細記錄每次巡邏情況，並定期向客戶提交報告，讓您全面掌握物業的安全狀況。" },
@@ -238,7 +238,7 @@ export const translations = {
       successMessage: "我們已收到您的查詢，將盡快與您聯絡。",
     },
     footer: {
-      description: "專業保安服務，守護您的安全。我們致力為客戶提供最優質的保安解決方案。",
+      description: "專業保安服務，守護您的安全。我們致力為客戶提供最優質的保安服務。",
       licenseTitle: "牌照資訊",
       licenseText: "本公司持有香港警務處簽發的保安公司牌照，所有保安人員均持有有效保安人員許可證。",
       licenseNo: "牌照號碼: 0646",
@@ -263,7 +263,7 @@ export const translations = {
       },
     },
     hero: {
-      slide1: { title: "专业保安服务", description: "我们提供顶级的商业及住宅保安解决方案，确保您的财产和人员安全无虞。", button: "了解更多" },
+      slide1: { title: "专业保安服务", description: "我们提供顶级的商业及住宅保安服务，确保您的财产和人员安全无虞。", button: "了解更多" },
       slide2: { title: "活动安全保障", description: "为各类大型活动提供全面的安全规划及执行，让活动顺利进行。", button: "查询服务" },
       slide3: { title: "个人安全护卫", description: "专业护卫团队为您提供贴身保护，确保您在任何场合都能安心无忧。", button: "立即预约" },
       slide4: { title: "保安系统服务", description: "我们提供先进的保安系统设计及安装服务，包括闭路电视、门禁系统、警报系统等，为您的物业提供全天候的智能安全保护。", button: "了解更多" },
@@ -273,13 +273,13 @@ export const translations = {
       title: "值得信赖的保安服务伙伴",
       pageTitle: "公司背景",
       companyName: "南方(警卫及管业)有限公司",
-      intro: "自1997年创立以来，南方始终致力为香港各界提供专业、可靠的综合保安解决方案。",
+      intro: "自1997年创立以来，南方始终致力为香港各界提供专业、可靠的综合保安服务。",
       description: "南方现有逾500名专业保安人员，服务网络遍及商业大厦、住宅屋苑、工业设施、零售商场、物流仓库、学校、建筑地盘及大型活动场地。我们提供全面的保安服务，涵盖门禁管理、巡逻监察、活动安保、个人护卫及车队巡逻等，满足客户多元化的安全需求。\n\n我们的保安团队均接受政府认可机构的专业培训，持有有效的保安人员许可证及相关资格。除基础培训外，我们更提供针对性的在职训练，确保每位人员具备应对各类场景的专业能力，持续提升服务质素。\n\n南方设有24小时运作的中央监控中心，由高级管理人员实时监察各岗位运作，并配备先进的通讯及调度系统。巡查主任定期进行突击查察，确保服务标准贯彻执行，为客户提供无间断的专业支援。\n\n凭藉逾二十年的行业经验，南方以专业态度、创新思维及客户为本的服务理念，持续为香港企业及社区缔造更安全、更值得信赖的环境。",
       imageAlt: "南方(警卫及管业)有限公司",
       vision: {
         title: "共建信任与可持续未来",
         subtitle: "Building Trust and a Sustainable Future",
-        description: "南方自1997年创立以来，始终坚持以客为本、以诚为先的经营理念。我们深信，真正的保安服务不仅仅是守护物业与人员的安全，更是与每一位客户建立长期互信的合作关系。\n\n二十余年来，我们以专业、诚信及创新的精神，持续提升服务质素，为社会缔造更安全、更可持续的未来。无论是商业大厦、住宅屋苑、工业设施或大型活动，我们都以同样的热诚与专注，为客户提供最可靠的保安解决方案。",
+        description: "南方自1997年创立以来，始终坚持以客为本、以诚为先的经营理念。我们深信，真正的保安服务不仅仅是守护物业与人员的安全，更是与每一位客户建立长期互信的合作关系。\n\n二十余年来，我们以专业、诚信及创新的精神，持续提升服务质素，为社会缔造更安全、更可持续的未来。无论是商业大厦、住宅屋苑、工业设施或大型活动，我们都以同样的热诚与专注，为客户提供最可靠的保安服务。",
       },
       letters: {
         badge: "客户嘉许",
@@ -300,7 +300,7 @@ export const translations = {
     },
     services: {
       badge: "服务范围",
-      title: "全面保安解决方案",
+      title: "全面保安服務範圍",
       referenceExperience: "合作客户",
       description: "我们提供多元化的专业保安服务，满足不同客户的独特需求，为您的财产及人员提供全方位保护。",
       items: [
@@ -308,7 +308,7 @@ export const translations = {
         { title: "住宅保安服务", description: "为私人屋苑、豪宅提供住户出入管理、访客控制、停车场管理及紧急事故应变等专业保安服务。", detail: "我们为私人屋苑、豪宅及住宅物业提供专业的保安服务，涵盖住户出入管理、访客控制、停车场管理、巡逻监察及紧急事故应变等。我们的团队以礼貌及专业态度服务住户，确保社区安全，同时提供24小时控制中心支援，即时处理任何突发事件。\n\n我们深明住宅保安的核心在于建立信任与和谐的社区关系。因此，我们的保安人员不仅接受严格的专业训练，更注重沟通技巧及服务态度，在保障社区安全的同时，为住户营造舒适安心的居住环境。" },
         { title: "活动保安管理", description: "为大型活动、展覽、演唱会提供人流控制、场地巡逻及紧急疏散等专业活动保安策划及执行。", detail: "我们为各类大型活动、展覽、演唱会、体育赛事及私人宴会提供专业的保安策划及执行服务。服务范围包括人流控制、场地巡逻、入口安检、紧急疏散计划及VIP护卫等。我们的活动保安团队经验丰富，能够根据活动规模及性质制定最合适的保安方案，确保活动顺利进行。\n\n在活动筹备阶段，我们会进行全面的风险评估及场地勘察，与主办方紧密沟通，制定周详的应变预案。活动当日，我们的指挥团队会全程监控现场状况，灵活调配人手，确保每一位参与者的安全。" },
         { title: "零售店铺及酒店保安", description: "为商场、零售店铺及酒店提供防盗监察、顾客服务、专业礼宾及人群管理服务，保障商户财产及顾客安全，提升顾客体验。", detail: "我们为商场、零售店铺、酒店及餐饮业提供专业的保安及礼宾服务，包括防盗监察、顾客服务、人群管理、入口控制及紧急应变等。我们的团队不仅具备专业的保安技能，更以友善及专业的态度服务顾客，在保障商户财产安全的同时，提升顾客的购物及入住体验。\n\n我们深谙零售及酒店业的运作模式，能够在不妨碍日常营运的前提下，有效防范盗窃、诈骗及破坏行为。我们的礼宾团队更是商户形象的重要延伸，以亲切有礼的服务为顾客留下深刻印象。" },
-        { title: "工业设施保安", description: "为工厂、仓库及物流设施提供出入管制、货物监察及消防安全巡查等专业保安服务。", detail: "我们为工厂、仓库、物流设施及建筑工地提供专业的保安服务，包括出入管制、货物监察、巡逻检查、消防安全巡查及访客管理等。我们的团队熟悉工业环境的运作，能够有效防范盗窃、破坏及未经授权的出入，确保生产及物流运作顺畅。\n\n我们亦会定期为客户进行保安风险评估，识别潜在漏洞并提出改善建议，协助企业符合相关安全法规要求。从货物进出登记到闭路电视监控，我们提供一站式工业保安解决方案，全方位保障您的资产与供应链安全。" },
+        { title: "工业设施保安", description: "为工厂、仓库及物流设施提供出入管制、货物监察及消防安全巡查等专业保安服务。", detail: "我们为工厂、仓库、物流设施及建筑工地提供专业的保安服务，包括出入管制、货物监察、巡逻检查、消防安全巡查及访客管理等。我们的团队熟悉工业环境的运作，能够有效防范盗窃、破坏及未经授权的出入，确保生产及物流运作顺畅。\n\n我们亦会定期为客户进行保安风险评估，识别潜在漏洞并提出改善建议，协助企业符合相关安全法规要求。从货物进出登记到闭路电视监控，我们提供一站式工业保安服务，全方位保障您的资产与供应链安全。" },
         { title: "个人护卫服务", description: "为企业高管、名人及有特殊安全需要的个人提供专业贴身护卫，确保人身安全。", detail: "我们为企业高管、名人、贵宾及有特殊安全需要的个人提供专业的贴身护卫服务。我们的护卫人员均经过严格的专业训练，具备敏锐的观察力及应变能力，能够在任何场合确保受护卫人员的人身安全，同时保持低调及专业。\n\n在每次护卫任务前，我们会进行详尽的威胁评估及路线规划，制定周密的应变方案。无论是日常出行、商务会议还是国际差旅，我们的护卫团队都能提供全天候的贴身保护，让您安心专注于重要事务。" },
         { title: "保安系统服务", description: "提供先进的保安系统设计及安装服务，包括闭路电视、门禁系统、警报系统等，为您的物业提供全天候的智能安全保护。", detail: "我们的附属公司国民警钟有限公司（CNT Alarm System Company Limited）成立于1992年，总部设于香港新蒲岗五芳街10号新宝中心21楼5-7室。国民警钟致力为客户评估需求、提供专业建议、设计解决方案、安装系统，并持续维护整合系统，以配合客户的要求及预算。\n\n国民警钟拥有逾20年业界经验，为香港保安专业学会会员，并于1995年成为香港警务处警察总部防止罪案科认可承办商，处理由该科转介的服务。\n\n我们提供的保安系统服务包括：\n• 门禁管理系统\n• 闭路电视监控系统\n• 防盗警报系统\n• 中央监控系统\n• 停车场管理系统\n• 楼宇自动化系统\n• 公共广播系统\n• 巡更系统\n• 无线射频识别系统\n• 中央GPS/GSM监控服务\n• 数码录像/网络系统/IP摄像机方案\n• 车辆追踪系统" },
         { title: "车队巡逻服务", description: "配备专业巡逻车队，於指定区域进行定时及不定时巡逻，确保范围内安全无虞。", detail: "我们配备专业的巡逻车队，为商业区、工业区、住宅区及特定区域提供定时及不定时的巡逻服务。巡逻人员配备先进的通讯设备，与24小时控制中心保持紧密联系，能够快速回应任何突发事件，确保巡逻范围内的安全。\n\n每辆巡逻车均配备GPS定位系统及即时通讯装置，控制中心可随时掌握巡逻路线及位置。巡逻人员会详细记录每次巡逻情况，并定期向客户提交报告，让您全面掌握物业的安全状况。" },
@@ -487,7 +487,7 @@ export const translations = {
       successMessage: "我们已收到您的查询，將盡快與您联系。",
     },
     footer: {
-      description: "专业保安服务，守护您的安全。我们致力为客户提供最优质的保安解决方案。",
+      description: "专业保安服务，守护您的安全。我们致力为客户提供最优质的保安服务。",
       licenseTitle: "牌照资讯",
       licenseText: "本公司持有香港警務处簽发的保安公司牌照，所有保安人员均持有有效保安人员许可证。",
       licenseNo: "牌照号码: 0646",
@@ -514,7 +514,7 @@ export const translations = {
     hero: {
       slide1: {
         title: "Professional Security Services",
-        description: "We provide top-tier commercial and residential security solutions to ensure the safety of your property and personnel.",
+        description: "We provide top-tier commercial and residential security services to ensure the safety of your property and personnel.",
         button: "Learn More",
       },
       slide2: {
@@ -544,7 +544,7 @@ export const translations = {
       vision: {
         title: "Building Trust and a Sustainable Future",
         subtitle: "",
-        description: "Since our establishment in 1997, Southern has steadfastly upheld a client-centric and integrity-driven philosophy. We believe that true security services go beyond safeguarding property and personnel — they are about building long-lasting, trust-based partnerships with every client we serve.\n\nFor over two decades, we have continuously elevated our service standards through professionalism, integrity, and innovation, striving to create a safer and more sustainable future for our community. Whether it is a commercial building, residential estate, industrial facility, or large-scale event, we approach every engagement with the same dedication and focus, delivering the most reliable security solutions tailored to our clients' needs.",
+        description: "Since our establishment in 1997, Southern has steadfastly upheld a client-centric and integrity-driven philosophy. We believe that true security services go beyond safeguarding property and personnel — they are about building long-lasting, trust-based partnerships with every client we serve.\n\nFor over two decades, we have continuously elevated our service standards through professionalism, integrity, and innovation, striving to create a safer and more sustainable future for our community. Whether it is a commercial building, residential estate, industrial facility, or large-scale event, we approach every engagement with the same dedication and focus, delivering the most reliable security services tailored to our clients' needs.",
       },
       letters: {
         badge: "Client Recognition",
@@ -565,15 +565,15 @@ export const translations = {
     },
     services: {
       badge: "Our Services",
-      title: "Comprehensive Security Solutions",
+      title: "Comprehensive Security Services",
       referenceExperience: "Reference Experience",
       description: "We offer diverse professional security services tailored to meet the unique needs of every client, providing all-round protection for your property and people.",
       items: [
-        { title: "Commercial Building & Shopping Mall Security", description: "Comprehensive security services for offices, commercial centres and shopping malls, including access control, patrol monitoring, and visitor registration.", detail: "We provide comprehensive security services for commercial buildings, office towers, business centres and shopping malls, covering access control, visitor registration, patrol monitoring, and emergency response. Our security team holds professional licenses and has extensive experience in commercial property management, effectively preventing and handling all types of security incidents to ensure a safe and orderly business environment, allowing tenants and visitors to work and move about with peace of mind.\n\nWe tailor security solutions to the unique needs of each commercial building and shopping mall and provide 24-hour control centre support. Whether during busy daytime hours or quiet nighttime periods, our team remains highly vigilant to provide uninterrupted professional protection for your property." },
+        { title: "Commercial Building & Shopping Mall Security", description: "Comprehensive security services for offices, commercial centres and shopping malls, including access control, patrol monitoring, and visitor registration.", detail: "We provide comprehensive security services for commercial buildings, office towers, business centres and shopping malls, covering access control, visitor registration, patrol monitoring, and emergency response. Our security team holds professional licenses and has extensive experience in commercial property management, effectively preventing and handling all types of security incidents to ensure a safe and orderly business environment, allowing tenants and visitors to work and move about with peace of mind.\n\nWe tailor security services to the unique needs of each commercial building and shopping mall and provide 24-hour control centre support. Whether during busy daytime hours or quiet nighttime periods, our team remains highly vigilant to provide uninterrupted professional protection for your property." },
         { title: "Residential Security", description: "Professional security services for private estates and luxury homes, including resident access management, visitor control, and emergency response.", detail: "We provide professional security services for private estates, luxury homes, and residential properties, covering resident access management, visitor control, car park management, patrol monitoring, and emergency incident response. Our team serves residents with courtesy and professionalism, ensuring community safety, while providing 24-hour control centre support to handle any emergencies in real time.\n\nWe understand that residential security is built on trust and harmonious community relationships. Therefore, our security personnel not only undergo rigorous professional training but also emphasise communication skills and service attitude, creating a comfortable and secure living environment for residents while safeguarding the community." },
         { title: "Event Security Management", description: "Professional event security planning and execution for large-scale events, exhibitions, and concerts, including crowd control and emergency evacuation.", detail: "We provide professional security planning and execution services for various large-scale events, exhibitions, concerts, sporting events, and private banquets. Our services include crowd control, venue patrols, entrance security checks, emergency evacuation plans, and VIP protection. Our event security team is highly experienced and can tailor the most suitable security plan based on the scale and nature of the event to ensure smooth operations.\n\nDuring the preparation phase, we conduct comprehensive risk assessments and site inspections, working closely with organisers to develop detailed contingency plans. On the day of the event, our command team monitors the situation throughout, flexibly deploying personnel to ensure the safety of every attendee." },
         { title: "Retail Store & Hotel Security", description: "Theft prevention, customer service, professional concierge, and crowd management services for shopping malls, retail stores, hotels, and retail properties.", detail: "We provide professional security and concierge services for shopping malls, retail stores, hotels, and the food & beverage industry, including theft prevention monitoring, customer service, crowd management, entrance control, and emergency response. Our team not only possesses professional security skills but also serves customers with a friendly and professional attitude, safeguarding merchant property while enhancing the shopping and guest experience.\n\nWe have an in-depth understanding of retail and hotel operations, effectively preventing theft, fraud, and vandalism without disrupting daily business. Our concierge team serves as an important extension of your brand image, leaving a lasting positive impression on customers through courteous and attentive service." },
-        { title: "Industrial Facility Security", description: "Access control, cargo monitoring, and fire safety inspections for factories, warehouses, and logistics facilities.", detail: "We provide professional security services for factories, warehouses, logistics facilities, and construction sites, including access control, cargo monitoring, patrol inspections, fire safety patrols, and visitor management. Our team is familiar with industrial operations and can effectively prevent theft, vandalism, and unauthorized access, ensuring smooth production and logistics operations.\n\nWe also conduct regular security risk assessments for clients, identifying potential vulnerabilities and providing improvement recommendations to help businesses meet relevant safety regulatory requirements. From cargo entry-exit registration to CCTV monitoring, we offer one-stop industrial security solutions to comprehensively protect your assets and supply chain." },
+        { title: "Industrial Facility Security", description: "Access control, cargo monitoring, and fire safety inspections for factories, warehouses, and logistics facilities.", detail: "We provide professional security services for factories, warehouses, logistics facilities, and construction sites, including access control, cargo monitoring, patrol inspections, fire safety patrols, and visitor management. Our team is familiar with industrial operations and can effectively prevent theft, vandalism, and unauthorized access, ensuring smooth production and logistics operations.\n\nWe also conduct regular security risk assessments for clients, identifying potential vulnerabilities and providing improvement recommendations to help businesses meet relevant safety regulatory requirements. From cargo entry-exit registration to CCTV monitoring, we offer one-stop industrial security services to comprehensively protect your assets and supply chain." },
         { title: "Personal Protection Services", description: "Close protection services for corporate executives, celebrities, and individuals with special security needs.", detail: "We provide professional close protection services for corporate executives, celebrities, VIPs, and individuals with special security needs. Our protection officers undergo rigorous professional training, possessing keen observation skills and emergency response capabilities, ensuring the personal safety of protected individuals in any situation while maintaining discretion and professionalism.\n\nBefore each protection assignment, we conduct thorough threat assessments and route planning, developing comprehensive contingency plans. Whether for daily commutes, business meetings, or international travel, our protection team provides round-the-clock close security, allowing you to focus on what matters most with complete peace of mind." },
         { title: "Security System Services", description: "Advanced security system design and installation services, including CCTV, access control, alarm systems, and more, offering round-the-clock intelligent protection for your property.", detail: "Our subsidiary, CNT Alarm System Company Limited (國民警鐘有限公司), was established in 1992 with its headquarters located at Room 5-7, 21/F, New Treasure Centre, 10 Ng Fong Street, San Po Kong, Kowloon, Hong Kong. CNT Alarm is committed to assessing customer needs, providing professional advice, designing solutions, installing systems, and continuously maintaining integrated systems to meet client requirements and budgets.\n\nWith over 20 years of industry experience, CNT Alarm is a member of the Hong Kong Security Association. In 1995, CNT Alarm became an approved contractor of the Crime Prevention Bureau, Hong Kong Police Force, handling services referred by the Bureau.\n\nOur security system services include:\n• Access Control Management System\n• CCTV Surveillance System\n• Burglar Alarm System\n• Central Monitoring System\n• Carpark Management System\n• Building Automation System\n• Public Address System\n• Guard Tour System\n• Radio Frequency Identification System\n• Central GPS / GSM Monitoring Service\n• Digital Video Recording / Networking System / IP Camera Solutions System\n• Vehicle Tracking System" },
         { title: "Fleet Patrol Services", description: "Equipped with professional patrol fleets for scheduled and unscheduled patrols in designated areas.", detail: "We are equipped with professional patrol fleets to provide scheduled and unscheduled patrol services for commercial districts, industrial areas, residential areas, and designated zones. Patrol officers are equipped with advanced communication equipment and maintain close contact with our 24-hour control centre, enabling rapid response to any emergencies and ensuring security within the patrol area.\n\nEach patrol vehicle is fitted with GPS tracking and real-time communication devices, allowing the control centre to monitor patrol routes and positions at all times. Patrol officers meticulously record every patrol session and submit regular reports to clients, giving you complete visibility over your property security status." },
@@ -588,7 +588,7 @@ export const translations = {
         "Licensed Professional Security Team",
         "24-Hour Control Centre Support",
         "Advanced Technology Security Systems",
-        "Tailored Security Solutions",
+        "Tailored Security Services",
         "Rigorous Training & Supervision",
         "Rapid Emergency Response",
       ] as string[],
@@ -752,7 +752,7 @@ export const translations = {
       successMessage: "We have received your inquiry and will contact you shortly.",
     },
     footer: {
-      description: "Professional security services to safeguard your safety. We are committed to providing the best security solutions for our clients.",
+      description: "Professional security services to safeguard your safety. We are committed to providing the best security services for our clients.",
       licenseTitle: "Licence Information",
       licenseText: "This company holds a security company licence issued by the Hong Kong Police Force. All security personnel hold valid security permits.",
       licenseNo: "Licence No.: 0646",
