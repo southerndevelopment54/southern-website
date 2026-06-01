@@ -32,8 +32,17 @@ interface VacancyForm {
   expiresAt: string;
 }
 
-const SALARY_MAX = 100000;
-const SALARY_STEP = 1000;
+function getSalaryConfig(period: string) {
+  switch (period) {
+    case "hourly":
+      return { max: 500, step: 5, defaultMin: 50, defaultMax: 80 };
+    case "yearly":
+      return { max: 1500000, step: 10000, defaultMin: 180000, defaultMax: 300000 };
+    case "monthly":
+    default:
+      return { max: 100000, step: 1000, defaultMin: 15000, defaultMax: 25000 };
+  }
+}
 
 function formatSalary(n: number) {
   return "$" + n.toLocaleString();
@@ -67,6 +76,16 @@ export default function NewVacancyPage() {
     api.get("/vacancies/districts").then((res) => setDistricts(res.data));
     api.get("/vacancies/guard-types").then((res) => setGuardTypes(res.data));
   }, []);
+
+  // Adjust salary range when period changes
+  useEffect(() => {
+    const cfg = getSalaryConfig(form.salaryPeriod);
+    setForm((f) => ({
+      ...f,
+      salaryMin: Math.min(Math.max(f.salaryMin, 0), cfg.max),
+      salaryMax: Math.min(Math.max(f.salaryMax, 0), cfg.max),
+    }));
+  }, [form.salaryPeriod]);
 
   const addRequirement = () => {
     setForm({ ...form, requirements: [...form.requirements, ""] });
@@ -211,8 +230,8 @@ export default function NewVacancyPage() {
                 <input
                   type="range"
                   min={0}
-                  max={SALARY_MAX}
-                  step={SALARY_STEP}
+                  max={getSalaryConfig(form.salaryPeriod).max}
+                  step={getSalaryConfig(form.salaryPeriod).step}
                   value={form.salaryMin}
                   onChange={(e) => setSalaryMin(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800"
@@ -226,8 +245,8 @@ export default function NewVacancyPage() {
                 <input
                   type="range"
                   min={0}
-                  max={SALARY_MAX}
-                  step={SALARY_STEP}
+                  max={getSalaryConfig(form.salaryPeriod).max}
+                  step={getSalaryConfig(form.salaryPeriod).step}
                   value={form.salaryMax}
                   onChange={(e) => setSalaryMax(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800"

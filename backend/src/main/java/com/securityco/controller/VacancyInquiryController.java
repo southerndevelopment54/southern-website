@@ -28,9 +28,9 @@ public class VacancyInquiryController {
         if (ip == null || ip.isEmpty()) {
             ip = httpRequest.getRemoteAddr();
         }
-        if (!rateLimitService.isAllowed(ip)) {
+        if (!rateLimitService.isAllowedGlobal(ip)) {
             return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("Rate limit exceeded. Please wait 1 minute before submitting again.");
+                    .body("Rate limit exceeded. Please wait before submitting again.");
         }
         String userAgent = httpRequest.getHeader("User-Agent");
         return ResponseEntity.ok(vacancyInquiryService.save(request, ip, userAgent));

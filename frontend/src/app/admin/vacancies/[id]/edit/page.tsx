@@ -33,8 +33,17 @@ interface VacancyForm {
   imageKey: string;
 }
 
-const SALARY_MAX = 100000;
-const SALARY_STEP = 1000;
+function getSalaryConfig(period: string) {
+  switch (period) {
+    case "hourly":
+      return { max: 500, step: 5, defaultMin: 50, defaultMax: 80 };
+    case "yearly":
+      return { max: 1500000, step: 10000, defaultMin: 180000, defaultMax: 300000 };
+    case "monthly":
+    default:
+      return { max: 100000, step: 1000, defaultMin: 15000, defaultMax: 25000 };
+  }
+}
 
 function formatSalary(n: number) {
   return "$" + n.toLocaleString();
@@ -75,15 +84,17 @@ export default function EditVacancyPage() {
       const reqs = Array.isArray(v.requirements) && v.requirements.length > 0
         ? v.requirements
         : [""];
+      const period = v.salaryPeriod || "monthly";
+      const cfg = getSalaryConfig(period);
       setForm({
         title: v.title || "",
         guardTypeId: v.guardType ? String(v.guardType.id) : "",
         districtId: v.district ? String(v.district.id) : "0",
         locationDescription: v.locationDescription || "",
         startDate: v.startDate || "",
-        salaryMin: v.salaryMin != null ? Number(v.salaryMin) : 15000,
-        salaryMax: v.salaryMax != null ? Number(v.salaryMax) : 25000,
-        salaryPeriod: v.salaryPeriod || "monthly",
+        salaryMin: v.salaryMin != null ? Math.min(Number(v.salaryMin), cfg.max) : cfg.defaultMin,
+        salaryMax: v.salaryMax != null ? Math.min(Number(v.salaryMax), cfg.max) : cfg.defaultMax,
+        salaryPeriod: period,
         employmentType: v.employmentType || "full-time",
         requirements: reqs,
         description: v.description || "",
@@ -98,6 +109,16 @@ export default function EditVacancyPage() {
       setLoading(false);
     });
   }, [id]);
+
+  // Adjust salary range when period changes
+  useEffect(() => {
+    const cfg = getSalaryConfig(form.salaryPeriod);
+    setForm((f) => ({
+      ...f,
+      salaryMin: Math.min(Math.max(f.salaryMin, 0), cfg.max),
+      salaryMax: Math.min(Math.max(f.salaryMax, 0), cfg.max),
+    }));
+  }, [form.salaryPeriod]);
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -254,8 +275,8 @@ export default function EditVacancyPage() {
                 <input
                   type="range"
                   min={0}
-                  max={SALARY_MAX}
-                  step={SALARY_STEP}
+                  max={getSalaryConfig(form.salaryPeriod).max}
+                  step={getSalaryConfig(form.salaryPeriod).step}
                   value={form.salaryMin}
                   onChange={(e) => setSalaryMin(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800"
@@ -269,8 +290,8 @@ export default function EditVacancyPage() {
                 <input
                   type="range"
                   min={0}
-                  max={SALARY_MAX}
-                  step={SALARY_STEP}
+                  max={getSalaryConfig(form.salaryPeriod).max}
+                  step={getSalaryConfig(form.salaryPeriod).step}
                   value={form.salaryMax}
                   onChange={(e) => setSalaryMax(Number(e.target.value))}
                   className="w-full h-2 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-800"
