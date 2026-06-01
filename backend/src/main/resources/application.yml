@@ -4,10 +4,12 @@ server:
 spring:
   application:
     name: security-co
+  config:
+    import: vault://
   datasource:
-    url: jdbc:postgresql://${DB_HOST:localhost}:5432/${DB_NAME:postgres}
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:1Ll0calPost9res}
+    url: jdbc:postgresql://${DB_HOST}:5432/${DB_NAME}
+    username: ${db.username}
+    password: ${db.password}
   jpa:
     hibernate:
       ddl-auto: validate
@@ -27,21 +29,25 @@ spring:
     vault:
       enabled: ${VAULT_ENABLED:true}
       uri: ${VAULT_ADDR:http://localhost:8200}
-      token: ${VAULT_TOKEN:dev-token}
+      authentication: APPROLE
+      app-role:
+        role-id: ${VAULT_ROLE_ID}
+        secret-id: ${VAULT_SECRET_ID}
+        role: security-co-app
       kv:
         enabled: true
         backend: secret
         default-context: security-co
+        version: 2
 
 minio:
   endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
   external-endpoint: ${MINIO_EXTERNAL_ENDPOINT:}
-  access-key: ${MINIO_ACCESS_KEY:minioadmin}
-  secret-key: ${MINIO_SECRET_KEY:minioadmin}
-  bucket-name: ${MINIO_BUCKET:security-co}
+  access-key: ${minio.access-key}
+  secret-key: ${minio.secret-key}
+  bucket-name: ${MINIO_BUCKET}
 
 jwt:
-  secret: ${JWT_SECRET:default-secret-key-change-me-in-production-default-secret-key-change-me-in-production}
   access-token-expiry: 900000      # 15 minutes
   refresh-token-expiry: 604800000  # 7 days
 

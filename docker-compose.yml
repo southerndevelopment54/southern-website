@@ -3,9 +3,9 @@ services:
     image: postgres:16
     container_name: postgres-db
     environment:
-      POSTGRES_DB: ${DB_NAME:-postgres}
-      POSTGRES_USER: ${DB_USERNAME:-postgres}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:-1Ll0calPost9res}
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
@@ -16,8 +16,8 @@ services:
     image: minio/minio:latest
     container_name: minio-server
     environment:
-      MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
     ports:
       - "9000:9000"
@@ -31,24 +31,35 @@ services:
     cap_add:
       - IPC_LOCK
     environment:
-      VAULT_DEV_ROOT_TOKEN_ID: dev-token
-      VAULT_DEV_LISTEN_ADDRESS: 0.0.0.0:8200
+      VAULT_LOCAL_CONFIG: |
+        {
+          "storage": {
+            "file": {
+              "path": "/vault/file"
+            }
+          },
+          "listener": {
+            "tcp": {
+              "address": "0.0.0.0:8200",
+              "tls_disable": true
+            }
+          },
+          "ui": true,
+          "api_addr": "http://vault:8200"
+        }
     ports:
-      - "8200:8200"
+      - "127.0.0.1:8200:8200"
     volumes:
       - /home/southern-tech-workstation/vault-data:/vault/file
+      - ./vault/config:/vault/config
+    command: server
 
-  vault-seed:
-    image: hashicorp/vault:1.15
-    container_name: vault-seed
-    depends_on:
-      - vault
-    environment:
-      VAULT_ADDR: http://vault:8200
-      VAULT_TOKEN: dev-token
-      JWT_SECRET: ${JWT_SECRET}
-    command: ["/bin/sh", "-c", "sleep 3 && vault kv put secret/security-co jwt.secret=\"$JWT_SECRET\" && echo 'Vault seeded successfully.'"]
-    restart: "no"
+  # vault-seed is disabled in production mode.
+  # After Vault is initialized and unsealed, run:
+  #   ./vault/init-vault.sh
+  # vault-seed:
+  #   image: hashicorp/vault:1.15
+  #   ...
 
   backend:
     build: ./backend
@@ -57,24 +68,21 @@ services:
       - "8080:8080"
     environment:
       - DB_HOST=postgres
-      - DB_NAME=${DB_NAME:-postgres}
-      - DB_USERNAME=${DB_USERNAME:-postgres}
-      - DB_PASSWORD=${DB_PASSWORD:-1Ll0calPost9res}
+      - DB_NAME=${DB_NAME}
       - MINIO_ENDPOINT=http://minio:9000
       - MINIO_EXTERNAL_ENDPOINT=http://localhost:9000
-      - MINIO_ACCESS_KEY=minioadmin
-      - MINIO_SECRET_KEY=minioadmin
-      - MINIO_BUCKET=security-co
-      - VAULT_ENABLED=true
-      - VAULT_ADDR=http://vault:8200
-      - VAULT_TOKEN=dev-token
+      - MINIO_BUCKET=${MINIO_BUCKET}
+      - VAULT_ENABLED=${VAULT_ENABLED}
+      - VAULT_ADDR=${VAULT_ADDR}
+      - VAULT_ROLE_ID=${VAULT_ROLE_ID}
+      - VAULT_SECRET_ID=${VAULT_SECRET_ID}
     depends_on:
       postgres:
         condition: service_started
       minio:
         condition: service_started
-      vault-seed:
-        condition: service_completed_successfully
+      vault:
+        condition: service_started
 
   frontend:
     build:

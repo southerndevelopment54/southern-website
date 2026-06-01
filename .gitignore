@@ -38,3 +38,9 @@ Initial-plan.md
 *.p12
 *.jks
 *.keystore
+
+# Vault sensitive files
+VAULT_CREDENTIALS.md
+vault/init-output.txt
+vault/init-script-output.txt
+backups/
