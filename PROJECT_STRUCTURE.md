@@ -23,7 +23,7 @@ This is a **monorepo** containing a public-facing company website with an admin 
 | Framework | Spring Boot 3.2.5 |
 | ORM | Spring Data JPA (Hibernate) |
 | Security | Spring Security + JWT (jjwt 0.12.5) |
-| Secrets | HashiCorp Vault |
+| Secrets | Environment Variables (`.env`) |
 | Database | PostgreSQL 16 |
 | Migrations | Flyway |
 | Object Storage | MinIO |
@@ -46,7 +46,7 @@ This is a **monorepo** containing a public-facing company website with an admin 
 |---------|-------|
 | Database | `postgres:16` |
 | Object Storage | `minio/minio:latest` |
-| Secrets | `hashicorp/vault:1.15` |
+| Secrets | `.env` file (never committed) |
 | Reverse Proxy | `nginx:alpine` |
 
 ---
@@ -125,7 +125,7 @@ southern-website/
 │   └── nginx.infra.conf              # Local dev proxy (host.docker.internal)
 │
 ├── docker-compose.yml                # Full stack (all services)
-├── docker-compose.infra.yml          # Infrastructure only (DB + MinIO + Vault + Nginx)
+├── docker-compose.infra.yml          # Infrastructure only (DB + MinIO + Nginx)
 ├── .env / .env.example
 └── Initial-plan.md
 ```
@@ -142,10 +142,8 @@ Launches **8 containers** for production-like local deployment:
 |---|---------|---------------|-------|---------|
 | 1 | `postgres` | `postgres-db` | `5432:5432` | PostgreSQL 16 database |
 | 2 | `minio` | `minio-server` | `9000:9000`, `9001:9001` | S3-compatible object storage |
-| 3 | `vault` | `vault-server` | `8200:8200` | HashiCorp Vault (dev mode) |
-| 4 | `vault-seed` | `vault-seed` | — | One-shot init script that seeds Vault with JWT secret |
-| 5 | `backend` | `backend-app` | `8080:8080` | Spring Boot API server |
-| 6 | `frontend` | `frontend-app` | `3000:3000` | Next.js standalone server |
+| 3 | `backend` | `backend-app` | `8080:8080` | Spring Boot API server |
+| 4 | `frontend` | `frontend-app` | `3000:3000` | Next.js standalone server |
 | 7 | `nginx` | `nginx-local` | `80:80` | Reverse proxy to backend/frontend |
 
 #### Nginx Routing (`nginx.conf`)
@@ -170,9 +168,7 @@ Port 80
 | `MINIO_ACCESS_KEY` | `minioadmin` |
 | `MINIO_SECRET_KEY` | `minioadmin` |
 | `MINIO_BUCKET` | `security-co` |
-| `VAULT_ENABLED` | `true` |
-| `VAULT_ADDR` | `http://vault:8200` |
-| `VAULT_TOKEN` | `dev-token` |
+
 
 #### Frontend Environment (in Docker)
 
@@ -191,9 +187,7 @@ For **local development** where you run backend/frontend manually on your host:
 |---|---------|---------------|-------|---------|
 | 1 | `postgres` | `postgres-db` | `5432:5432` | PostgreSQL 16 |
 | 2 | `minio` | `minio-server` | `9000:9000`, `9001:9001` | MinIO |
-| 3 | `vault` | `vault-server` | `8200:8200` | Vault |
-| 4 | `vault-seed` | `vault-seed` | — | Seed script |
-| 5 | `nginx` | `nginx-local` | `80:80` | Proxy to `host.docker.internal` |
+| 3 | `nginx` | `nginx-local` | `80:80` | Proxy to `host.docker.internal` |
 
 Nginx routes to `host.docker.internal:8080` (backend) and `host.docker.internal:3000` (frontend).
 
@@ -460,11 +454,6 @@ DB_NAME=postgres
 DB_USERNAME=postgres
 DB_PASSWORD=your-db-password
 
-# Vault
-VAULT_ENABLED=true
-VAULT_ADDR=http://localhost:8200
-VAULT_TOKEN=dev-token
-
 # MinIO
 MINIO_ENDPOINT=http://localhost:9000
 MINIO_EXTERNAL_ENDPOINT=http://localhost:9000
@@ -497,7 +486,7 @@ npm run build              # Production build
 
 ### Docker
 ```bash
-# Infrastructure only (DB + MinIO + Vault + Nginx)
+# Infrastructure only (DB + MinIO + Nginx)
 docker compose -f docker-compose.infra.yml up -d
 
 # Full stack (everything)
@@ -520,11 +509,10 @@ docker compose up -d
 
 ### 13.2 Secret Management
 
-- **HashiCorp Vault**: JWT signing secret is **not hardcoded** in `application.yml`
-  - Stored in Vault at path `secret/jwt`
-  - Retrieved at runtime via Vault Java driver
-  - Dev mode uses `VAULT_TOKEN=dev-token`; production should use AppRole or Kubernetes auth
-- **Environment Isolation**: Database credentials, MinIO keys, and Vault address are injected via environment variables (`.env` file)
+- **Environment Variables**: All secrets are stored in `.env` and injected into containers
+  - `.env` is gitignored and never committed
+  - `chmod 600 .env` ensures only the owner can read it
+- **No Hardcoded Secrets**: JWT signing key, database passwords, and MinIO credentials are never in source code
 
 ### 13.3 Rate Limiting
 
@@ -574,4 +562,3 @@ In-memory `ConcurrentHashMap`-based rate limiter to prevent abuse:
 
 - **Docker Secrets**: Production should mount secrets via Docker Secrets or Kubernetes Secrets instead of plain `.env` files
 - **HTTPS**: Production Nginx should terminate TLS with valid certificates
-- **Vault Production Mode**: Disable Vault dev mode; enable TLS, seal/unseal workflow, and proper authentication backends
