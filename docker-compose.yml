@@ -34,47 +34,6 @@ services:
           cpus: '1.0'
           memory: 512M
 
-  vault:
-    image: hashicorp/vault:1.15
-    container_name: vault-server
-    restart: unless-stopped
-    cap_add:
-      - IPC_LOCK
-    environment:
-      VAULT_LOCAL_CONFIG: |
-        {
-          "storage": {
-            "file": {
-              "path": "/vault/file"
-            }
-          },
-          "listener": {
-            "tcp": {
-              "address": "0.0.0.0:8200"
-            }
-          },
-          "ui": true,
-          "api_addr": "http://vault:8200"
-        }
-    # Localhost-only — NOT exposed to the public internet
-    ports:
-      - "127.0.0.1:8200:8200"
-    volumes:
-      - /home/southern-tech-workstation/vault-data:/vault/file
-      - ./vault/config:/vault/config
-    deploy:
-      resources:
-        limits:
-          cpus: '0.5'
-          memory: 256M
-
-  # vault-seed is disabled in production mode.
-  # After Vault is initialized and unsealed, run:
-  #   ./vault/init-vault.sh
-  # vault-seed:
-  #   image: hashicorp/vault:1.15
-  #   ...
-
   backend:
     build: ./backend
     container_name: backend-app
@@ -83,20 +42,19 @@ services:
     environment:
       - DB_HOST=postgres
       - DB_NAME=${DB_NAME}
+      - DB_USERNAME=${DB_USERNAME}
+      - DB_PASSWORD=${DB_PASSWORD}
       - MINIO_ENDPOINT=http://minio:9000
       - MINIO_EXTERNAL_ENDPOINT=http://localhost:9000
       - MINIO_BUCKET=${MINIO_BUCKET}
-      - VAULT_ENABLED=${VAULT_ENABLED}
-      - VAULT_ADDR=${VAULT_ADDR}
-      - VAULT_ROLE_ID=${VAULT_ROLE_ID}
-      - VAULT_SECRET_ID=${VAULT_SECRET_ID}
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - JWT_SECRET=${JWT_SECRET}
       - JAVA_OPTS=-Xms512m -Xmx768m
     depends_on:
       postgres:
         condition: service_started
       minio:
-        condition: service_started
-      vault:
         condition: service_started
     deploy:
       resources:

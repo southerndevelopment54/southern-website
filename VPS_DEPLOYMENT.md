@@ -44,7 +44,7 @@ Internet
        │
    ┌───┴───┐
    ▼       ▼
-Frontend  Backend ──► Postgres, MinIO, Vault (internal only)
+Frontend  Backend ──► Postgres, MinIO (internal only)
 (3000)    (8080)
 ```
 
@@ -56,7 +56,6 @@ Frontend  Backend ──► Postgres, MinIO, Vault (internal only)
 | minio | `9000:9000`, `9001:9001` | *(none)* | Internal only |
 | backend | `8080:8080` | *(none)* | Internal only |
 | frontend | `3000:3000` | *(none)* | Internal only |
-| vault | `127.0.0.1:8200:8200` | `127.0.0.1:8200:8200` | Localhost only |
 
 ---
 
@@ -90,7 +89,6 @@ sudo usermod -aG docker $USER
 # Create data directories
 sudo mkdir -p /home/southern-tech-workstation/postgres-data
 sudo mkdir -p /home/southern-tech-workstation/minio-data
-sudo mkdir -p /home/southern-tech-workstation/vault-data
 sudo mkdir -p /var/www/certbot
 ```
 
@@ -110,7 +108,7 @@ nano .env
 
 **Fill in ALL values in `.env`:**
 ```
-DB_NAME=securityco
+DB_NAME=southern_website_db
 DB_USERNAME=postgres
 DB_PASSWORD=<strong-password>
 MINIO_ACCESS_KEY=<strong-key>
@@ -118,14 +116,17 @@ MINIO_SECRET_KEY=<strong-secret>
 MINIO_BUCKET=securityco-files
 MINIO_ROOT_USER=<admin-user>
 MINIO_ROOT_PASSWORD=<strong-password>
-VAULT_ENABLED=true
-VAULT_ADDR=http://vault:8200
 JWT_SECRET=<64-char-random-string>
 ```
 
 **Generate a strong JWT secret:**
 ```bash
 openssl rand -base64 48
+```
+
+Or run the provided script:
+```bash
+./init-secrets.sh
 ```
 
 ---
@@ -139,72 +140,7 @@ sed -i 's/YOUR_DOMAIN/yourdomain.com/g' nginx/nginx.conf
 
 ---
 
-## Step 4: Start Infrastructure
-
-```bash
-# Start postgres, minio, and vault
-docker compose up -d postgres minio vault
-
-# Wait a few seconds
-sleep 5
-```
-
----
-
-## Step 5: Initialize Vault
-
-### 5.1 Initialize Vault (Generates 5 unseal keys + 1 root token)
-```bash
-docker exec -it vault-server vault operator init -key-shares=5 -key-threshold=3
-```
-
-**CRITICAL:** Save the output securely. You will see:
-- 5 Unseal Keys
-- 1 Initial Root Token
-
-Store these in a password manager. **Never commit them to Git.**
-
-### 5.2 Unseal Vault (run 3 times with 3 different keys)
-```bash
-docker exec -it vault-server vault operator unseal <key-1>
-docker exec -it vault-server vault operator unseal <key-2>
-docker exec -it vault-server vault operator unseal <key-3>
-```
-
-### 5.3 Verify Vault is unsealed
-```bash
-docker exec -e VAULT_ADDR=http://127.0.0.1:8200 vault-server vault status
-```
-Look for `Sealed: false`.
-
----
-
-## Step 6: Seed Vault Secrets
-
-```bash
-# Set your root token as environment variable
-export VAULT_TOKEN=<your-root-token>
-
-# Run the initialization script
-./vault/init-vault.sh
-```
-
-The script will:
-1. Enable KV v2 secrets engine
-2. Create policies
-3. Enable AppRole authentication
-4. Generate Role ID and Secret ID
-5. Store your application secrets in Vault
-
-**After the script completes, add these to your `.env`:**
-```
-VAULT_ROLE_ID=<role-id-from-output>
-VAULT_SECRET_ID=<secret-id-from-output>
-```
-
----
-
-## Step 7: Obtain SSL Certificate
+## Step 4: Obtain SSL Certificate
 
 ```bash
 # Create webroot directory
@@ -225,7 +161,7 @@ sudo ls /etc/letsencrypt/live/yourdomain.com/
 
 ---
 
-## Step 8: Install Certbot Auto-Reload Hook
+## Step 5: Install Certbot Auto-Reload Hook
 
 Certbot auto-renews certificates, but nginx doesn't know the files changed. This hook reloads nginx after every renewal:
 
@@ -243,10 +179,10 @@ sudo certbot renew --dry-run
 
 ---
 
-## Step 9: Start Full Stack
+## Step 6: Deploy
 
 ```bash
-# Start ALL services (including nginx with SSL)
+# Start the full stack
 docker compose up -d
 
 # Watch logs to confirm everything starts correctly
@@ -268,7 +204,28 @@ curl -I -k https://yourdomain.com
 
 ---
 
-## Step 10: Security Verification
+## Step 7: Create Admin User
+
+The first time you deploy, create an admin user in the database:
+
+```bash
+# Run the admin creation script
+./create_admin.sh
+```
+
+Or manually insert into PostgreSQL:
+```bash
+docker exec -it postgres-db psql -U ${DB_USERNAME} -d ${DB_NAME} \
+  -c "INSERT INTO admin_users (username, password, role, created_at) VALUES ('admin', '\$2a\$10\$...', 'ADMIN', NOW());"
+```
+
+Default admin credentials (if you used `create_admin.sh`):
+- Username: `admin`
+- Password: `rS7IJg2CO2OOPvIp`
+
+---
+
+## Step 8: Security Verification
 
 Run these checks on your VPS:
 
@@ -277,9 +234,9 @@ Run these checks on your VPS:
 sudo ss -tlnp | grep -E ':(5432|9000|9001|8080|3000)'
 # Expected: NOTHING (empty output)
 
-# 2. Verify only nginx (80/443) and vault-localhost are listening
-sudo ss -tlnp | grep -E ':(80|443|8200)'
-# Expected: Shows nginx on 80 and 443, vault on 127.0.0.1:8200
+# 2. Verify only nginx (80/443) is listening publicly
+sudo ss -tlnp | grep -E ':(80|443)'
+# Expected: Shows nginx on 80 and 443
 
 # 3. Verify actuator lockdown
 curl -k https://yourdomain.com/actuator/health
@@ -294,9 +251,6 @@ curl -k https://yourdomain.com/actuator/metrics
 # 4. Verify rate limiting (run quickly 6 times)
 for i in {1..6}; do curl -k https://yourdomain.com/api/contact; done
 # Expected: Last request returns 503 (rate limited)
-
-# 5. Check SSL certificate
-echo | openssl s_client -servername yourdomain.com -connect yourdomain.com:443 2>/dev/null | openssl x509 -noout -dates
 ```
 
 ---
@@ -305,14 +259,8 @@ echo | openssl s_client -servername yourdomain.com -connect yourdomain.com:443 2
 
 Since internal services have no public ports, use these methods:
 
-### Vault UI
-```bash
-# From your local machine
-ssh -L 8200:localhost:8200 user@your-vps-ip
-# Then open http://localhost:8200 in your browser
-```
-
 ### PostgreSQL
+
 ```bash
 # SSH tunnel from your local machine
 ssh -L 5433:localhost:5432 user@your-vps-ip
@@ -323,6 +271,7 @@ docker exec -it postgres-db psql -U <db-user> -d <db-name>
 ```
 
 ### MinIO Console
+
 ```bash
 # SSH tunnel from your local machine
 ssh -L 9001:localhost:9001 user@your-vps-ip
@@ -330,6 +279,7 @@ ssh -L 9001:localhost:9001 user@your-vps-ip
 ```
 
 ### Backend Logs / Debug
+
 ```bash
 # View logs
 docker compose logs -f backend
@@ -374,31 +324,15 @@ sudo ls /etc/letsencrypt/live/yourdomain.com/
 sudo certbot certonly --webroot -w /var/www/certbot -d yourdomain.com
 ```
 
-### Vault is sealed after VPS reboot
-**Expected behavior.** Production Vault seals on restart.
-
-**Fix:**
+### Backend fails to start
+**Check logs:**
 ```bash
-# Unseal with 3 keys
-docker exec -e VAULT_ADDR=http://127.0.0.1:8200 vault-server vault operator unseal <key-1>
-docker exec -e VAULT_ADDR=http://127.0.0.1:8200 vault-server vault operator unseal <key-2>
-docker exec -e VAULT_ADDR=http://127.0.0.1:8200 vault-server vault operator unseal <key-3>
+docker compose logs -f backend
 ```
 
-Consider setting up [Auto-Unseal](https://developer.hashicorp.com/vault/docs/concepts/seal#auto-unseal) via AWS/GCP KMS for hands-off operation.
-
-### Backend fails to start with "Vault connection refused"
-**Cause:** Vault is still sealed or not started.
-
-**Fix:**
-```bash
-# Check Vault status
-docker exec -e VAULT_ADDR=http://127.0.0.1:8200 vault-server vault status
-
-# If sealed, unseal it
-# Then restart backend
-docker compose restart backend
-```
+Common causes:
+- `.env` values missing or incorrect
+- PostgreSQL not ready (wait 10 seconds, then restart backend)
 
 ### "Cannot connect to postgres from my local machine"
 **Expected.** PostgreSQL is internal-only.
@@ -427,10 +361,9 @@ docker exec nginx-local nginx -s reload
 
 | Service | CPU | Memory |
 |---------|-----|--------|
-| postgres | 1.0 | 512M |
+| postgres | 1.0 | 1G |
 | minio | 1.0 | 512M |
-| vault | 0.5 | 256M |
-| backend | 1.0 | 1G (JVM heap: 256m–512m) |
+| backend | 1.0 | 1G (JVM heap: 512m–768m) |
 | frontend | 1.0 | 512M |
 | nginx | 0.5 | 256M |
 
@@ -449,10 +382,9 @@ deploy:
 
 ## Security Checklist (Before Going Live)
 
-- [ ] `docker-compose.yml` has NO ports except nginx (80/443) and vault (127.0.0.1:8200)
+- [ ] `docker-compose.yml` has NO ports except nginx (80/443)
 - [ ] `nginx/nginx.conf` has `YOUR_DOMAIN` replaced with real domain
 - [ ] `.env` is properly configured and NOT in git (`git status` shows ignored)
-- [ ] `VAULT_CREDENTIALS.md` (with unseal keys) is NOT in git
 - [ ] SSL certificate is active (visit `https://yourdomain.com`, check padlock)
 - [ ] HTTP redirects to HTTPS
 - [ ] `/actuator/health` works publicly

@@ -40,7 +40,7 @@ cat > "$ENV_FILE" <<EOF
 # -----------------------------------------------------------------------------
 # Database (PostgreSQL)
 # -----------------------------------------------------------------------------
-DB_NAME=postgres
+DB_NAME=southern_website_db
 DB_USERNAME=postgres
 DB_PASSWORD=$(openssl rand -base64 32)
 
@@ -58,15 +58,7 @@ MINIO_ROOT_USER=$(openssl rand -base64 24 | tr -dc 'a-zA-Z0-9' | head -c 20)
 MINIO_ROOT_PASSWORD=$(openssl rand -base64 48 | tr -dc 'a-zA-Z0-9' | head -c 40)
 
 # -----------------------------------------------------------------------------
-# HashiCorp Vault
-# -----------------------------------------------------------------------------
-VAULT_ENABLED=true
-VAULT_ADDR=http://vault:8200
-VAULT_TOKEN=$(openssl rand -base64 32 | tr -dc 'a-zA-Z0-9' | head -c 32)
-
-# -----------------------------------------------------------------------------
-# JWT (used by vault-seed script to store secret in Vault)
-# Must be at least 64 characters for HS512 algorithm.
+# JWT (must be at least 64 characters for HS512 algorithm)
 # -----------------------------------------------------------------------------
 JWT_SECRET=$(openssl rand -base64 64 | tr -dc 'a-zA-Z0-9' | head -c 64)
 EOF
@@ -82,7 +74,6 @@ echo "  - MINIO_ACCESS_KEY:   $(grep '^MINIO_ACCESS_KEY=' "$ENV_FILE" | cut -d= 
 echo "  - MINIO_SECRET_KEY:   $(grep '^MINIO_SECRET_KEY=' "$ENV_FILE" | cut -d= -f2 | wc -c) chars"
 echo "  - MINIO_ROOT_USER:    $(grep '^MINIO_ROOT_USER=' "$ENV_FILE" | cut -d= -f2 | wc -c) chars"
 echo "  - MINIO_ROOT_PASS:    $(grep '^MINIO_ROOT_PASSWORD=' "$ENV_FILE" | cut -d= -f2 | wc -c) chars"
-echo "  - VAULT_TOKEN:        $(grep '^VAULT_TOKEN=' "$ENV_FILE" | cut -d= -f2 | wc -c) chars"
 echo "  - JWT_SECRET:         $(grep '^JWT_SECRET=' "$ENV_FILE" | cut -d= -f2 | wc -c) chars"
 echo ""
 echo "Next steps:"
