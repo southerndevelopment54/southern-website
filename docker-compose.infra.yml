@@ -1,6 +1,14 @@
-# Infrastructure only — for local development
+# =============================================================================
+# INFRASTRUCTURE ONLY — FOR LOCAL DEVELOPMENT
+# =============================================================================
+# ⚠️ SECURITY WARNING: This file exposes postgres (5432), minio (9000/9001),
+# and vault (8200) on 0.0.0.0. NEVER use this file on a public VPS.
+#
+# For VPS deployment, use docker-compose.yml (production-hardened).
+#
 # Run: docker compose -f docker-compose.infra.yml up -d
-# Then start backend and frontend manually on your host machine
+# Then start backend and frontend manually on your host machine.
+# =============================================================================
 
 services:
   postgres:

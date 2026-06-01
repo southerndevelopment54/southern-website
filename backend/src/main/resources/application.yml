@@ -28,7 +28,7 @@ spring:
   cloud:
     vault:
       enabled: ${VAULT_ENABLED:true}
-      uri: ${VAULT_ADDR:http://localhost:8200}
+      uri: ${VAULT_ADDR:http://vault:8200}
       authentication: APPROLE
       app-role:
         role-id: ${VAULT_ROLE_ID}

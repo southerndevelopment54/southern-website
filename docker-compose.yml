@@ -2,32 +2,42 @@ services:
   postgres:
     image: postgres:16
     container_name: postgres-db
+    restart: unless-stopped
     environment:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       PGDATA: /var/lib/postgresql/data/pgdata
-    ports:
-      - "5432:5432"
+    # NO host port binding — internal Docker network only
     volumes:
       - /home/southern-tech-workstation/postgres-data:/var/lib/postgresql/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
 
   minio:
     image: minio/minio:latest
     container_name: minio-server
+    restart: unless-stopped
     environment:
       MINIO_ROOT_USER: ${MINIO_ROOT_USER}
       MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
     command: server /data --console-address ":9001"
-    ports:
-      - "9000:9000"
-      - "9001:9001"
+    # NO host port bindings — internal Docker network only
     volumes:
       - /home/southern-tech-workstation/minio-data:/data
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
 
   vault:
     image: hashicorp/vault:1.15
     container_name: vault-server
+    restart: unless-stopped
     cap_add:
       - IPC_LOCK
     environment:
@@ -40,19 +50,23 @@ services:
           },
           "listener": {
             "tcp": {
-              "address": "0.0.0.0:8200",
-              "tls_disable": true
+              "address": "0.0.0.0:8200"
             }
           },
           "ui": true,
           "api_addr": "http://vault:8200"
         }
+    # Localhost-only — NOT exposed to the public internet
     ports:
       - "127.0.0.1:8200:8200"
     volumes:
       - /home/southern-tech-workstation/vault-data:/vault/file
       - ./vault/config:/vault/config
-    command: server
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
 
   # vault-seed is disabled in production mode.
   # After Vault is initialized and unsealed, run:
@@ -64,8 +78,8 @@ services:
   backend:
     build: ./backend
     container_name: backend-app
-    ports:
-      - "8080:8080"
+    restart: unless-stopped
+    # NO host port binding — accessed only via nginx reverse proxy
     environment:
       - DB_HOST=postgres
       - DB_NAME=${DB_NAME}
@@ -76,6 +90,7 @@ services:
       - VAULT_ADDR=${VAULT_ADDR}
       - VAULT_ROLE_ID=${VAULT_ROLE_ID}
       - VAULT_SECRET_ID=${VAULT_SECRET_ID}
+      - JAVA_OPTS=-Xms512m -Xmx768m
     depends_on:
       postgres:
         condition: service_started
@@ -83,6 +98,11 @@ services:
         condition: service_started
       vault:
         condition: service_started
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
 
   frontend:
     build:
@@ -90,23 +110,37 @@ services:
       args:
         API_URL: http://backend:8080
     container_name: frontend-app
-    ports:
-      - "3000:3000"
+    restart: unless-stopped
+    # NO host port binding — accessed only via nginx reverse proxy
     environment:
       - NODE_ENV=production
     depends_on:
       backend:
         condition: service_started
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 512M
 
   nginx:
     image: nginx:alpine
     container_name: nginx-local
+    restart: unless-stopped
     ports:
       - "80:80"
+      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
     depends_on:
       backend:
         condition: service_started
       frontend:
         condition: service_started
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
