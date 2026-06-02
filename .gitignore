@@ -43,6 +43,11 @@ nginx/ssl-local/
 *.jks
 *.keystore
 
+# Local utility scripts (not for public repo)
+scripts/generate-bcrypt-hash.sh
+*.pyc
+__pycache__/
+
 # Vault sensitive files
 VAULT_CREDENTIALS.md
 vault/init-output.txt
