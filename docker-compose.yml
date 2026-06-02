@@ -10,7 +10,7 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     # NO host port binding — internal Docker network only
     volumes:
-      - /home/southern-tech-workstation/postgres-data:/var/lib/postgresql/data
+      - ${HOME}/postgres-data:/var/lib/postgresql/data
     deploy:
       resources:
         limits:
@@ -27,7 +27,7 @@ services:
     command: server /data --console-address ":9001"
     # NO host port bindings — internal Docker network only
     volumes:
-      - /home/southern-tech-workstation/minio-data:/data
+      - ${HOME}/minio-data:/data
     deploy:
       resources:
         limits:

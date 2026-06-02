@@ -87,8 +87,8 @@ sudo apt install -y docker.io docker-compose-plugin git certbot
 sudo usermod -aG docker $USER
 
 # Create data directories
-sudo mkdir -p /home/southern-tech-workstation/postgres-data
-sudo mkdir -p /home/southern-tech-workstation/minio-data
+sudo mkdir -p "$HOME/postgres-data"
+sudo mkdir -p "$HOME/minio-data"
 sudo mkdir -p /var/www/certbot
 ```
 
@@ -219,9 +219,11 @@ docker exec -it postgres-db psql -U ${DB_USERNAME} -d ${DB_NAME} \
   -c "INSERT INTO admin_users (username, password, role, created_at) VALUES ('admin', '\$2a\$10\$...', 'ADMIN', NOW());"
 ```
 
-Default admin credentials (if you used `create_admin.sh`):
+Default admin credentials (seeded by Flyway migration):
 - Username: `admin`
-- Password: `rS7IJg2CO2OOPvIp`
+- Password: `admin123`
+
+> **Important:** Change this password immediately after first login via the admin dashboard.
 
 ---
 

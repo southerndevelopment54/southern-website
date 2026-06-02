@@ -61,8 +61,8 @@ echo ""
 echo "[2/7] Preparing directories..."
 sudo mkdir -p /var/www/certbot
 sudo mkdir -p /etc/letsencrypt/renewal-hooks/deploy
-sudo mkdir -p /home/southern-tech-workstation/postgres-data
-sudo mkdir -p /home/southern-tech-workstation/minio-data
+sudo mkdir -p "$HOME/postgres-data"
+sudo mkdir -p "$HOME/minio-data"
 
 # ---------------------------------------------------------------------------
 # Step 3: Configure nginx domain
