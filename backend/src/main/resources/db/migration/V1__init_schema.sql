@@ -204,11 +204,6 @@ CREATE INDEX IF NOT EXISTS idx_clients_active ON clients(is_active);
 -- 4. Seed data
 -- --------------------------------------------------------
 
--- Default admin (password: admin123)
-INSERT INTO admin_users (username, password_hash, full_name, email, role, is_active)
-VALUES ('admin', '$2a$10$N9qo8uLOickgx2ZMRZoMyeIjZAgcfl7p92ldGxad68LJZdL17lhWy', 'System Administrator', 'admin@securityco.hk', 'admin', true)
-ON CONFLICT (username) DO NOTHING;
-
 -- Education levels
 INSERT INTO education_levels (level_name, display_order) VALUES
     ('小學', 10),

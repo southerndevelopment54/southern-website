@@ -204,26 +204,32 @@ curl -I -k https://yourdomain.com
 
 ---
 
-## Step 7: Create Admin User
+## Step 7: Admin User (Auto-Created on Startup)
 
-The first time you deploy, create an admin user in the database:
+The backend automatically creates the admin user on first startup from your `.env` file. No manual script needed.
 
+**1. Generate a BCrypt hash (on any machine with Python):**
 ```bash
-# Run the admin creation script
-./create_admin.sh
+python3 -c "import bcrypt; print(bcrypt.hashpw(b'your-password', bcrypt.gensalt(rounds=12)).decode())"
 ```
 
-Or manually insert into PostgreSQL:
+**2. Add to `.env`:**
 ```bash
-docker exec -it postgres-db psql -U ${DB_USERNAME} -d ${DB_NAME} \
-  -c "INSERT INTO admin_users (username, password, role, created_at) VALUES ('admin', '\$2a\$10\$...', 'ADMIN', NOW());"
+ADMIN_USERNAME=admin
+ADMIN_PASSWORD_HASH=$2a$12$...
+ADMIN_EMAIL=admin@yourdomain.com
 ```
 
-Default admin credentials (seeded by Flyway migration):
-- Username: `admin`
-- Password: `admin123`
+**3. Deploy — the backend creates the admin automatically:**
+```bash
+docker compose up -d
+```
 
-> **Important:** Change this password immediately after first login via the admin dashboard.
+> **Note:** The database migration includes a fallback `admin` / `admin123` account. The auto-initializer creates your custom admin if `ADMIN_PASSWORD_HASH` is set. If you ever need to change the password, update `ADMIN_PASSWORD_HASH` in `.env`, delete the admin user from the database, and restart the backend:
+> ```bash
+> docker exec -it postgres-db psql -U postgres -d southern_website_db -c "DELETE FROM admin_users WHERE username='admin';"
+> docker compose restart backend
+> ```
 
 ---
 
