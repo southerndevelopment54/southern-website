@@ -28,9 +28,12 @@ build/
 # Docker volumes
 docker-volumes/
 
-# Sensitive documents
+# Sensitive documents / internal notes
 Agent.md
 Initial-plan.md
+AGENTS.md
+PROJECT_STRUCTURE.md
+VPS_DEPLOYMENT.md
 
 # Certificates / keys
 *.pem
