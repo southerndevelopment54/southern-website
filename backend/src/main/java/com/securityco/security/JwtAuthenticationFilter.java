@@ -54,8 +54,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 }
             }
-        } catch (JwtException e) {
-            // Token is expired or invalid — continue without authentication.
+        } catch (Exception e) {
+            // Token is expired, invalid, or malformed — continue without authentication.
             // Spring Security will handle authorization (401/403) downstream.
         }
         filterChain.doFilter(request, response);

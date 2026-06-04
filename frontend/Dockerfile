@@ -1,12 +1,14 @@
 # Dependencies stage
 FROM node:20-alpine AS deps
 WORKDIR /app
+RUN npm install -g npm@latest
 COPY package*.json ./
 RUN npm ci
 
 # Build stage
 FROM node:20-alpine AS builder
 WORKDIR /app
+RUN npm install -g npm@latest
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 ARG API_URL
@@ -16,6 +18,7 @@ RUN npm run build
 # Run stage
 FROM node:20-alpine AS runner
 WORKDIR /app
+RUN npm install -g npm@latest
 ENV NODE_ENV=production
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/.next/standalone ./
