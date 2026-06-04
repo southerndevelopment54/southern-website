@@ -263,7 +263,7 @@ export const translations = {
       },
     },
     hero: {
-      slide1: { title: "专业保安服务", description: "我们提供顶级的商业及住宅保安服务，确保您的财产和人员安全无虞。", button: "了解更多" },
+      slide1: { title: "专业保安服务", description: "我们提供的商业及住宅保安服务，确保您的财产和人员安全无虞。", button: "了解更多" },
       slide2: { title: "活动安全保障", description: "为各类大型活动提供全面的安全规划及执行，让活动顺利进行。", button: "查询服务" },
       slide3: { title: "个人安全护卫", description: "专业护卫团队为您提供贴身保护，确保您在任何场合都能安心无忧。", button: "立即预约" },
       slide4: { title: "保安系统服务", description: "我们提供先进的保安系统设计及安装服务，包括闭路电视、门禁系统、警报系统等，为您的物业提供全天候的智能安全保护。", button: "了解更多" },
@@ -514,7 +514,7 @@ export const translations = {
     hero: {
       slide1: {
         title: "Professional Security Services",
-        description: "We provide top-tier commercial and residential security services to ensure the safety of your property and personnel.",
+        description: "We provide professional commercial and residential security services to ensure the safety of your property and personnel.",
         button: "Learn More",
       },
       slide2: {
