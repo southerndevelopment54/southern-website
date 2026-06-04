@@ -85,7 +85,7 @@ services:
           memory: 512M
 
   nginx:
-    image: nginx:alpine
+    build: ./nginx
     container_name: nginx-local
     restart: unless-stopped
     ports:
