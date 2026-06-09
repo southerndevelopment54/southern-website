@@ -118,7 +118,7 @@ export default function ServicesTabs() {
                     }
                     className="inline-flex items-center gap-2 mt-6 bg-primary hover:bg-primary-light text-white px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 hover:gap-3"
                   >
-                    相關項目
+                    {t.services.relatedProjects}
                     <ChevronRight size={18} />
                   </a>
                 )}

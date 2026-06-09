@@ -53,6 +53,7 @@ export const translations = {
       badge: "服務範圍",
       title: "全面保安服務",
       referenceExperience: "合作客戶",
+      relatedProjects: "參考項目",
       description: "我們提供多元化的專業保安服務，滿足不同客戶的獨特需求，為您的財產及人員提供全方位保護。",
       items: [
         { title: "商廈及商場保安", description: "為寫字樓、商業中心及商場提供門禁管理、巡邏監察及訪客登記等全面保安服務，確保商業環境安全有序。", detail: "我們為商業大廈、寫字樓、商業中心及商場提供全面的保安服務，涵蓋門禁管理、訪客登記、巡邏監察及緊急應變等。我們的保安團隊均持有專業牌照，具備豐富的商業物業管理經驗，能夠有效預防及處理各類安全事件，確保商業環境安全有序，讓租戶及訪客安心工作及出入。\n\n我們會根據每座商業大廈及商場的獨特需求，量身定制保安方案，並提供24小時控制中心支援。無論日間繁忙時段或夜間非辦公時間，我們的團隊時刻保持高度警覺，為您的物業提供無間斷的專業守護。" },
@@ -302,6 +303,7 @@ export const translations = {
       badge: "服务范围",
       title: "全面保安服務範圍",
       referenceExperience: "合作客户",
+      relatedProjects: "参考项目",
       description: "我们提供多元化的专业保安服务，满足不同客户的独特需求，为您的财产及人员提供全方位保护。",
       items: [
         { title: "商厦及商场保安", description: "为写字楼、商业中心及商场提供门禁管理、巡逻监察及访客登记等全面保安服务，确保商业环境安全有序。", detail: "我们为商业大厦、写字楼、商业中心及商场提供全面的保安服务，涵盖门禁管理、访客登记、巡逻监察及紧急应变等。我们的保安团队均持有专业牌照，具备丰富的商业物业管理经验，能够有效预防及处理各类安全事件，确保商业环境安全有序，让租户及访客安心工作及出入。\n\n我们会根据每座商业大厦及商场的独特需求，量身定制保安方案，并提供24小时控制中心支援。无论日间繁忙时段或夜间非办公时间，我们的团队时刻保持高度警觉，为您的物业提供无间断的专业守护。" },
@@ -539,7 +541,7 @@ export const translations = {
       pageTitle: "Company Profile",
       companyName: "Southern Services Limited",
       intro: "Established in 1997, Southern is a leading provider of professional security and property management solutions across Hong Kong.",
-      description: "Southern employs over 500 licensed security professionals, delivering comprehensive protection across commercial buildings, residential estates, industrial facilities, retail malls, logistics warehouses, schools, construction sites, and major event venues. Our integrated service portfolio covers access control, patrol operations, event security, close protection, and mobile patrols — tailored to meet the diverse needs of every client.\n\nAll our security personnel undergo rigorous training at government-recognised institutions and hold valid security permits and relevant certifications. Beyond foundational training, we provide targeted on-the-job development to ensure our team possesses the specialised skills required for each operational environment, consistently upholding the highest service standards.\n\nOur 24/7 Central Monitoring Centre is staffed by senior officers utilising advanced communication and dispatch systems to oversee all post operations in real time. Regular spot inspections by our supervisory team ensure strict adherence to service protocols, providing clients with uninterrupted professional support around the clock.\n\nWith over two decades of industry leadership, Southern continues to set the benchmark for security excellence in Hong Kong — combining professional expertise, innovative solutions, and an unwavering client-focused philosophy to create safer, more secure environments for businesses and communities alike.",
+      description: "Southern employs over 500 licensed security professionals, delivering comprehensive protection across commercial buildings, residential estates, industrial facilities, retail malls, logistics warehouses, schools, construction sites, and major event venues. Our services cover access control, patrol operations, event security, close protection, and mobile patrols.\n\nAll personnel undergo rigorous training at government-recognised institutions and hold valid security permits. We also provide targeted on-the-job development to ensure our team possesses the skills required for each environment.\n\nOur 24/7 Central Monitoring Centre oversees all operations in real time. Regular spot inspections by our supervisory team ensure strict adherence to service protocols.\n\nWith over two decades of experience, Southern continues to set the benchmark for security excellence in Hong Kong.",
       imageAlt: "Southern (Security & Property Management) Co., Ltd.",
       vision: {
         title: "Building Trust and a Sustainable Future",
@@ -567,6 +569,7 @@ export const translations = {
       badge: "Our Services",
       title: "Comprehensive Security Services",
       referenceExperience: "Reference Experience",
+      relatedProjects: "Reference Sites",
       description: "We offer diverse professional security services tailored to meet the unique needs of every client, providing all-round protection for your property and people.",
       items: [
         { title: "Commercial Building & Shopping Mall Security", description: "Comprehensive security services for offices, commercial centres and shopping malls, including access control, patrol monitoring, and visitor registration.", detail: "We provide comprehensive security services for commercial buildings, office towers, business centres and shopping malls, covering access control, visitor registration, patrol monitoring, and emergency response. Our security team holds professional licenses and has extensive experience in commercial property management, effectively preventing and handling all types of security incidents to ensure a safe and orderly business environment, allowing tenants and visitors to work and move about with peace of mind.\n\nWe tailor security services to the unique needs of each commercial building and shopping mall and provide 24-hour control centre support. Whether during busy daytime hours or quiet nighttime periods, our team remains highly vigilant to provide uninterrupted professional protection for your property." },

@@ -54,9 +54,9 @@ export default function AboutPage() {
 
           {/* Image + Description */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-12">
-            <div className="grid lg:grid-cols-2 items-start">
+            <div className="grid lg:grid-cols-2">
               {/* Image */}
-              <div className="aspect-[4/3] lg:aspect-[4/3]">
+              <div className="h-full min-h-[300px]">
                 <img
                   src="/images/southern front desk.png"
                   alt={t.about.imageAlt}
