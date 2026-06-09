@@ -54,9 +54,9 @@ export default function AboutPage() {
 
           {/* Image + Description */}
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden mb-12">
-            <div className="grid lg:grid-cols-2">
+            <div className="grid lg:grid-cols-2 items-start">
               {/* Image */}
-              <div className="aspect-[4/3] lg:aspect-auto">
+              <div className="aspect-[4/3] lg:aspect-[4/3]">
                 <img
                   src="/images/southern front desk.png"
                   alt={t.about.imageAlt}
@@ -70,7 +70,7 @@ export default function AboutPage() {
                   {t.about.pageTitle}
                 </h2>
                 <p className="text-dark leading-relaxed mb-5">
-                  <strong className="font-bold">{t.about.companyName}</strong>
+                  <strong className="font-bold">{t.about.companyName}</strong>{" "}
                   {t.about.intro}
                 </p>
                 <div className="space-y-4 text-gray-600 leading-relaxed whitespace-pre-line">

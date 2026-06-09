@@ -599,10 +599,10 @@ export const translations = {
     },
     clientShowcase: {
       badge: "Our Track Record",
-      title: "Clients & Partner Projects",
-      description: "Over the years, Southern has provided professional security services for numerous renowned enterprises and landmark projects, earning wide recognition in the industry.",
+      title: "Clients & Client Sites",
+      description: "Over the years, Southern has provided professional security services for numerous renowned enterprises and landmark sites, earning wide recognition in the industry.",
       tabClients: "Partner Clients",
-      tabSites: "Partner Projects",
+      tabSites: "Client Sites",
       tabAll: "All",
       tabKey: "Key Projects",
       tabCommercial: "Commercial & Malls",
