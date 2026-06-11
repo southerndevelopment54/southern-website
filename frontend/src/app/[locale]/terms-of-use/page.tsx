@@ -205,7 +205,9 @@ export default function TermsOfUsePage() {
                   : "如您對本使用條款有任何疑問，請透過以下方式聯絡我們："}
               </p>
               <ul className="list-disc pl-5 space-y-1">
+                {/* TODO: Re-enable when email is ready
                 <li>Email: info@southern-security.hk</li>
+                */}
                 <li>
                   {isEn ? "Phone: " : isCn ? "电话：" : "電話："}+852 2762 8128
                 </li>

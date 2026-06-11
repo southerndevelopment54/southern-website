@@ -51,10 +51,13 @@ export default function Footer() {
                 <Phone className="w-4 h-4 text-primary flex-shrink-0" />
                 <span>+852 2762 8128</span>
               </div>
+              {/* TODO: Re-enable when email is ready
               <div className="flex items-center gap-2 text-sm text-white/60">
                 <Mail className="w-4 h-4 text-primary flex-shrink-0" />
                 <span>info@southern-security.hk</span>
               </div>
+              */}
+
               <div className="flex items-start gap-2 text-sm text-white/60">
                 <MapPin className="w-4 h-4 text-primary flex-shrink-0 mt-0.5" />
                 <span>{t.contact.addressValue}</span>

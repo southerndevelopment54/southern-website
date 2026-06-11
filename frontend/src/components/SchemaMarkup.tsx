@@ -57,7 +57,7 @@ export default function SchemaMarkup({ type = "home" }: SchemaMarkupProps) {
     description: description,
     foundingDate: "1997",
     telephone: "+852-2762-8128",
-    email: "info@southern-security.hk",
+    // email: "info@southern-security.hk", // TODO: Re-enable when email is ready
     address: address,
     sameAs: [],
   };
@@ -92,7 +92,7 @@ export default function SchemaMarkup({ type = "home" }: SchemaMarkupProps) {
     logo: logo,
     image: logo,
     telephone: "+852-2762-8128",
-    email: "info@southern-security.hk",
+    // email: "info@southern-security.hk", // TODO: Re-enable when email is ready
     address: address,
     geo: geo,
     openingHoursSpecification: [
