@@ -188,7 +188,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
               <div className="grid md:grid-cols-2 gap-6">
                 {/* Name */}
                 <div className="space-y-2">
-                  <Label htmlFor="name">{t.contact.name}</Label>
+                  <Label htmlFor="name">{t.contact.name} <span className="text-red-500">*</span></Label>
                   <Input
                     id="name"
                     value={form.name}
@@ -212,7 +212,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
                 {/* Phone */}
                 <div className="space-y-2">
-                  <Label htmlFor="phone">{t.contact.phoneLabel}</Label>
+                  <Label htmlFor="phone">{t.contact.phoneLabel} <span className="text-red-500">*</span></Label>
                   <Input
                     id="phone"
                     type="tel"
@@ -225,7 +225,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
                 {/* Email */}
                 <div className="space-y-2">
-                  <Label htmlFor="email">{t.contact.emailLabel}</Label>
+                  <Label htmlFor="email">{t.contact.emailLabel} <span className="text-red-500">*</span></Label>
                   <Input
                     id="email"
                     type="email"
@@ -259,7 +259,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
               {/* Message */}
               <div className="space-y-2">
-                <Label htmlFor="message">{t.contact.message}</Label>
+                <Label htmlFor="message">{t.contact.message} <span className="text-red-500">*</span></Label>
                 <Textarea
                   id="message"
                   value={form.message}

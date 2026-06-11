@@ -1,6 +1,7 @@
 import { Header, Footer } from "@/components/sections";
 import CareersSection from "@/components/sections/CareersSection";
 import VacanciesSection from "@/components/sections/VacanciesSection";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const metadata = {
   title: "加入我們 | 南方(警衛及管業)有限公司",
@@ -10,6 +11,7 @@ export const metadata = {
 export default function CareersPage() {
   return (
     <main className="min-h-screen">
+      <SchemaMarkup type="careers" />
       <Header />
       <div className="pt-16">
         <CareersSection />

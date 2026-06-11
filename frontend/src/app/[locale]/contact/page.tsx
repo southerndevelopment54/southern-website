@@ -1,5 +1,6 @@
 import { Header, Footer } from "@/components/sections";
 import GetInTouch from "@/components/sections/GetInTouch";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const metadata = {
   title: "聯絡我們 | 南方(警衛及管業)有限公司",
@@ -9,6 +10,7 @@ export const metadata = {
 export default function ContactPage() {
   return (
     <main className="min-h-screen">
+      <SchemaMarkup type="contact" />
       <Header />
       <div className="pt-16">
         <GetInTouch showForm />

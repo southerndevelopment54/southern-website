@@ -1,5 +1,13 @@
 import { I18nProvider } from "@/components/I18nProvider";
 import { Toaster } from "@/components/ui/toaster";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  icons: {
+    icon: "/white-ssl-logo-transparent-bg.png",
+    apple: "/white-ssl-logo-transparent-bg.png",
+  },
+};
 
 export async function generateStaticParams() {
   return [{ locale: "zh" }, { locale: "en" }, { locale: "cn" }];

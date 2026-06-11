@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Header, Footer } from "@/components/sections";
+import SchemaMarkup from "@/components/SchemaMarkup";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 import {
@@ -38,6 +39,7 @@ export default function AboutPage() {
 
   return (
     <main className="min-h-screen">
+      <SchemaMarkup type="about" />
       <Header />
 
       <section className="pt-36 md:pt-44 pb-20 bg-off-white">

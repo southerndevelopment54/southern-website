@@ -1,5 +1,6 @@
 import { Header, Footer } from "@/components/sections";
 import ClientShowcase from "@/components/sections/ClientShowcase";
+import SchemaMarkup from "@/components/SchemaMarkup";
 
 export const metadata = {
   title: "客戶及合作項目 | 南方警衛",
@@ -9,6 +10,7 @@ export const metadata = {
 export default function ClientsPage() {
   return (
     <main className="min-h-screen">
+      <SchemaMarkup type="clients" />
       <Header />
       <div className="pt-16">
         <ClientShowcase />
