@@ -10,7 +10,7 @@ export default function ContactPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <div className="pt-32">
+      <div className="pt-16">
         <GetInTouch showForm />
       </div>
       <Footer />

@@ -18,6 +18,7 @@ export default function HeroCarousel() {
     {
       id: 1,
       image: "/images/ICC_image.jpg",
+      mobileImage: "/images/ICC_mobile.png",
       title: t.hero.slide1.title,
       description: t.hero.slide1.description,
       buttonText: t.hero.slide1.button,
@@ -26,6 +27,7 @@ export default function HeroCarousel() {
     {
       id: 2,
       image: "/images/security_guard_in_event.png",
+      mobileImage: "/images/event_mobile.png",
       title: t.hero.slide2.title,
       description: t.hero.slide2.description,
       buttonText: t.hero.slide2.button,
@@ -34,6 +36,7 @@ export default function HeroCarousel() {
     {
       id: 3,
       image: "/images/body_guard_banner.png",
+      mobileImage: "/images/personal_body_guard_mobile.png",
       title: t.hero.slide3.title,
       description: t.hero.slide3.description,
       buttonText: t.hero.slide3.button,
@@ -42,6 +45,7 @@ export default function HeroCarousel() {
     {
       id: 4,
       image: "/images/cctv_camera_cut.png",
+      mobileImage: "/images/cctv_mobile.png",
       title: t.hero.slide4.title,
       description: t.hero.slide4.description,
       buttonText: t.hero.slide4.button,
@@ -88,14 +92,23 @@ export default function HeroCarousel() {
           {slides.map((slide) => (
             <div key={slide.id} className="embla__slide relative">
               <div className="relative h-[500px] md:h-[600px] lg:h-[700px]">
-                {/* Background Image */}
+                {/* Background Image - Desktop */}
                 {slide.image ? (
                   <div
-                    className="absolute inset-0 bg-cover bg-center"
+                    className="absolute inset-0 bg-cover bg-center hidden md:block"
                     style={{ backgroundImage: `url(${slide.image})` }}
                   />
                 ) : (
-                  <div className="absolute inset-0 bg-dark" />
+                  <div className="absolute inset-0 bg-dark hidden md:block" />
+                )}
+                {/* Background Image - Mobile */}
+                {slide.mobileImage ? (
+                  <div
+                    className="absolute inset-0 bg-cover bg-center block md:hidden"
+                    style={{ backgroundImage: `url(${slide.mobileImage})` }}
+                  />
+                ) : (
+                  <div className="absolute inset-0 bg-dark block md:hidden" />
                 )}
                 {/* Overlay */}
                 <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />

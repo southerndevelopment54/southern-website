@@ -40,7 +40,7 @@ export default function AboutPage() {
     <main className="min-h-screen">
       <Header />
 
-      <section className="pt-28 md:pt-36 pb-20 bg-off-white">
+      <section className="pt-36 md:pt-44 pb-20 bg-off-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Page Header */}
           <div className="text-center max-w-2xl mx-auto mb-12">

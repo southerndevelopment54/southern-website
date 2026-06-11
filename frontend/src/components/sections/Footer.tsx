@@ -119,10 +119,10 @@ export default function Footer() {
               <span className="whitespace-nowrap">&copy; {year} {t.header.companyName}.</span> <span>{t.footer.copyright}</span>
             </p>
             <div className="flex gap-6">
-              <a href="#" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              <a href={`/${locale}/privacy-policy`} className="text-sm text-white/40 hover:text-white/60 transition-colors">
                 {t.footer.privacy}
               </a>
-              <a href="#" className="text-sm text-white/40 hover:text-white/60 transition-colors">
+              <a href={`/${locale}/terms-of-use`} className="text-sm text-white/40 hover:text-white/60 transition-colors">
                 {t.footer.terms}
               </a>
             </div>
