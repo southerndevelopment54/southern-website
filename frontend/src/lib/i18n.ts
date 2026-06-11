@@ -111,7 +111,6 @@ export const translations = {
       benefits: [
         "具競爭力的薪酬待遇",
         "完善在職培訓及晉升機會",
-        "醫療保險及強積金供款",
         "有薪年假及法定假期",
       ] as string[],
       cta: "立即申請",
@@ -361,7 +360,6 @@ export const translations = {
       benefits: [
         "具竞争力的薪酬待遇",
         "完善在職培训及晋升機會",
-        "医疗保险及强积金供款",
         "有薪年假及法定假期",
       ] as string[],
       cta: "立即申请",
@@ -627,7 +625,6 @@ export const translations = {
       benefits: [
         "Competitive Remuneration",
         "Comprehensive On-the-job Training & Promotion",
-        "Medical Insurance & MPF Contributions",
         "Paid Annual Leave & Statutory Holidays",
       ] as string[],
       cta: "Apply Now",
