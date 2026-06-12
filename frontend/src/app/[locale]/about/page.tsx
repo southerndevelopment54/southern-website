@@ -204,7 +204,7 @@ export default function AboutPage() {
                     e.stopPropagation();
                     goToPrev();
                   }}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-dark shadow-lg flex items-center justify-center transition-colors"
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white border border-white/40 shadow-lg flex items-center justify-center transition-colors"
                   aria-label="Previous letter"
                 >
                   <ChevronLeft className="w-6 h-6" />
@@ -218,7 +218,7 @@ export default function AboutPage() {
                     e.stopPropagation();
                     goToNext();
                   }}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-dark shadow-lg flex items-center justify-center transition-colors"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/50 hover:bg-black/70 text-white border border-white/40 shadow-lg flex items-center justify-center transition-colors"
                   aria-label="Next letter"
                 >
                   <ChevronRight className="w-6 h-6" />
