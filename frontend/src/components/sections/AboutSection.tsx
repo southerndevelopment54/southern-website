@@ -43,7 +43,7 @@ export default function AboutSection() {
             <div className="space-y-4 text-gray-600 leading-relaxed mb-8">
               <p>
                 {locale !== "en"
-                  ? "南方(警衛及管業)有限公司自1997年創立以來，一直為香港各界提供專業可靠的綜合保安服務。現有逾500名持牌保安人員，服務網絡遍及商業大廈、住宅屋苑、零售商場、工業設施、物流倉庫、學校、建築地盤及大型活動場地，涵蓋門禁管理、巡邏監察、活動安保及個人護衛等多元化服務。"
+                  ? "南方(警衛及管業)有限公司自1997年創立以來，一直為香港各界提供專業可靠的綜合保安服務。現有逾500名持牌保安人員，服務網絡遍及商業大廈、住宅屋苑、零售商場、工業設施、物流倉庫、學校、建築地盤及大型活動場地，涵蓋門禁管理、巡邏監察、活動保安及個人護衛等多元化服務。"
                   : "Established in 1997, Southern is a leading provider of professional security and property management solutions across Hong Kong. With over 500 licensed security professionals, we protect commercial buildings, residential estates, retail malls, industrial facilities, logistics warehouses, schools, construction sites, and major events — delivering integrated services from access control and patrol operations to event security and close protection."}
               </p>
               <p>

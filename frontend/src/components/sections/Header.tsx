@@ -45,7 +45,7 @@ export default function Header() {
           : "bg-white shadow-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-6 xl:px-8">
         {/* Main header row */}
         <div
           className={`flex items-center justify-between transition-all duration-300 ${
@@ -53,35 +53,35 @@ export default function Header() {
           }`}
         >
           {/* Logo and Company Name */}
-          <a href={`/${locale}`} className="flex items-center gap-4">
+          <a href={`/${locale}`} className="flex items-center gap-3">
             <Image
               src="/white-ssl-logo-transparent-bg.png"
               alt={t.header.companyName}
               width={128}
               height={128}
               className={`object-contain transition-all duration-300 ${
-                scrolled ? "w-20 h-20" : "w-28 h-28"
+                scrolled ? "w-20 h-20" : "w-24 h-24"
               }`}
             />
             <span
-              className={`text-dark font-bold tracking-wide hidden lg:block transition-all duration-300 ${
-                scrolled ? "text-lg" : "text-xl"
-              }`}
+              className={`text-dark font-bold tracking-wide transition-all duration-300 whitespace-nowrap ${
+                locale === "en" ? "hidden xl:block" : "hidden lg:block"
+              } ${scrolled ? "text-base" : "text-lg"}`}
             >
               {t.header.companyName}
             </span>
           </a>
 
           {/* Desktop Navigation + Language Switcher */}
-          <div className="hidden md:flex items-center gap-6">
-            <nav className="flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4 lg:gap-5">
+            <nav className="flex items-center gap-4 lg:gap-5">
               {navItems.map((item) => {
                 const active = isActive(item.href);
                 return (
                   <a
                     key={item.href}
                     href={item.href}
-                    className={`text-base font-medium tracking-wide transition-colors duration-200 pb-1 border-b-2 ${
+                    className={`text-base font-medium tracking-wide transition-colors duration-200 pb-1 border-b-2 whitespace-nowrap ${
                       active
                         ? "text-primary border-primary"
                         : "text-dark/70 border-transparent hover:text-primary hover:border-primary"
