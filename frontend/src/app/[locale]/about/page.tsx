@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Header, Footer } from "@/components/sections";
 import SchemaMarkup from "@/components/SchemaMarkup";
 import { useI18n } from "@/components/I18nProvider";
@@ -24,6 +25,22 @@ export default function AboutPage() {
   const { t } = useI18n();
   const [letters, setLetters] = useState<AppreciationLetter[]>([]);
   const [selectedLetter, setSelectedLetter] = useState<AppreciationLetter | null>(null);
+
+  const selectedIndex = selectedLetter
+    ? letters.findIndex((l) => l.id === selectedLetter.id)
+    : -1;
+
+  const goToPrev = () => {
+    if (selectedIndex > 0) {
+      setSelectedLetter(letters[selectedIndex - 1]);
+    }
+  };
+
+  const goToNext = () => {
+    if (selectedIndex < letters.length - 1) {
+      setSelectedLetter(letters[selectedIndex + 1]);
+    }
+  };
 
   const regionImages = [
     { src: "/images/hongkongislandlogo.png", color: "bg-blue-50 text-blue-700 border-blue-200" },
@@ -168,16 +185,46 @@ export default function AboutPage() {
       </section>
 
       <Dialog open={selectedLetter !== null} onOpenChange={() => setSelectedLetter(null)}>
-        <DialogContent className="max-w-4xl w-[95vw] p-2 bg-white border-0">
+        <DialogContent className="w-[min(95vw,800px)] p-0 bg-white border-0 overflow-hidden shadow-2xl">
           <DialogTitle className="sr-only">
             {selectedLetter?.date}
           </DialogTitle>
           {selectedLetter !== null && (
-            <img
-              src={selectedLetter.imageUrl}
-              alt={selectedLetter.date}
-              className="w-full h-auto max-h-[85vh] object-contain rounded-lg"
-            />
+            <div className="relative aspect-[1/1.414] bg-white">
+              <img
+                src={selectedLetter.imageUrl}
+                alt={selectedLetter.date}
+                className="w-full h-full object-contain"
+              />
+
+              {/* Previous Button */}
+              {selectedIndex > 0 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToPrev();
+                  }}
+                  className="absolute left-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-dark shadow-lg flex items-center justify-center transition-colors"
+                  aria-label="Previous letter"
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+              )}
+
+              {/* Next Button */}
+              {selectedIndex < letters.length - 1 && (
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    goToNext();
+                  }}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/90 hover:bg-white text-dark shadow-lg flex items-center justify-center transition-colors"
+                  aria-label="Next letter"
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              )}
+            </div>
           )}
         </DialogContent>
       </Dialog>

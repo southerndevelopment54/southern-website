@@ -90,7 +90,7 @@ export default function EditAppreciationLetterPage() {
     <div className="max-w-2xl mx-auto">
       <div className="flex items-center gap-4 mb-6">
         <Link href="/admin/appreciation-letters" className="text-sm text-primary">&larr; 返回</Link>
-        <h1 className="text-2xl font-bold">編輯客戶嘉許信</h1>
+        <h1 className="text-2xl font-bold">編輯嘉許信</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border shadow-sm">

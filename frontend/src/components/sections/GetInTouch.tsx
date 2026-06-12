@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Phone, Mail, MapPin, Clock, Send } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useI18n } from "@/components/I18nProvider";
 import { useToast } from "@/hooks/use-toast";
 import { Input } from "@/components/ui/input";
@@ -18,8 +19,11 @@ import {
 import { api } from "@/lib/api";
 
 export default function GetInTouch({ showForm = false }: { showForm?: boolean }) {
-  const { t } = useI18n();
+  const { locale, t } = useI18n();
+  const pathname = usePathname();
   const { toast } = useToast();
+
+  const isContactPage = pathname.startsWith(`/${locale}/contact`);
 
   const [form, setForm] = useState({
     name: "",
@@ -49,13 +53,21 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
       icon: MapPin,
       label: t.contact.address,
       value: t.contact.addressValue,
-      href: "#",
+      href: isContactPage ? "#our-location" : `/${locale}/contact#our-location`,
+      onClick: (e: React.MouseEvent<HTMLAnchorElement>) => {
+        if (isContactPage) {
+          e.preventDefault();
+          document.getElementById("our-location")?.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      },
     },
     {
       icon: Clock,
       label: t.contact.hours,
       value: t.contact.officeHours,
       href: "#",
+      disabled: true,
+      onClick: (e: React.MouseEvent<HTMLAnchorElement>) => e.preventDefault(),
     },
   ];
 
@@ -137,14 +149,15 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
                 <a
                   key={index}
                   href={detail.href}
-                  className="flex items-start gap-4 group"
+                  onClick={detail.onClick}
+                  className={`flex items-start gap-4 ${detail.disabled ? "cursor-default" : "group"}`}
                 >
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0 group-hover:bg-primary group-hover:text-white text-primary transition-colors duration-200">
                     <detail.icon className="w-5 h-5" />
                   </div>
                   <div>
                     <div className="text-sm text-gray-500 mb-0.5">{detail.label}</div>
-                    <div className="text-dark font-semibold group-hover:text-primary transition-colors">
+                    <div className={`font-semibold transition-colors ${detail.disabled ? "text-dark" : "text-dark group-hover:text-primary"}`}>
                       <span>{detail.value}</span>
                     </div>
                   </div>
@@ -156,7 +169,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
 
         {/* Map Section — only on Contact page */}
         {showForm && (
-          <div className="mb-20">
+          <div id="our-location" className="mb-20 scroll-mt-40">
             <h3 className="text-2xl md:text-3xl font-bold text-dark mb-6 text-center">
               {t.contact.ourLocation}
             </h3>

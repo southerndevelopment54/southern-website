@@ -33,8 +33,8 @@ export const translations = {
         description: "南方自1997年創立以來，始終堅持以客為本、以誠為先的經營理念。我們深信，真正的保安服務不僅僅是守護物業與人員的安全，更是與每一位客戶建立長期互信的合作關係。\n\n二十餘年來，我們以專業、誠信及創新的精神，持續提升服務質素，為社會締造更安全、更可持續的未來。無論是商業大廈、住宅屋苑、工業設施或大型活動，我們都以同樣的熱誠與專注，為客戶提供最可靠的保安服務。",
       },
       letters: {
-        badge: "客戶嘉許",
-        title: "客戶嘉許信",
+        badge: "嘉許信",
+        title: "客戶/警方嘉許信",
       },
       coverage: {
         title: "服務遍及全港",
@@ -64,7 +64,7 @@ export const translations = {
         { title: "個人護衛服務", description: "為企業高管、名人及有特殊安全需要的個人提供專業貼身護衛，確保人身安全。", detail: "我們為貴賓及有特殊安全需要的個人提供專業的貼身護衛服務。我們的護衛人員均經過嚴格的專業訓練，具備敏銳的觀察力及應變能力，能夠在任何場合確保受護衛人員的人身安全，同時保持低調及專業。\n\n在每次護衛任務前，我們會進行詳盡的威脅評估及路線規劃，制定周密的應變方案。無論是日常出行、商務會議還是國際差旅，我們的護衛團隊都能提供全天候的貼身保護，讓您安心專注於重要事務。" },
         { title: "保安系統服務", description: "提供先進的保安系統設計及安裝服務，包括閉路電視、門禁系統、警報系統等，為您的物業提供全天候的智能安全保護。", detail: "我們的附屬公司國民警鐘有限公司（CNT Alarm System Company Limited）成立於1992年，總部設於香港新蒲崗五芳街10號新寶中心21樓5-7室。國民警鐘致力為客戶評估需求、提供專業建議、設計解決方案、安裝系統，並持續維護整合系統，以配合客戶的要求及預算。\n\n國民警鐘擁有逾20年業界經驗，為香港保安專業學會會員，並於1995年成為香港警務處警察總部防止罪案科認可承辦商，處理由該科轉介的服務。\n\n我們提供的保安系統服務包括：\n• 門禁管理系統\n• 閉路電視監控系統\n• 防盜警報系統\n• 中央監控系統\n• 停車場管理系統\n• 樓宇自動化系統\n• 公共廣播系統\n• 巡更系統\n• 無線射頻識別系統\n• 中央GPS/GSM監控服務\n• 數碼錄影/網絡系統/IP攝像機方案\n• 車輛追蹤系統" },
         { title: "車隊巡邏服務", description: "配備專業巡邏車隊，於指定區域進行定時及不定時巡邏，確保範圍內安全無虞。", detail: "我們配備專業的巡邏車隊，為商業區、工業區、住宅區及特定區域提供定時及不定時的巡邏服務。巡邏人員配備先進的通訊設備，與24小時控制中心保持緊密聯繫，能夠快速回應任何突發事件，確保巡邏範圍內的安全。\n\n每輛巡邏車均配備GPS定位系統及即時通訊裝置，控制中心可隨時掌握巡邏路線及位置。巡邏人員會詳細記錄每次巡邏情況，並定期向客戶提交報告，讓您全面掌握物業的安全狀況。" },
-        { title: "電話報跟服務", description: "提供24小時電話報更及跟進服務，確保保安人員準時到崗及突發事件即時處理。", detail: "我們提供24小時電話報更及跟進服務，確保各崗位的保安人員準時到崗，並即時處理任何突發事件。我們的控制中心配備先進的通訊系統，能夠實時監察所有崗位的運作狀況，為客戶提供全天候的後勤支援。\n\n我們採用數碼化報更系統，精確記錄每位保安員的到崗時間及巡邏軌跡。如發現任何異常情況，控制中心會立即啟動應變程序，通知相關主管跟進，確保問題得到迅速妥善的處理。" },
+        { title: "電話報跟服務", description: "提供24小時電話報更及跟進服務，確保保安人員準時到崗及突發事件即時處理。", detail: "我們提供24小時電話報更及跟進服務，確保各崗位的保安人員準時到崗，並即時處理任何突發事件。我們的控制中心配備先進的通訊系統，能夠實時監察所有崗位的運作狀況，為客戶提供全天候的後勤支援。\n\n我們採用報更系統，精確記錄每位保安員的到崗時間及巡邏軌跡。如發現任何異常情況，控制中心會立即啟動應變程序，通知相關主管跟進，確保問題得到迅速妥善的處理。" },
       ] as { title: string; description: string; detail: string }[],
     },
     whyChooseUs: {
@@ -81,7 +81,7 @@ export const translations = {
       ] as string[],
     },
     trustedCompanies: {
-      title: "客戶信賴",
+      title: "合作客戶",
       subtitle: "深受眾多知名企業及機構信賴",
     },
     clientShowcase: {
@@ -313,7 +313,7 @@ export const translations = {
         { title: "个人护卫服务", description: "为企业高管、名人及有特殊安全需要的个人提供专业贴身护卫，确保人身安全。", detail: "我们为企业高管、名人、贵宾及有特殊安全需要的个人提供专业的贴身护卫服务。我们的护卫人员均经过严格的专业训练，具备敏锐的观察力及应变能力，能够在任何场合确保受护卫人员的人身安全，同时保持低调及专业。\n\n在每次护卫任务前，我们会进行详尽的威胁评估及路线规划，制定周密的应变方案。无论是日常出行、商务会议还是国际差旅，我们的护卫团队都能提供全天候的贴身保护，让您安心专注于重要事务。" },
         { title: "保安系统服务", description: "提供先进的保安系统设计及安装服务，包括闭路电视、门禁系统、警报系统等，为您的物业提供全天候的智能安全保护。", detail: "我们的附属公司国民警钟有限公司（CNT Alarm System Company Limited）成立于1992年，总部设于香港新蒲岗五芳街10号新宝中心21楼5-7室。国民警钟致力为客户评估需求、提供专业建议、设计解决方案、安装系统，并持续维护整合系统，以配合客户的要求及预算。\n\n国民警钟拥有逾20年业界经验，为香港保安专业学会会员，并于1995年成为香港警务处警察总部防止罪案科认可承办商，处理由该科转介的服务。\n\n我们提供的保安系统服务包括：\n• 门禁管理系统\n• 闭路电视监控系统\n• 防盗警报系统\n• 中央监控系统\n• 停车场管理系统\n• 楼宇自动化系统\n• 公共广播系统\n• 巡更系统\n• 无线射频识别系统\n• 中央GPS/GSM监控服务\n• 数码录像/网络系统/IP摄像机方案\n• 车辆追踪系统" },
         { title: "车队巡逻服务", description: "配备专业巡逻车队，於指定区域进行定时及不定时巡逻，确保范围内安全无虞。", detail: "我们配备专业的巡逻车队，为商业区、工业区、住宅区及特定区域提供定时及不定时的巡逻服务。巡逻人员配备先进的通讯设备，与24小时控制中心保持紧密联系，能够快速回应任何突发事件，确保巡逻范围内的安全。\n\n每辆巡逻车均配备GPS定位系统及即时通讯装置，控制中心可随时掌握巡逻路线及位置。巡逻人员会详细记录每次巡逻情况，并定期向客户提交报告，让您全面掌握物业的安全状况。" },
-        { title: "电话报跟服务", description: "提供24小时电话报更及跟进服务，确保保安人员准时到岗及突发事件即时处理。", detail: "我们提供24小时电话报更及跟进服务，确保各岗位的保安人员准时到岗，并即时处理任何突发事件。我们的控制中心配备先进的通讯系统，能够实时监察所有岗位的运作状况，为客户提供全天候的后勤支援。\n\n我们采用数码化报更系统，精确记录每位保安员的到岗时间及巡逻轨迹。如发现任何异常情况，控制中心会立即启动应变程序，通知相关主管跟进，确保问题得到迅速妥善的处理。" },
+        { title: "电话报跟服务", description: "提供24小时电话报更及跟进服务，确保保安人员准时到岗及突发事件即时处理。", detail: "我们提供24小时电话报更及跟进服务，确保各岗位的保安人员准时到岗，并即时处理任何突发事件。我们的控制中心配备先进的通讯系统，能够实时监察所有岗位的运作状况，为客户提供全天候的后勤支援。\n\n我们采用报更系统，精确记录每位保安员的到岗时间及巡逻轨迹。如发现任何异常情况，控制中心会立即启动应变程序，通知相关主管跟进，确保问题得到迅速妥善的处理。" },
       ] as { title: string; description: string; detail: string }[],
     },
     whyChooseUs: {
@@ -330,7 +330,7 @@ export const translations = {
       ] as string[],
     },
     trustedCompanies: {
-      title: "客户信赖",
+      title: "合作客户",
       subtitle: "深受众多知名企业及機構信赖",
     },
     clientShowcase: {
@@ -578,7 +578,7 @@ export const translations = {
         { title: "Personal Protection Services", description: "Close protection services for corporate executives, celebrities, and individuals with special security needs.", detail: "We provide professional close protection services for corporate executives, celebrities, VIPs, and individuals with special security needs. Our protection officers undergo rigorous professional training, possessing keen observation skills and emergency response capabilities, ensuring the personal safety of protected individuals in any situation while maintaining discretion and professionalism.\n\nBefore each protection assignment, we conduct thorough threat assessments and route planning, developing comprehensive contingency plans. Whether for daily commutes, business meetings, or international travel, our protection team provides round-the-clock close security, allowing you to focus on what matters most with complete peace of mind." },
         { title: "Security System Services", description: "Advanced security system design and installation services, including CCTV, access control, alarm systems, and more, offering round-the-clock intelligent protection for your property.", detail: "Our subsidiary, CNT Alarm System Company Limited (國民警鐘有限公司), was established in 1992 with its headquarters located at Room 5-7, 21/F, New Treasure Centre, 10 Ng Fong Street, San Po Kong, Kowloon, Hong Kong. CNT Alarm is committed to assessing customer needs, providing professional advice, designing solutions, installing systems, and continuously maintaining integrated systems to meet client requirements and budgets.\n\nWith over 20 years of industry experience, CNT Alarm is a member of the Hong Kong Security Association. In 1995, CNT Alarm became an approved contractor of the Crime Prevention Bureau, Hong Kong Police Force, handling services referred by the Bureau.\n\nOur security system services include:\n• Access Control Management System\n• CCTV Surveillance System\n• Burglar Alarm System\n• Central Monitoring System\n• Carpark Management System\n• Building Automation System\n• Public Address System\n• Guard Tour System\n• Radio Frequency Identification System\n• Central GPS / GSM Monitoring Service\n• Digital Video Recording / Networking System / IP Camera Solutions System\n• Vehicle Tracking System" },
         { title: "Fleet Patrol Services", description: "Equipped with professional patrol fleets for scheduled and unscheduled patrols in designated areas.", detail: "We are equipped with professional patrol fleets to provide scheduled and unscheduled patrol services for commercial districts, industrial areas, residential areas, and designated zones. Patrol officers are equipped with advanced communication equipment and maintain close contact with our 24-hour control centre, enabling rapid response to any emergencies and ensuring security within the patrol area.\n\nEach patrol vehicle is fitted with GPS tracking and real-time communication devices, allowing the control centre to monitor patrol routes and positions at all times. Patrol officers meticulously record every patrol session and submit regular reports to clients, giving you complete visibility over your property security status." },
-        { title: "Telephone Reporting Service", description: "24-hour telephone reporting and follow-up services to ensure guards are on duty on time and emergencies are handled promptly.", detail: "We provide 24-hour telephone reporting and follow-up services to ensure security personnel arrive at their posts on time and handle any emergencies immediately. Our control centre is equipped with advanced communication systems capable of real-time monitoring of all post operations, providing clients with round-the-clock logistical support.\n\nWe utilise a digital reporting system to accurately record each officer arrival time and patrol trail. Should any abnormalities be detected, the control centre immediately initiates emergency procedures and notifies relevant supervisors for follow-up, ensuring swift and proper resolution of all issues." },
+        { title: "Telephone Reporting Service", description: "24-hour telephone reporting and follow-up services to ensure guards are on duty on time and emergencies are handled promptly.", detail: "We provide 24-hour telephone reporting and follow-up services to ensure security personnel arrive at their posts on time and handle any emergencies immediately. Our control centre is equipped with advanced communication systems capable of real-time monitoring of all post operations, providing clients with round-the-clock logistical support.\n\nWe utilise a reporting system to accurately record each officer arrival time and patrol trail. Should any abnormalities be detected, the control centre immediately initiates emergency procedures and notifies relevant supervisors for follow-up, ensuring swift and proper resolution of all issues." },
       ] as { title: string; description: string; detail: string }[],
     },
     whyChooseUs: {
@@ -595,7 +595,7 @@ export const translations = {
       ] as string[],
     },
     trustedCompanies: {
-      title: "Trusted By",
+      title: "Partner Clients",
       subtitle: "Trusted by numerous renowned enterprises and institutions",
     },
     clientShowcase: {

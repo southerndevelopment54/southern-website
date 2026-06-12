@@ -51,7 +51,7 @@ export default function AdminAppreciationLettersPage() {
   return (
     <div>
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-slate-900">客戶嘉許信</h1>
+        <h1 className="text-2xl font-bold text-slate-900">嘉許信</h1>
         <Link href="/admin/appreciation-letters/new">
           <Button>新增嘉許信</Button>
         </Link>
