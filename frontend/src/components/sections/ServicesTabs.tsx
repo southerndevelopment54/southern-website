@@ -13,7 +13,7 @@ const serviceImages = [
   "/images/airport_warehouse.png",
   "/images/personal_security_guard.png",
   "/images/CNT_services.png",
-  "/images/southern-car-fleet.png",
+  "/images/southern-car-fleet-no-plate.png",
   "/images/security_report.png",
 ];
 
