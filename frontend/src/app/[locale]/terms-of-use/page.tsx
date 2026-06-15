@@ -34,7 +34,7 @@ export default function TermsOfUsePage() {
 
               <p>
                 {isEn
-                  ? "Welcome to the website of Southern (Security & Property Management) Co., Ltd. ('Southern', 'we', 'us', or 'our'). By accessing or using this website, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use this website."
+                  ? "Welcome to the website of Southern Services Limited ('Southern', 'we', 'us', or 'our'). By accessing or using this website, you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use this website."
                   : isCn
                   ? "欢迎浏览南方(警卫及管业)有限公司（「南方」、「我们」）的网站。您一经登入或使用本网站，即表示您同意受本使用条款约束。如您不同意本条款，请勿使用本网站。"
                   : "歡迎瀏覽南方(警衛及管業)有限公司（「南方」、「我們」）的網站。您一經登入或使用本網站，即表示您同意受本使用條款約束。如您不同意本條款，請勿使用本網站。"}

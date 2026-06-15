@@ -13,7 +13,7 @@ export default function SchemaMarkup({ type = "home" }: SchemaMarkupProps) {
   const baseUrl = "https://southernservices.com.hk";
 
   const orgName = isEn
-    ? "Southern (Security & Property Management) Co., Ltd."
+    ? "Southern Services Limited"
     : "南方(警衛及管業)有限公司";
 
   const orgNameAlt = isEn

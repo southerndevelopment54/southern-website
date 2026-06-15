@@ -57,7 +57,7 @@ export default function PrivacyPolicyPage() {
               <ul className="list-disc pl-5 space-y-1">
                 <li>
                   {isEn
-                    ? "Southern (Security & Property Management) Co., Ltd."
+                    ? "Southern Services Limited"
                     : isCn
                     ? "南方(警卫及管业)有限公司"
                     : "南方(警衛及管業)有限公司"}

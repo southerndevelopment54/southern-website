@@ -540,7 +540,7 @@ export const translations = {
       companyName: "Southern Services Limited",
       intro: "Established in 1997, Southern is a leading provider of professional security and property management solutions across Hong Kong.",
       description: "Southern employs over 500 licensed security professionals, delivering comprehensive protection across commercial buildings, residential estates, industrial facilities, retail malls, logistics warehouses, schools, construction sites, and major event venues. Our services cover access control, patrol operations, event security, close protection, and mobile patrols.\n\nAll personnel undergo rigorous training at government-recognised institutions and hold valid security permits. We also provide targeted on-the-job development to ensure our team possesses the skills required for each environment.\n\nOur 24/7 Central Monitoring Centre oversees all operations in real time. Regular spot inspections by our supervisory team ensure strict adherence to service protocols.\n\nWith over two decades of experience, Southern continues to set the benchmark for security excellence in Hong Kong.",
-      imageAlt: "Southern (Security & Property Management) Co., Ltd.",
+      imageAlt: "Southern Services Limited",
       vision: {
         title: "Building Trust and a Sustainable Future",
         subtitle: "",
