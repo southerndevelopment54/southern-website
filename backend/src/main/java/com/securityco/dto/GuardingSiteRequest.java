@@ -30,7 +30,7 @@ public class GuardingSiteRequest {
     @Pattern(regexp = "|香港|九龍|新界", message = "District must be 香港, 九龍, or 新界")
     private String district;
 
-    @Pattern(regexp = "|hotel|serviced_apartment|large_event|retail_shop", message = "Sub-category must be hotel, serviced_apartment, large_event, or retail_shop")
+    @Pattern(regexp = "|hotel|serviced_apartment|large_event|retail_shop|government_infrastructure", message = "Sub-category must be hotel, serviced_apartment, large_event, retail_shop, or government_infrastructure")
     private String subCategory;
 
     private Boolean isFeatured;

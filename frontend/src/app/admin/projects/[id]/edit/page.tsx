@@ -173,6 +173,7 @@ export default function EditProjectPage() {
                 <SelectItem value="serviced_apartment">服務式住宅</SelectItem>
                 <SelectItem value="large_event">大型活動</SelectItem>
                 <SelectItem value="retail_shop">零售店</SelectItem>
+                <SelectItem value="government_infrastructure">政府基建</SelectItem>
               </SelectContent>
             </Select>
           </div>

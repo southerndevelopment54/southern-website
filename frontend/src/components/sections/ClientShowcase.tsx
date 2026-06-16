@@ -30,7 +30,7 @@ interface GuardingSite {
 
 type SiteFilter = "featured" | "commercial" | "residential" | "other";
 type DistrictSubFilter = "all" | "香港" | "九龍" | "新界";
-type OtherSubFilter = "all" | "hotel" | "serviced_apartment" | "large_event" | "retail_shop";
+type OtherSubFilter = "all" | "hotel" | "serviced_apartment" | "large_event" | "retail_shop" | "government_infrastructure";
 
 
 export default function ClientShowcase() {
@@ -55,7 +55,11 @@ export default function ClientShowcase() {
     if (filter && ["featured", "commercial", "residential", "other"].includes(filter)) {
       setSiteFilter(filter);
     }
-    if (subFilter && ["hotel", "serviced_apartment", "large_event", "retail_shop"].includes(subFilter)) {
+    const districtFilter = params.get("district") as DistrictSubFilter | null;
+    if (districtFilter && ["香港", "九龍", "新界"].includes(districtFilter)) {
+      setDistrictSubFilter(districtFilter);
+    }
+    if (subFilter && ["hotel", "serviced_apartment", "large_event", "retail_shop", "government_infrastructure"].includes(subFilter)) {
       setOtherSubFilter(subFilter);
     }
   }, []);
@@ -116,6 +120,7 @@ export default function ClientShowcase() {
     { id: "serviced_apartment", label: t.clientShowcase.tabServicedApartment },
     { id: "large_event", label: t.clientShowcase.tabLargeEvent },
     { id: "retail_shop", label: t.clientShowcase.tabRetailShop },
+    { id: "government_infrastructure", label: t.clientShowcase.tabGovernmentInfrastructure },
   ];
 
   const filteredCommercialSites =
