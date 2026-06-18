@@ -1,0 +1,2 @@
+ALTER TABLE vacancies
+    ADD COLUMN IF NOT EXISTS working_hours VARCHAR(255);

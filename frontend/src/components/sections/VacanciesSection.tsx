@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Clock, DollarSign, ChevronRight, ShieldCheck } from "lucide-react";
+import { MapPin, Clock, ChevronRight, ShieldCheck } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 import VacancyApplyDialog from "@/components/VacancyApplyDialog";
@@ -11,9 +11,12 @@ interface Vacancy {
   id: number;
   title: string;
   salaryDisplay: string;
+  showSalary: boolean;
   jobType: string;
+  workingHours: string;
   district: { districtName: string } | null;
   locationDescription: string;
+  description: string;
   requirements: string[];
   isUrgent: boolean;
   isFeatured: boolean;
@@ -96,10 +99,11 @@ export default function VacanciesSection() {
                   {/* Title & Salary */}
                   <div className="flex items-start justify-between gap-4 mb-4">
                     <h3 className="text-xl font-bold text-dark">{job.title}</h3>
-                    <div className="flex items-center gap-1 text-primary font-bold text-sm whitespace-nowrap">
-                      <DollarSign className="w-4 h-4" />
-                      {job.salaryDisplay || "面議"}
-                    </div>
+                    {job.showSalary && (
+                      <div className="text-primary font-bold text-sm whitespace-nowrap">
+                        {job.salaryDisplay || "面議"}
+                      </div>
+                    )}
                   </div>
 
                   {/* Meta */}
@@ -113,6 +117,21 @@ export default function VacanciesSection() {
                       {job.jobType || "—"}
                     </div>
                   </div>
+
+                  {/* Description */}
+                  {job.description && (
+                    <div className="mb-5 text-sm text-gray-600 whitespace-pre-line">
+                      {job.description}
+                    </div>
+                  )}
+
+                  {/* Working Hours */}
+                  {job.workingHours && (
+                    <div className="mb-5">
+                      <div className="text-sm font-semibold text-dark mb-1">工作時間：</div>
+                      <div className="text-sm text-gray-600 whitespace-pre-line">{job.workingHours}</div>
+                    </div>
+                  )}
 
                   {/* Requirements */}
                   {job.requirements && job.requirements.length > 0 && (

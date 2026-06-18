@@ -20,8 +20,10 @@ public class VacancyResponse {
     private BigDecimal salaryMax;
     private String salaryDisplay;
     private String salaryPeriod;
+    private Boolean showSalary;
     private String employmentType;
     private String jobType;
+    private String workingHours;
     private List<String> requirements;
     private String description;
     private String contactPhone;

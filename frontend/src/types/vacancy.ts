@@ -21,8 +21,10 @@ export interface Vacancy {
   salaryMax: number;
   salaryDisplay: string;
   salaryPeriod: string;
+  showSalary: boolean;
   employmentType: string;
   jobType: string;
+  workingHours: string;
   requirements: string[];
   description: string;
   contactPhone: string;

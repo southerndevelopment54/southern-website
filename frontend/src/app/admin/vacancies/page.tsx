@@ -71,7 +71,13 @@ export default function AdminVacanciesPage() {
                 <td className="px-5 py-4 font-medium text-slate-900">{v.title}</td>
                 <td className="px-5 py-4 text-slate-500">{v.guardType?.typeName || "—"}</td>
                 <td className="px-5 py-4 text-slate-500">{v.district?.districtName || "—"}</td>
-                <td className="px-5 py-4 text-slate-500">{v.salaryDisplay || "—"}</td>
+                <td className="px-5 py-4 text-slate-500">
+                  {v.showSalary === false ? (
+                    <span className="text-slate-400 italic">不公開</span>
+                  ) : (
+                    v.salaryDisplay || "—"
+                  )}
+                </td>
                 <td className="px-5 py-4 text-slate-500">{v.jobType || "—"}</td>
                 <td className="px-5 py-4">
                   {v.isFeatured ? (

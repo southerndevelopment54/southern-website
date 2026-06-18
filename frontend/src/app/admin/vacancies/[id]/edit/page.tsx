@@ -21,11 +21,11 @@ interface VacancyForm {
   salaryMin: number;
   salaryMax: number;
   salaryPeriod: string;
+  showSalary: boolean;
   employmentType: string;
+  workingHours: string;
   requirements: string[];
   description: string;
-  contactPhone: string;
-  contactEmail: string;
   isActive: boolean;
   isFeatured: boolean;
   isUrgent: boolean;
@@ -63,11 +63,11 @@ export default function EditVacancyPage() {
     salaryMin: 15000,
     salaryMax: 25000,
     salaryPeriod: "monthly",
+    showSalary: true,
     employmentType: "full-time",
+    workingHours: "",
     requirements: [""],
     description: "",
-    contactPhone: "",
-    contactEmail: "",
     isActive: true,
     isFeatured: false,
     isUrgent: false,
@@ -95,11 +95,12 @@ export default function EditVacancyPage() {
         salaryMin: v.salaryMin != null ? Math.min(Number(v.salaryMin), cfg.max) : cfg.defaultMin,
         salaryMax: v.salaryMax != null ? Math.min(Number(v.salaryMax), cfg.max) : cfg.defaultMax,
         salaryPeriod: period,
+        showSalary: v.showSalary != null ? v.showSalary : true,
         employmentType: v.employmentType || "full-time",
+        workingHours: v.workingHours || "",
         requirements: reqs,
         description: v.description || "",
-        contactPhone: v.contactPhone || "",
-        contactEmail: v.contactEmail || "",
+
         isActive: v.isActive != null ? v.isActive : true,
         isFeatured: v.isFeatured || false,
         isUrgent: v.isUrgent || false,
@@ -159,7 +160,7 @@ export default function EditVacancyPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!form.title || !form.guardTypeId || !form.districtId || !form.startDate || !form.contactPhone || !form.contactEmail || !form.expiresAt) {
+    if (!form.title || !form.guardTypeId || !form.districtId || !form.startDate || !form.expiresAt) {
       toast({ title: "錯誤", description: "請填寫所有必填欄位", variant: "destructive" });
       return;
     }
@@ -189,11 +190,11 @@ export default function EditVacancyPage() {
         salaryMin: form.salaryMin || null,
         salaryMax: form.salaryMax || null,
         salaryPeriod: form.salaryPeriod,
+        showSalary: form.showSalary,
         employmentType: form.employmentType,
+        workingHours: form.workingHours,
         requirements: requirementsArray,
         description: form.description,
-        contactPhone: form.contactPhone,
-        contactEmail: form.contactEmail,
         isActive: form.isActive,
         isFeatured: form.isFeatured,
         isUrgent: form.isUrgent,
@@ -266,7 +267,11 @@ export default function EditVacancyPage() {
                 </div>
               </div>
             </div>
-            <div className="space-y-3 pt-1">
+            <div className="flex items-center gap-2 pt-1">
+              <input type="checkbox" id="showSalary" checked={form.showSalary} onChange={(e) => setForm({ ...form, showSalary: e.target.checked })} />
+              <Label htmlFor="showSalary" className="text-sm">顯示薪金</Label>
+            </div>
+            <div className={`space-y-3 pt-1 ${form.showSalary ? "" : "opacity-50"}`}>
               <div>
                 <div className="flex items-center justify-between mb-1">
                   <Label className="text-sm">最低薪金</Label>
@@ -323,6 +328,15 @@ export default function EditVacancyPage() {
                 </Select>
               </div>
             </div>
+            <div>
+              <Label>工作時間</Label>
+              <Textarea
+                value={form.workingHours}
+                onChange={(e) => setForm({ ...form, workingHours: e.target.value })}
+                placeholder="例如：星期一至六：19:00至07:00 或 星期一至六：07:00至19:00"
+                rows={3}
+              />
+            </div>
           </div>
         </div>
 
@@ -352,21 +366,6 @@ export default function EditVacancyPage() {
           <div className="mt-4">
             <Label>職位描述</Label>
             <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
-          </div>
-        </div>
-
-        {/* Contact */}
-        <div className="border-b pb-4 mb-2">
-          <h2 className="text-sm font-semibold text-slate-500 mb-3">聯絡</h2>
-          <div className="space-y-3">
-            <div>
-              <Label>聯絡電話 <span className="text-red-500">*</span></Label>
-              <Input value={form.contactPhone} onChange={(e) => setForm({ ...form, contactPhone: e.target.value })} required />
-            </div>
-            <div>
-              <Label>聯絡電郵 <span className="text-red-500">*</span></Label>
-              <Input type="email" value={form.contactEmail} onChange={(e) => setForm({ ...form, contactEmail: e.target.value })} required />
-            </div>
           </div>
         </div>
 

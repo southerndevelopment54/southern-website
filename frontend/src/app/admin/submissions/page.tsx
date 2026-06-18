@@ -213,11 +213,17 @@ export default function AdminSubmissionsPage() {
                           <p className="text-xs text-slate-500">職位編號: #{vacancyDetails.id}</p>
                         </div>
                         <div className="text-right">
-                          <div className="flex items-center gap-1 text-primary font-bold text-sm">
-                            <DollarSign className="w-4 h-4" />
-                            {vacancyDetails.salaryDisplay || "面議"}
-                          </div>
-                          <p className="text-xs text-slate-500">{vacancyDetails.salaryPeriod}</p>
+                          {vacancyDetails.showSalary ? (
+                            <>
+                              <div className="flex items-center gap-1 text-primary font-bold text-sm">
+                                <DollarSign className="w-4 h-4" />
+                                {vacancyDetails.salaryDisplay || "面議"}
+                              </div>
+                              <p className="text-xs text-slate-500">{vacancyDetails.salaryPeriod}</p>
+                            </>
+                          ) : (
+                            <span className="text-xs text-slate-400">薪金不公開</span>
+                          )}
                         </div>
                       </div>
 

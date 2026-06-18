@@ -32,9 +32,13 @@ public class VacancyRequest {
 
     private String salaryPeriod;
 
+    private Boolean showSalary;
+
     private String employmentType;
 
     private String jobType;
+
+    private String workingHours;
 
     private String locationDisplay;
 

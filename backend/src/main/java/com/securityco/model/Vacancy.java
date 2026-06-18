@@ -57,11 +57,17 @@ public class Vacancy {
     @Column(name = "salary_period", length = 20)
     private String salaryPeriod;
 
+    @Column(name = "show_salary")
+    private Boolean showSalary;
+
     @Column(name = "employment_type", length = 20)
     private String employmentType;
 
     @Column(name = "job_type", length = 50)
     private String jobType;
+
+    @Column(name = "working_hours", length = 255)
+    private String workingHours;
 
     @JdbcTypeCode(SqlTypes.JSON)
     @Column(name = "requirements")

@@ -125,10 +125,12 @@ public class VacancyService {
         vacancy.setSalaryMax(request.getSalaryMax());
         vacancy.setSalaryPeriod(request.getSalaryPeriod());
         vacancy.setEmploymentType(request.getEmploymentType());
+        vacancy.setWorkingHours(request.getWorkingHours());
         vacancy.setRequirements(request.getRequirements());
         vacancy.setDescription(request.getDescription());
-        vacancy.setContactPhone(request.getContactPhone());
-        vacancy.setContactEmail(request.getContactEmail());
+        // Preserve existing contact details when the frontend no longer sends them.
+        if (request.getContactPhone() != null) vacancy.setContactPhone(request.getContactPhone());
+        if (request.getContactEmail() != null) vacancy.setContactEmail(request.getContactEmail());
         vacancy.setIsActive(request.getIsActive());
         vacancy.setIsFeatured(request.getIsFeatured());
         vacancy.setIsUrgent(request.getIsUrgent() != null ? request.getIsUrgent() : false);
@@ -137,7 +139,9 @@ public class VacancyService {
         vacancy.setUpdatedAt(java.time.LocalDateTime.now());
 
         // Auto-compute display fields
-        vacancy.setSalaryDisplay(computeSalaryDisplay(request.getSalaryMin(), request.getSalaryMax(), request.getSalaryPeriod()));
+        boolean showSalary = request.getShowSalary() != null ? request.getShowSalary() : true;
+        vacancy.setShowSalary(showSalary);
+        vacancy.setSalaryDisplay(showSalary ? computeSalaryDisplay(request.getSalaryMin(), request.getSalaryMax(), request.getSalaryPeriod()) : null);
         vacancy.setJobType(computeJobType(request.getEmploymentType()));
     }
 
@@ -173,8 +177,10 @@ public class VacancyService {
         response.setSalaryMax(vacancy.getSalaryMax());
         response.setSalaryDisplay(vacancy.getSalaryDisplay());
         response.setSalaryPeriod(vacancy.getSalaryPeriod());
+        response.setShowSalary(vacancy.getShowSalary());
         response.setEmploymentType(vacancy.getEmploymentType());
         response.setJobType(vacancy.getJobType());
+        response.setWorkingHours(vacancy.getWorkingHours());
         response.setRequirements(vacancy.getRequirements());
         response.setDescription(vacancy.getDescription());
         response.setContactPhone(vacancy.getContactPhone());
