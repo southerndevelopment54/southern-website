@@ -60,7 +60,7 @@ export default function ServicesTabs() {
   }, [activeIndex]);
 
   return (
-    <section id="service-tabs" className="pt-36 md:pt-44 pb-20 bg-off-white scroll-mt-40">
+    <section id="service-tabs" className="pt-36 md:pt-36 pb-20 bg-off-white scroll-mt-40">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">

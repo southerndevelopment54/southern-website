@@ -14,7 +14,7 @@ export default function PrivacyPolicyPage() {
     <main className="min-h-screen bg-off-white">
       <Header />
 
-      <section className="pt-36 md:pt-36 pb-20">
+      <section className="pt-28 md:pt-28 pb-20">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-8 md:p-12">
             <h1 className="text-3xl md:text-4xl font-bold text-dark mb-8">

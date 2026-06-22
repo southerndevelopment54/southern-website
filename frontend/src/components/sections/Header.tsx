@@ -49,7 +49,7 @@ export default function Header() {
         {/* Main header row */}
         <div
           className={`flex items-center justify-between transition-all duration-300 ${
-            scrolled ? "h-24" : "h-32"
+            scrolled ? "h-24" : "h-28"
           }`}
         >
           {/* Logo and Company Name */}
@@ -60,7 +60,7 @@ export default function Header() {
               width={128}
               height={128}
               className={`object-contain transition-all duration-300 ${
-                scrolled ? "w-20 h-20" : "w-24 h-24"
+                scrolled ? "w-24 h-24" : "w-28 h-28"
               }`}
             />
             <span
