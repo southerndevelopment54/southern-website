@@ -12,7 +12,7 @@ const images = [
   "/images/warehouse.png",
   "/images/personal_body_guard.png",
   "/images/rounded_cctv_camera.png",
-  "/images/car_patrol1.png",
+  "/images/car_fleet.png",
   "/images/security_report.png",
 ];
 
