@@ -37,11 +37,13 @@ function getSalaryConfig(period: string) {
   switch (period) {
     case "hourly":
       return { max: 500, step: 5, defaultMin: 50, defaultMax: 80 };
+    case "daily":
+      return { max: 5000, step: 10, defaultMin: 500, defaultMax: 800 };
     case "yearly":
       return { max: 1500000, step: 10000, defaultMin: 180000, defaultMax: 300000 };
     case "monthly":
     default:
-      return { max: 100000, step: 1000, defaultMin: 15000, defaultMax: 25000 };
+      return { max: 100000, step: 100, defaultMin: 15000, defaultMax: 25000 };
   }
 }
 
@@ -165,10 +167,6 @@ export default function EditVacancyPage() {
       return;
     }
     const today = new Date().toLocaleDateString("en-CA", { timeZone: "Asia/Hong_Kong" });
-    if (form.startDate <= today) {
-      toast({ title: "錯誤", description: "開始日期必須晚於今天", variant: "destructive" });
-      return;
-    }
     if (form.expiresAt <= today) {
       toast({ title: "錯誤", description: "截止日期必須晚於今天", variant: "destructive" });
       return;
@@ -310,6 +308,7 @@ export default function EditVacancyPage() {
                   <SelectTrigger><SelectValue /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="monthly">每月</SelectItem>
+                    <SelectItem value="daily">每日</SelectItem>
                     <SelectItem value="hourly">每小時</SelectItem>
                     <SelectItem value="yearly">每年</SelectItem>
                   </SelectContent>

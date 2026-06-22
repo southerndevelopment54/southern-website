@@ -66,7 +66,7 @@ public class VacancyService {
 
     @Transactional
     public VacancyResponse createVacancy(VacancyRequest request) {
-        validateDates(request);
+        validateDates(request, true);
         Vacancy vacancy = new Vacancy();
         mapRequestToEntity(request, vacancy);
 
@@ -80,7 +80,7 @@ public class VacancyService {
 
     @Transactional
     public VacancyResponse updateVacancy(Integer id, VacancyRequest request) {
-        validateDates(request);
+        validateDates(request, false);
         Vacancy vacancy = vacancyRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Vacancy not found"));
         mapRequestToEntity(request, vacancy);
@@ -92,11 +92,13 @@ public class VacancyService {
         vacancyRepository.deleteById(id);
     }
 
-    private void validateDates(VacancyRequest request) {
+    private void validateDates(VacancyRequest request, boolean isNewVacancy) {
         LocalDate today = LocalDate.now();
-        if (request.getStartDate() != null && !request.getStartDate().isAfter(today)) {
+        // Start date must be in the future only when creating a new vacancy.
+        if (isNewVacancy && request.getStartDate() != null && !request.getStartDate().isAfter(today)) {
             throw new IllegalArgumentException("開始日期必須晚於今天");
         }
+        // Expiry date must always be in the future.
         if (request.getExpiresAt() != null && !request.getExpiresAt().isAfter(today)) {
             throw new IllegalArgumentException("截止日期必須晚於今天");
         }
@@ -149,6 +151,7 @@ public class VacancyService {
         if (min == null || max == null) return "面議";
         String periodLabel = switch (period) {
             case "monthly" -> " / 月";
+            case "daily" -> " / 日";
             case "hourly" -> " / 小時";
             case "yearly" -> " / 年";
             default -> "";
