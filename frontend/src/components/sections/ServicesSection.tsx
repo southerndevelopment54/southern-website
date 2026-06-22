@@ -11,9 +11,9 @@ const images = [
   "/images/retails_store.png",
   "/images/warehouse.png",
   "/images/personal_body_guard.png",
-  "/images/rounded_cctv_camera.png",
+  "/images/rounded_cctv_camera_with_CNT_logo.png",
   "/images/car_fleet.png",
-  "/images/security_report.png",
+  "/images/security_report_with_logo.png",
 ];
 
 export default function ServicesSection() {

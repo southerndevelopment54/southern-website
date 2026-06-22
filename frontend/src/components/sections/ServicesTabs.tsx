@@ -14,7 +14,7 @@ const serviceImages = [
   "/images/personal_security_guard.png",
   "/images/CNT_services.png",
   "/images/ssl_fleet3.png",
-  "/images/security_report.png",
+  "/images/security_report_with_logo.png",
 ];
 
 interface SecuritySystemClient {
