@@ -23,6 +23,12 @@ public class SecuritySystemClient {
     @Column(nullable = false, length = 200)
     private String name;
 
+    @Column(name = "name_en", length = 200)
+    private String nameEn;
+
+    @Column(name = "name_cn", length = 200)
+    private String nameCn;
+
     @Column(name = "logo_key", length = 255)
     private String logoKey;
 

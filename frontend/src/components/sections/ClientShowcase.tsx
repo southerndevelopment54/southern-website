@@ -138,22 +138,6 @@ export default function ClientShowcase() {
       ? sites.filter((s) => s.subCategory === otherSubFilter)
       : sites;
 
-  const formatClientName = (name: string) => {
-    const parts = name.split("有限公司");
-    if (parts.length <= 1) return name;
-    return parts.map((part, i) => (
-      <span key={i}>
-        {part}
-        {i < parts.length - 1 && (
-          <>
-            <wbr />
-            <span className="whitespace-nowrap">有限公司</span>
-          </>
-        )}
-      </span>
-    ));
-  };
-
   const renderSiteCard = (site: GuardingSite, compact = false) => (
     <div
       key={site.id}
@@ -261,36 +245,37 @@ export default function ClientShowcase() {
 
         {/* Clients Tab */}
         {activeTab === "clients" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {clients.map((client) => (
-              <div
-                key={client.id}
-                className="bg-white rounded-xl border border-gray-100 p-6 md:p-8 flex items-center gap-5 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
-              >
-                {client.logoUrl ? (
-                  <div className="w-24 h-24 md:w-28 md:h-28 rounded-xl flex items-center justify-center shrink-0 overflow-hidden bg-white border border-gray-100 group-hover:border-primary/30 transition-colors duration-200">
-                    <img
-                      src={client.logoUrl}
-                      alt={client.name}
-                      className="w-full h-full object-contain p-3"
-                    />
-                  </div>
-                ) : (
-                  <div className="w-24 h-24 md:w-28 md:h-28 bg-dark rounded-xl flex items-center justify-center shrink-0 group-hover:bg-primary transition-colors duration-200">
-                    <span className="text-white font-bold text-2xl">
-                      {client.name.charAt(0)}
-                    </span>
-                  </div>
-                )}
-                <div className="min-w-0">
-                  <h3 className="font-bold text-dark text-lg md:text-xl mb-1">
-                    {formatClientName(locale === "en" && client.nameEn ? client.nameEn : locale === "cn" && client.nameCn ? client.nameCn : client.name)}
-                  </h3>
-                </div>
+          <div className="max-w-6xl mx-auto">
+            {clients.length > 0 ? (
+              <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4">
+                {[...clients]
+                  .map((client) => ({
+                    ...client,
+                    displayName:
+                      locale === "en" && client.nameEn
+                        ? client.nameEn
+                        : locale === "cn" && client.nameCn
+                        ? client.nameCn
+                        : client.name,
+                  }))
+                  .sort((a, b) =>
+                    a.displayName.localeCompare(
+                      b.displayName,
+                      locale === "en" ? "en" : "zh-HK"
+                    )
+                  )
+                  .map((client) => (
+                    <div
+                      key={client.id}
+                      title={client.displayName}
+                      className="inline-flex items-center justify-center px-5 py-2.5 md:px-7 md:py-3 rounded-full bg-white border border-gray-200 text-sm md:text-base font-medium text-dark text-center leading-snug shadow-sm hover:bg-primary hover:border-primary hover:text-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default select-none max-w-[260px] md:max-w-[340px] break-words"
+                    >
+                      {client.displayName}
+                    </div>
+                  ))}
               </div>
-            ))}
-            {clients.length === 0 && (
-              <div className="col-span-full text-center py-20">
+            ) : (
+              <div className="text-center py-20">
                 <p className="text-gray-400 text-lg">暫無客戶 / No clients yet</p>
               </div>
             )}

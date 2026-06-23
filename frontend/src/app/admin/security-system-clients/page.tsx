@@ -13,6 +13,8 @@ import SortHeader from "@/components/SortHeader";
 interface SecuritySystemClient {
   id: number;
   name: string;
+  nameEn?: string;
+  nameCn?: string;
   logoKey: string;
   logoUrl: string;
   displayOrder: number;
@@ -83,7 +85,11 @@ export default function AdminSecuritySystemClientsPage() {
                         <span className="text-xs font-bold text-slate-400">{c.name.charAt(0)}</span>
                       </div>
                     )}
-                    <span className="font-medium text-slate-900">{c.name}</span>
+                    <div className="flex flex-col">
+                      <span className="font-medium text-slate-900">{c.name}</span>
+                      {c.nameEn && <span className="text-xs text-slate-400">{c.nameEn}</span>}
+                      {c.nameCn && <span className="text-xs text-slate-400">{c.nameCn}</span>}
+                    </div>
                   </div>
                 </td>
                 <td className="px-5 py-4 text-slate-400 tabular-nums">{c.displayOrder ?? "—"}</td>

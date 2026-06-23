@@ -20,6 +20,8 @@ const serviceImages = [
 interface SecuritySystemClient {
   id: number;
   name: string;
+  nameEn?: string;
+  nameCn?: string;
   logoKey: string;
   logoUrl: string;
   displayOrder: number;
@@ -139,33 +141,36 @@ export default function ServicesTabs() {
                 <h3 className="text-xl font-bold text-dark mb-6">
                   {t.services.referenceExperience}
                 </h3>
-                <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3">
-                  {securityClients.length > 0 ? (
-                    securityClients.map((client) => (
-                      <div
-                        key={client.id}
-                        className="bg-white border border-gray-200 rounded-lg aspect-[4/3] flex items-center justify-center p-3 overflow-hidden"
-                      >
-                        {client.logoUrl ? (
-                          <img
-                            src={client.logoUrl}
-                            alt={client.name}
-                            className="w-full h-full object-contain"
-                          />
-                        ) : (
-                          <span className="text-xs text-gray-400">{client.name}</span>
-                        )}
-                      </div>
-                    ))
-                  ) : (
-                    Array.from({ length: 6 }).map((_, i) => (
-                      <div
-                        key={i}
-                        className="bg-gray-200 border-2 border-dashed border-gray-300 rounded-lg aspect-[4/3]"
-                      />
-                    ))
-                  )}
-                </div>
+                {securityClients.length > 0 ? (
+                  <div className="flex flex-wrap justify-start items-center gap-3 md:gap-4">
+                    {[...securityClients]
+                      .map((client) => ({
+                        ...client,
+                        displayName:
+                          locale === "en" && client.nameEn
+                            ? client.nameEn
+                            : locale === "cn" && client.nameCn
+                            ? client.nameCn
+                            : client.name,
+                      }))
+                      .sort((a, b) =>
+                        a.displayName.localeCompare(b.displayName, locale === "en" ? "en" : "zh-HK")
+                      )
+                      .map((client) => (
+                        <div
+                          key={client.id}
+                          title={client.displayName}
+                          className="inline-flex items-center justify-center px-5 py-2.5 md:px-7 md:py-3 rounded-full bg-white border border-gray-200 text-sm md:text-base font-medium text-dark text-center leading-snug shadow-sm hover:bg-primary hover:border-primary hover:text-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default select-none max-w-[260px] md:max-w-[340px] break-words"
+                        >
+                          {client.displayName}
+                        </div>
+                      ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-10">
+                    <p className="text-gray-400 text-base">暫無客戶 / No clients yet</p>
+                  </div>
+                )}
               </div>
             )}
           </div>

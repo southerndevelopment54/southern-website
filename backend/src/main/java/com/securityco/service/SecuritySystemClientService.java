@@ -44,6 +44,8 @@ public class SecuritySystemClientService {
     public SecuritySystemClientResponse create(SecuritySystemClientRequest request) {
         SecuritySystemClient entity = new SecuritySystemClient();
         entity.setName(request.getName());
+        entity.setNameEn(request.getNameEn());
+        entity.setNameCn(request.getNameCn());
         entity.setLogoKey(request.getLogoKey());
         entity.setDisplayOrder(request.getDisplayOrder());
         entity.setIsActive(request.getIsActive());
@@ -58,6 +60,8 @@ public class SecuritySystemClientService {
                 .orElseThrow(() -> new RuntimeException("Security system client not found"));
 
         entity.setName(request.getName());
+        entity.setNameEn(request.getNameEn());
+        entity.setNameCn(request.getNameCn());
         entity.setLogoKey(request.getLogoKey());
         entity.setDisplayOrder(request.getDisplayOrder());
         entity.setIsActive(request.getIsActive());
@@ -77,6 +81,8 @@ public class SecuritySystemClientService {
         SecuritySystemClientResponse response = new SecuritySystemClientResponse();
         response.setId(entity.getId());
         response.setName(entity.getName());
+        response.setNameEn(entity.getNameEn());
+        response.setNameCn(entity.getNameCn());
         response.setLogoKey(entity.getLogoKey());
         if (entity.getLogoKey() != null && !entity.getLogoKey().isBlank()) {
             response.setLogoUrl(minioService.getPublicUrl(entity.getLogoKey()));

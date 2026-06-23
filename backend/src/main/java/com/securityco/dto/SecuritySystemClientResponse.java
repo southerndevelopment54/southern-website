@@ -9,6 +9,8 @@ public class SecuritySystemClientResponse {
 
     private Integer id;
     private String name;
+    private String nameEn;
+    private String nameCn;
     private String logoKey;
     private String logoUrl;
     private Integer displayOrder;

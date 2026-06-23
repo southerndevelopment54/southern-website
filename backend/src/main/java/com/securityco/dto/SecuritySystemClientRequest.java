@@ -10,6 +10,10 @@ public class SecuritySystemClientRequest {
     @NotBlank(message = "Name is required")
     private String name;
 
+    private String nameEn;
+
+    private String nameCn;
+
     private String logoKey;
 
     @NotNull(message = "Display order is required")

@@ -13,6 +13,8 @@ import { compressImage } from "@/lib/image";
 
 interface ClientForm {
   name: string;
+  nameEn: string;
+  nameCn: string;
   logoKey: string;
   displayOrder: string;
   isActive: boolean;
@@ -23,6 +25,8 @@ export default function EditSecuritySystemClientPage() {
   const { id } = useParams();
   const [form, setForm] = useState<ClientForm>({
     name: "",
+    nameEn: "",
+    nameCn: "",
     logoKey: "",
     displayOrder: "",
     isActive: true,
@@ -34,6 +38,8 @@ export default function EditSecuritySystemClientPage() {
       const c = res.data;
       setForm({
         name: c.name || "",
+        nameEn: c.nameEn || "",
+        nameCn: c.nameCn || "",
         logoKey: c.logoKey || "",
         displayOrder: c.displayOrder != null ? String(c.displayOrder) : "",
         isActive: c.isActive != null ? c.isActive : true,
@@ -68,6 +74,8 @@ export default function EditSecuritySystemClientPage() {
     try {
       await api.put(`/admin/security-system-clients/${id}`, {
         name: form.name,
+        nameEn: form.nameEn || null,
+        nameCn: form.nameCn || null,
         logoKey: form.logoKey || null,
         displayOrder: form.displayOrder ? Number(form.displayOrder) : null,
         isActive: form.isActive,
@@ -91,8 +99,16 @@ export default function EditSecuritySystemClientPage() {
 
       <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg border shadow-sm">
         <div>
-          <Label>名稱</Label>
+          <Label>名稱（中文）</Label>
           <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required />
+        </div>
+        <div>
+          <Label>名稱（English）</Label>
+          <Input value={form.nameEn} onChange={(e) => setForm({ ...form, nameEn: e.target.value })} />
+        </div>
+        <div>
+          <Label>名稱（简体中文）</Label>
+          <Input value={form.nameCn} onChange={(e) => setForm({ ...form, nameCn: e.target.value })} />
         </div>
         <div>
           <Label>客戶商標</Label>
