@@ -80,9 +80,20 @@ export const translations = {
         "快速緊急應變能力",
       ] as string[],
     },
-    trustedCompanies: {
-      title: "合作客戶",
-      subtitle: "深受眾多知名企業及機構信賴",
+    featuredProjects: {
+      title: "重點項目",
+      subtitle: "我們為眾多知名企業及地標提供專業保安服務",
+      badge: "重點項目",
+      categories: {
+        commercial: "商廈/商場",
+        residential: "住宅",
+        hotel: "酒店",
+        serviced_apartment: "服務式住宅",
+        large_event: "大型活動",
+        retail_shop: "零售店舖",
+        government_infrastructure: "政府基建",
+        other: "其他",
+      },
     },
     clientShowcase: {
       badge: "實力見證",
@@ -330,9 +341,20 @@ export const translations = {
         "快速紧急应变能力",
       ] as string[],
     },
-    trustedCompanies: {
-      title: "合作客户",
-      subtitle: "深受众多知名企业及機構信赖",
+    featuredProjects: {
+      title: "重点项目",
+      subtitle: "我们为众多知名企业及地标提供专业保安服务",
+      badge: "重点项目",
+      categories: {
+        commercial: "商厦/商场",
+        residential: "住宅",
+        hotel: "酒店",
+        serviced_apartment: "服务式住宅",
+        large_event: "大型活动",
+        retail_shop: "零售店舖",
+        government_infrastructure: "政府基建",
+        other: "其他",
+      },
     },
     clientShowcase: {
       badge: "实力見证",
@@ -596,9 +618,20 @@ export const translations = {
         "Rapid Emergency Response",
       ] as string[],
     },
-    trustedCompanies: {
-      title: "Partner Clients",
-      subtitle: "Trusted by numerous renowned enterprises and institutions",
+    featuredProjects: {
+      title: "Featured Projects",
+      subtitle: "Providing professional security services for renowned enterprises and landmarks",
+      badge: "Featured Project",
+      categories: {
+        commercial: "Commercial / Shopping Mall",
+        residential: "Residential",
+        hotel: "Hotel",
+        serviced_apartment: "Serviced Apartment",
+        large_event: "Large Event",
+        retail_shop: "Retail Shop",
+        government_infrastructure: "Government Infrastructure",
+        other: "Others",
+      },
     },
     clientShowcase: {
       badge: "Our Track Record",
