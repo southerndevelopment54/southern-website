@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { MapPin, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { useI18n } from "@/components/I18nProvider";
 import type { Locale, Translations } from "@/lib/i18n";
@@ -42,6 +43,7 @@ function getDisplayAddress(site: GuardingSite, locale: Locale) {
 
 export default function TrustedCompanies() {
   const { locale, t } = useI18n();
+  const router = useRouter();
   const [sites, setSites] = useState<GuardingSite[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
@@ -107,6 +109,15 @@ export default function TrustedCompanies() {
 
   const goPrev = () => goTo(currentIndex - 1);
   const goNext = () => goTo(currentIndex + 1);
+
+  const handleProjectClick = (site: GuardingSite) => {
+    const params = new URLSearchParams({ tab: "sites", filter: site.category });
+    if (site.category === "other" && site.subCategory) {
+      params.set("subFilter", site.subCategory);
+    }
+    router.push(`/${locale}/clients?${params.toString()}`);
+  };
+
   const goNextRef = useRef(goNext);
   goNextRef.current = goNext;
 
@@ -155,13 +166,23 @@ export default function TrustedCompanies() {
       >
         {sites.map((site) => {
           const offset = offsetsRef.current[site.id] ?? 0;
+          const isCenter = offset === 0;
           const isSide = Math.abs(offset) === 1;
+          const isVisible = isCenter || isSide;
 
           return (
             <div
               key={site.id}
-              onClick={() => isSide && goTo(sites.indexOf(site))}
-              className={`absolute top-0 left-1/2 w-[260px] sm:w-[300px] md:w-[340px] will-change-transform backface-hidden transition-all duration-700 ease-in-out cursor-pointer ${getOpacityClass(offset)} ${getZIndexClass(offset)}`}
+              onClick={() =>
+                isSide
+                  ? goTo(sites.indexOf(site))
+                  : isCenter
+                  ? handleProjectClick(site)
+                  : undefined
+              }
+              className={`absolute top-0 left-1/2 w-[260px] sm:w-[300px] md:w-[340px] will-change-transform backface-hidden transition-all duration-700 ease-in-out ${getOpacityClass(offset)} ${getZIndexClass(offset)} ${
+                isVisible ? "cursor-pointer" : "pointer-events-none"
+              }`}
               style={{ transform: getTransform(offset) }}
             >
               <div className="aspect-square rounded-xl overflow-hidden shadow-lg bg-white">
