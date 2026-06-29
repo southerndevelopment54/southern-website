@@ -259,9 +259,9 @@ export default function ClientShowcase() {
                         : client.name,
                   }))
                   .sort((a, b) =>
-                    a.displayName.localeCompare(
-                      b.displayName,
-                      locale === "en" ? "en" : "zh-HK"
+                    (a.nameEn || a.displayName).localeCompare(
+                      b.nameEn || b.displayName,
+                      "en"
                     )
                   )
                   .map((client) => (
