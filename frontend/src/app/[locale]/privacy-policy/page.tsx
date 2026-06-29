@@ -69,9 +69,7 @@ export default function PrivacyPolicyPage() {
                     ? "地址：香港九龙新蒲岗五芳街10号新宝中心21楼2105-2107室"
                     : "地址：香港九龍新蒲崗五芳街10號新寶中心21樓2105-2107室"}
                 </li>
-                {/* TODO: Re-enable when email is ready
-                <li>Email: info@southern-security.hk</li>
-                */}
+                <li>Email: info@southern.hk</li>
                 <li>
                   {isEn ? "Phone: " : isCn ? "电话：" : "電話："}+852 2762 8128
                 </li>
@@ -319,9 +317,7 @@ export default function PrivacyPolicyPage() {
                   : "如您對本隱私政策有任何疑問，或希望行使您的資料保護權利，請透過以下方式聯絡我們："}
               </p>
               <ul className="list-disc pl-5 space-y-1">
-                {/* TODO: Re-enable when email is ready
-                <li>Email: info@southern-security.hk</li>
-                */}
+                <li>Email: info@southern.hk</li>
                 <li>
                   {isEn ? "Phone: " : isCn ? "电话：" : "電話："}+852 2762 8128
                 </li>

@@ -41,13 +41,12 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
       value: "+852 2762 8128",
       href: "tel:+85227628128",
     },
-    // TODO: Re-enable when email is ready
-    // {
-    //   icon: Mail,
-    //   label: t.contact.email,
-    //   value: "info@southern-security.hk",
-    //   href: "mailto:info@southern-security.hk",
-    // },
+    {
+      icon: Mail,
+      label: t.contact.email,
+      value: "info@southern.hk",
+      href: "mailto:info@southern.hk",
+    },
 
     {
       icon: MapPin,
