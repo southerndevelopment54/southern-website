@@ -15,7 +15,7 @@ export default function WhyChooseUs() {
           <div className="relative order-2 lg:order-1">
             <div className="aspect-[4/3] rounded-lg overflow-hidden">
               <img
-                src="/images/guard_guiding_people_taller.png"
+                src="/images/guard_guiding_people_taller_fixed.png"
                 alt={t.header.companyName}
                 className="w-full h-full object-cover"
               />
