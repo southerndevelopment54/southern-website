@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { MapPin, Clock, ChevronRight, ShieldCheck } from "lucide-react";
+import { MapPin, Clock, ChevronRight, ShieldCheck, Gift } from "lucide-react";
 import { useI18n } from "@/components/I18nProvider";
 import { api } from "@/lib/api";
 import VacancyApplyDialog from "@/components/VacancyApplyDialog";
@@ -116,9 +116,9 @@ export default function VacanciesSection() {
                     <span>{job.jobType || "—"}</span>
                   </div>
                   <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-gray-300" />
-                  <div className="inline-flex items-center gap-2">
-                    <MapPin className="w-5 h-5 text-primary" />
-                    <span className="text-primary font-semibold">{getLocation(job)}</span>
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-white text-base font-semibold">
+                    <MapPin className="w-4 h-4" />
+                    <span>{getLocation(job)}</span>
                   </div>
                 </div>
 
@@ -136,7 +136,7 @@ export default function VacanciesSection() {
                   )}
 
                   {(job.workingHours || job.welfare?.length > 0) && (
-                    <div className={`grid gap-5 ${job.workingHours && job.welfare?.length > 0 ? "sm:grid-cols-2" : ""}`}>
+                    <div className="grid gap-5 sm:grid-cols-2 items-start">
                       {job.workingHours && (
                         <div>
                           <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
@@ -148,13 +148,14 @@ export default function VacanciesSection() {
                         </div>
                       )}
                       {job.welfare?.length > 0 && (
-                        <div>
-                          <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-5">
+                          <div className="flex items-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+                            <Gift className="w-4 h-4" />
                             {t.vacancies.welfare}
                           </div>
                           <ul className="space-y-2">
                             {job.welfare.map((item, idx) => (
-                              <li key={idx} className="flex items-start gap-2.5 text-base text-gray-600">
+                              <li key={idx} className="flex items-start gap-2.5 text-base text-gray-700">
                                 <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0" />
                                 {item}
                               </li>
