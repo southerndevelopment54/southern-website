@@ -128,6 +128,14 @@ export default function ClientShowcase() {
 
   const filteredOtherSites = sites;
 
+  const getDisplayName = (site: GuardingSite) => {
+    return locale === "en" && site.nameEn
+      ? site.nameEn
+      : locale === "cn" && site.nameCn
+      ? site.nameCn
+      : site.name;
+  };
+
   const getSiteTypeLabel = (site: GuardingSite) => {
     switch (site.subCategory) {
       case "hotel":
@@ -191,6 +199,43 @@ export default function ClientShowcase() {
             {nonFeatured.map((site) => renderSiteCard(site, true, showTypeTags))}
           </div>
         )}
+      </div>
+    );
+  };
+
+  const renderOtherSitesGrouped = (sitesToRender: GuardingSite[]) => {
+    // Group by subCategory
+    const groups = new Map<string, GuardingSite[]>();
+    sitesToRender.forEach((site) => {
+      const key = site.subCategory || "unknown";
+      if (!groups.has(key)) groups.set(key, []);
+      groups.get(key)!.push(site);
+    });
+
+    // Sort groups by their type label alphabetically
+    const sortedGroups = Array.from(groups.entries()).sort((a, b) => {
+      const labelA = getSiteTypeLabel(a[1][0]) || a[0];
+      const labelB = getSiteTypeLabel(b[1][0]) || b[0];
+      return labelA.localeCompare(labelB, locale === "en" ? "en" : "zh");
+    });
+
+    return (
+      <div className="space-y-10">
+        {sortedGroups.map(([subCategory, groupSites]) => {
+          const sortedSites = [...groupSites].sort((a, b) =>
+            getDisplayName(a).localeCompare(getDisplayName(b), locale === "en" ? "en" : "zh")
+          );
+          return (
+            <div key={subCategory}>
+              <h3 className="text-lg font-bold text-dark mb-4 pb-2 border-b border-gray-200">
+                {getSiteTypeLabel(sortedSites[0]) || subCategory}
+              </h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                {sortedSites.map((site) => renderSiteCard(site, true, false))}
+              </div>
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -305,8 +350,8 @@ export default function ClientShowcase() {
               </div>
             ) : sites.length > 0 ? (
               <div key={siteFilter + districtSubFilter + otherSubFilter}>
-                {/* Featured — simple grid */}
-                {siteFilter === "featured" && renderSitesGrid(sites)}
+                {/* Featured — simple grid with type tags for other items */}
+                {siteFilter === "featured" && renderSitesGrid(sites, true)}
 
                 {/* Commercial — sidebar + grid */}
                 {siteFilter === "commercial" && (
@@ -376,11 +421,11 @@ export default function ClientShowcase() {
                   </div>
                 )}
 
-                {/* Other — full width grid with type tags */}
+                {/* Other — grouped by type, sorted alphabetically */}
                 {siteFilter === "other" && (
                   <div>
                     {filteredOtherSites.length > 0 ? (
-                      renderSitesGrid(filteredOtherSites, true)
+                      renderOtherSitesGrouped(filteredOtherSites)
                     ) : (
                       <div className="text-center py-20">
                         <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
