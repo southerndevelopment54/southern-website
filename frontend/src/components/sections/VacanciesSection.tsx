@@ -89,13 +89,13 @@ export default function VacanciesSection() {
                 }`}
               >
                 {/* Status badges */}
-                <div className="flex items-center gap-2 mb-4">
-                  {job.isUrgent && (
+                {job.isUrgent && (
+                  <div className="flex items-center gap-2 mb-3">
                     <span className="inline-flex items-center gap-1 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
                       {t.vacancies.urgent}
                     </span>
-                  )}
-                </div>
+                  </div>
+                )}
 
                 {/* Title & Salary */}
                 <div className="flex items-start justify-between gap-4 mb-3">
@@ -123,59 +123,60 @@ export default function VacanciesSection() {
                 </div>
 
                 {/* Body */}
-                <div className="flex-grow space-y-6">
-                  {job.description && (
-                    <div>
-                      <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                        {t.vacancies.jobDescription}
-                      </div>
-                      <div className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
-                        {job.description}
-                      </div>
-                    </div>
-                  )}
-
-                  {(job.workingHours || job.welfare?.length > 0) && (
-                    <div className="flex flex-col sm:flex-row gap-5 items-start">
-                      {job.workingHours && (
-                        <div className="flex-1">
-                          <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                            {t.vacancies.workingHours}
-                          </div>
-                          <div className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
-                            {job.workingHours}
-                          </div>
+                <div className="flex-grow flex flex-col sm:flex-row gap-6 items-start">
+                  {/* Left column */}
+                  <div className="flex-1 space-y-6">
+                    {job.description && (
+                      <div>
+                        <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                          {t.vacancies.jobDescription}
                         </div>
-                      )}
-                      {job.welfare?.length > 0 && (
-                        <div className="shrink-0 w-fit sm:ml-auto bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-5">
-                          <div className="flex items-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-2">
-                            <Gift className="w-4 h-4" />
-                            {t.vacancies.welfare}
-                          </div>
-                          <ul className="space-y-2">
-                            {job.welfare.map((item, idx) => (
-                              <li key={idx} className="flex items-start gap-2.5 text-base text-gray-700">
-                                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0" />
-                                {item}
-                              </li>
-                            ))}
-                          </ul>
+                        <div className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                          {job.description}
                         </div>
-                      )}
-                    </div>
-                  )}
+                      </div>
+                    )}
 
-                  {job.requirements && job.requirements.length > 0 && (
-                    <div>
-                      <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
-                        {t.vacancies.requirements}
+                    {job.workingHours && (
+                      <div>
+                        <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                          {t.vacancies.workingHours}
+                        </div>
+                        <div className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                          {job.workingHours}
+                        </div>
+                      </div>
+                    )}
+
+                    {job.requirements && job.requirements.length > 0 && (
+                      <div>
+                        <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                          {t.vacancies.requirements}
+                        </div>
+                        <ul className="space-y-2">
+                          {job.requirements.map((req, idx) => (
+                            <li key={idx} className="flex items-start gap-2.5 text-base text-gray-600">
+                              <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0" />
+                              {req}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Right column - Welfare */}
+                  {job.welfare?.length > 0 && (
+                    <div className="shrink-0 w-fit bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-5">
+                      <div className="flex items-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-2">
+                        <Gift className="w-4 h-4" />
+                        {t.vacancies.welfare}
                       </div>
                       <ul className="space-y-2">
-                        {job.requirements.map((req, idx) => (
-                          <li key={idx} className="flex items-start gap-2.5 text-base text-gray-600">
+                        {job.welfare.map((item, idx) => (
+                          <li key={idx} className="flex items-start gap-2.5 text-base text-gray-700">
                             <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0" />
-                            {req}
+                            {item}
                           </li>
                         ))}
                       </ul>
