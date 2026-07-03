@@ -26,6 +26,7 @@ export interface Vacancy {
   jobType: string;
   workingHours: string;
   requirements: string[];
+  welfare: string[];
   description: string;
   contactPhone: string;
   contactEmail: string;

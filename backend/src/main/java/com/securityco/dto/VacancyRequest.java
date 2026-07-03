@@ -44,6 +44,8 @@ public class VacancyRequest {
 
     private List<String> requirements;
 
+    private List<String> welfare;
+
     private String description;
 
     private String contactPhone;

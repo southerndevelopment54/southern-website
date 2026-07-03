@@ -73,6 +73,10 @@ public class Vacancy {
     @Column(name = "requirements")
     private List<String> requirements;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @Column(name = "welfare")
+    private List<String> welfare;
+
     @Column(columnDefinition = "TEXT")
     private String description;
 

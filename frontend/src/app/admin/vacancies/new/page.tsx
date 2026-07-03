@@ -25,6 +25,7 @@ interface VacancyForm {
   employmentType: string;
   workingHours: string;
   requirements: string[];
+  welfare: string[];
   description: string;
   isActive: boolean;
   isFeatured: boolean;
@@ -67,6 +68,7 @@ export default function NewVacancyPage() {
     employmentType: "full-time",
     workingHours: "",
     requirements: [""],
+    welfare: ["在職培訓", "晉升機會"],
     description: "",
     isActive: true,
     isFeatured: false,
@@ -103,6 +105,20 @@ export default function NewVacancyPage() {
     setForm({ ...form, requirements: next });
   };
 
+  const addWelfare = () => {
+    setForm({ ...form, welfare: [...form.welfare, ""] });
+  };
+
+  const removeWelfare = (index: number) => {
+    setForm({ ...form, welfare: form.welfare.filter((_, i) => i !== index) });
+  };
+
+  const updateWelfare = (index: number, value: string) => {
+    const next = [...form.welfare];
+    next[index] = value;
+    setForm({ ...form, welfare: next });
+  };
+
   const setSalaryMin = (v: number) => {
     setForm((f) => ({ ...f, salaryMin: v, salaryMax: Math.max(v, f.salaryMax) }));
   };
@@ -133,6 +149,7 @@ export default function NewVacancyPage() {
     }
 
     const requirementsArray = form.requirements.map((s) => s.trim()).filter((s) => s.length > 0);
+    const welfareArray = form.welfare.map((s) => s.trim()).filter((s) => s.length > 0);
 
     const payload = {
       title: form.title,
@@ -147,6 +164,7 @@ export default function NewVacancyPage() {
       employmentType: form.employmentType,
       workingHours: form.workingHours,
       requirements: requirementsArray,
+      welfare: welfareArray,
       description: form.description,
       isActive: form.isActive,
       isFeatured: form.isFeatured,
@@ -323,6 +341,29 @@ export default function NewVacancyPage() {
           <div className="mt-4">
             <Label>職位描述</Label>
             <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          </div>
+
+          <div className="mt-4">
+            <Label>員工福利</Label>
+            <div className="space-y-2 mt-1.5">
+              {form.welfare.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Input
+                    value={item}
+                    onChange={(e) => updateWelfare(index, e.target.value)}
+                    placeholder={`福利 ${index + 1}`}
+                  />
+                  {form.welfare.length > 1 && (
+                    <Button type="button" variant="ghost" size="sm" className="text-red-500 shrink-0" onClick={() => removeWelfare(index)}>
+                      刪除
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={addWelfare}>
+                + 新增福利
+              </Button>
+            </div>
           </div>
         </div>
 

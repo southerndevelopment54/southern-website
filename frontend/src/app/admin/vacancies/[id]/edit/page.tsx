@@ -25,6 +25,7 @@ interface VacancyForm {
   employmentType: string;
   workingHours: string;
   requirements: string[];
+  welfare: string[];
   description: string;
   isActive: boolean;
   isFeatured: boolean;
@@ -69,6 +70,7 @@ export default function EditVacancyPage() {
     employmentType: "full-time",
     workingHours: "",
     requirements: [""],
+    welfare: ["在職培訓", "晉升機會"],
     description: "",
     isActive: true,
     isFeatured: false,
@@ -86,6 +88,9 @@ export default function EditVacancyPage() {
       const reqs = Array.isArray(v.requirements) && v.requirements.length > 0
         ? v.requirements
         : [""];
+      const welfareItems = Array.isArray(v.welfare) && v.welfare.length > 0
+        ? v.welfare
+        : [""];
       const period = v.salaryPeriod || "monthly";
       const cfg = getSalaryConfig(period);
       setForm({
@@ -101,6 +106,7 @@ export default function EditVacancyPage() {
         employmentType: v.employmentType || "full-time",
         workingHours: v.workingHours || "",
         requirements: reqs,
+        welfare: welfareItems,
         description: v.description || "",
 
         isActive: v.isActive != null ? v.isActive : true,
@@ -153,6 +159,20 @@ export default function EditVacancyPage() {
     setForm({ ...form, requirements: next });
   };
 
+  const addWelfare = () => {
+    setForm({ ...form, welfare: [...form.welfare, ""] });
+  };
+
+  const removeWelfare = (index: number) => {
+    setForm({ ...form, welfare: form.welfare.filter((_, i) => i !== index) });
+  };
+
+  const updateWelfare = (index: number, value: string) => {
+    const next = [...form.welfare];
+    next[index] = value;
+    setForm({ ...form, welfare: next });
+  };
+
   const setSalaryMin = (v: number) => {
     setForm((f) => ({ ...f, salaryMin: v, salaryMax: Math.max(v, f.salaryMax) }));
   };
@@ -177,6 +197,7 @@ export default function EditVacancyPage() {
     }
 
     const requirementsArray = form.requirements.map((s) => s.trim()).filter((s) => s.length > 0);
+    const welfareArray = form.welfare.map((s) => s.trim()).filter((s) => s.length > 0);
 
     try {
       await api.put(`/admin/vacancies/${id}`, {
@@ -192,6 +213,7 @@ export default function EditVacancyPage() {
         employmentType: form.employmentType,
         workingHours: form.workingHours,
         requirements: requirementsArray,
+        welfare: welfareArray,
         description: form.description,
         isActive: form.isActive,
         isFeatured: form.isFeatured,
@@ -365,6 +387,29 @@ export default function EditVacancyPage() {
           <div className="mt-4">
             <Label>職位描述</Label>
             <Textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} />
+          </div>
+
+          <div className="mt-4">
+            <Label>員工福利</Label>
+            <div className="space-y-2 mt-1.5">
+              {form.welfare.map((item, index) => (
+                <div key={index} className="flex items-center gap-2">
+                  <Input
+                    value={item}
+                    onChange={(e) => updateWelfare(index, e.target.value)}
+                    placeholder={`福利 ${index + 1}`}
+                  />
+                  {form.welfare.length > 1 && (
+                    <Button type="button" variant="ghost" size="sm" className="text-red-500 shrink-0" onClick={() => removeWelfare(index)}>
+                      刪除
+                    </Button>
+                  )}
+                </div>
+              ))}
+              <Button type="button" variant="outline" size="sm" onClick={addWelfare}>
+                + 新增福利
+              </Button>
+            </div>
           </div>
         </div>
 

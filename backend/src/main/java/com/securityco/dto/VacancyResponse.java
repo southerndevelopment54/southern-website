@@ -25,6 +25,7 @@ public class VacancyResponse {
     private String jobType;
     private String workingHours;
     private List<String> requirements;
+    private List<String> welfare;
     private String description;
     private String contactPhone;
     private String contactEmail;

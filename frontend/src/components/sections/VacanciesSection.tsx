@@ -17,6 +17,7 @@ interface Vacancy {
   district: { districtName: string } | null;
   locationDescription: string;
   description: string;
+  welfare: string[];
   requirements: string[];
   isUrgent: boolean;
   isFeatured: boolean;
@@ -81,88 +82,122 @@ export default function VacanciesSection() {
             {vacancies.map((job) => (
               <div
                 key={job.id}
-                className={`relative rounded-xl border p-6 md:p-8 transition-all duration-200 hover:shadow-lg ${
+                className={`relative rounded-2xl border bg-white p-6 md:p-8 transition-all duration-200 hover:shadow-lg flex flex-col h-full ${
                   job.isUrgent
-                    ? "border-primary bg-primary/5"
-                    : "border-gray-100 bg-off-white hover:border-primary/30"
+                    ? "border-primary/40"
+                    : "border-gray-200 hover:border-primary/30"
                 }`}
               >
-                {job.isUrgent && (
-                  <div className="absolute -top-3 left-6">
-                    <span className="bg-primary text-white text-xs font-bold px-3 py-1 rounded-full">
+                {/* Status badges */}
+                <div className="flex items-center gap-2 mb-4">
+                  {job.isUrgent && (
+                    <span className="inline-flex items-center gap-1 bg-primary text-white text-sm font-bold px-3 py-1 rounded-full">
                       {t.vacancies.urgent}
                     </span>
-                  </div>
-                )}
+                  )}
+                </div>
 
-                <div className="flex flex-col h-full">
-                  {/* Title & Salary */}
-                  <div className="flex items-start justify-between gap-4 mb-4">
-                    <h3 className="text-xl font-bold text-dark">{job.title}</h3>
-                    {job.showSalary && (
-                      <div className="text-primary font-bold text-sm whitespace-nowrap">
-                        {job.salaryDisplay || "面議"}
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Meta */}
-                  <div className="flex flex-wrap gap-4 mb-5 text-sm text-gray-500">
-                    <div className="flex items-center gap-1.5">
-                      <MapPin className="w-4 h-4" />
-                      {getLocation(job)}
+                {/* Title & Salary */}
+                <div className="flex items-start justify-between gap-4 mb-3">
+                  <h3 className="text-2xl md:text-3xl font-bold text-dark leading-tight">
+                    {job.title}
+                  </h3>
+                  {job.showSalary && (
+                    <div className="shrink-0 inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/10 text-primary text-base font-bold whitespace-nowrap">
+                      {job.salaryDisplay || "面議"}
                     </div>
-                    <div className="flex items-center gap-1.5">
-                      <Clock className="w-4 h-4" />
-                      {job.jobType || "—"}
-                    </div>
-                  </div>
+                  )}
+                </div>
 
-                  {/* Description */}
+                {/* Meta */}
+                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5 text-base text-gray-600">
+                  <div className="inline-flex items-center gap-2">
+                    <Clock className="w-5 h-5 text-primary" />
+                    <span>{job.jobType || "—"}</span>
+                  </div>
+                  <span className="hidden sm:inline-block w-1.5 h-1.5 rounded-full bg-gray-300" />
+                  <div className="inline-flex items-center gap-2">
+                    <MapPin className="w-5 h-5 text-primary" />
+                    <span className="text-primary font-semibold">{getLocation(job)}</span>
+                  </div>
+                </div>
+
+                {/* Body */}
+                <div className="flex-grow space-y-6">
                   {job.description && (
-                    <div className="mb-5 text-sm text-gray-600 whitespace-pre-line">
-                      {job.description}
+                    <div>
+                      <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        {t.vacancies.jobDescription}
+                      </div>
+                      <div className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                        {job.description}
+                      </div>
                     </div>
                   )}
 
-                  {/* Working Hours */}
-                  {job.workingHours && (
-                    <div className="mb-5">
-                      <div className="text-sm font-semibold text-dark mb-1">工作時間：</div>
-                      <div className="text-sm text-gray-600 whitespace-pre-line">{job.workingHours}</div>
+                  {(job.workingHours || job.welfare?.length > 0) && (
+                    <div className={`grid gap-5 ${job.workingHours && job.welfare?.length > 0 ? "sm:grid-cols-2" : ""}`}>
+                      {job.workingHours && (
+                        <div>
+                          <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                            {t.vacancies.workingHours}
+                          </div>
+                          <div className="text-base text-gray-600 leading-relaxed whitespace-pre-line">
+                            {job.workingHours}
+                          </div>
+                        </div>
+                      )}
+                      {job.welfare?.length > 0 && (
+                        <div>
+                          <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                            {t.vacancies.welfare}
+                          </div>
+                          <ul className="space-y-2">
+                            {job.welfare.map((item, idx) => (
+                              <li key={idx} className="flex items-start gap-2.5 text-base text-gray-600">
+                                <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0" />
+                                {item}
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      )}
                     </div>
                   )}
 
-                  {/* Requirements */}
                   {job.requirements && job.requirements.length > 0 && (
-                    <div className="mb-6 flex-grow">
-                      <div className="text-sm font-semibold text-dark mb-2">{t.vacancies.requirements}</div>
-                      <ul className="space-y-1.5">
+                    <div>
+                      <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                        {t.vacancies.requirements}
+                      </div>
+                      <ul className="space-y-2">
                         {job.requirements.map((req, idx) => (
-                          <li key={idx} className="flex items-start gap-2 text-sm text-gray-600">
-                            <div className="w-1 h-1 bg-primary rounded-full mt-2 flex-shrink-0" />
+                          <li key={idx} className="flex items-start gap-2.5 text-base text-gray-600">
+                            <div className="w-1.5 h-1.5 bg-primary rounded-full mt-2.5 flex-shrink-0" />
                             {req}
                           </li>
                         ))}
                       </ul>
                     </div>
                   )}
+                </div>
 
-                  {/* Button */}
+                {/* Button */}
+                <div className="mt-6">
                   <button
                     type="button"
                     onClick={() => {
                       setApplyVacancy(job);
                       setDialogOpen(true);
                     }}
-                    className={`inline-flex items-center justify-center gap-2 w-full py-3 rounded-lg font-semibold text-sm transition-all duration-200 ${
+                    className={`inline-flex items-center justify-center gap-2 w-full py-4 rounded-xl font-semibold text-base transition-all duration-200 ${
                       job.isUrgent
                         ? "bg-primary hover:bg-primary-light text-white"
                         : "bg-dark hover:bg-dark-gray text-white"
                     }`}
                   >
                     {t.vacancies.applyNow}
-                    <ChevronRight className="w-4 h-4" />
+                    <ChevronRight className="w-5 h-5" />
                   </button>
                 </div>
               </div>

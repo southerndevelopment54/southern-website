@@ -129,6 +129,7 @@ public class VacancyService {
         vacancy.setEmploymentType(request.getEmploymentType());
         vacancy.setWorkingHours(request.getWorkingHours());
         vacancy.setRequirements(request.getRequirements());
+        vacancy.setWelfare(request.getWelfare());
         vacancy.setDescription(request.getDescription());
         // Preserve existing contact details when the frontend no longer sends them.
         if (request.getContactPhone() != null) vacancy.setContactPhone(request.getContactPhone());
@@ -185,6 +186,7 @@ public class VacancyService {
         response.setJobType(vacancy.getJobType());
         response.setWorkingHours(vacancy.getWorkingHours());
         response.setRequirements(vacancy.getRequirements());
+        response.setWelfare(vacancy.getWelfare());
         response.setDescription(vacancy.getDescription());
         response.setContactPhone(vacancy.getContactPhone());
         response.setContactEmail(vacancy.getContactEmail());
