@@ -115,7 +115,7 @@ export default function VacanciesSection() {
                     <Clock className="w-5 h-5 text-primary" />
                     <span>{job.jobType || "—"}</span>
                   </div>
-                  <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary text-white text-base font-semibold">
+                  <div className="inline-flex items-center gap-1.5 px-3 h-8 rounded-full bg-primary text-white text-base font-semibold">
                     <MapPin className="w-4 h-4" />
                     <span>{getLocation(job)}</span>
                   </div>
