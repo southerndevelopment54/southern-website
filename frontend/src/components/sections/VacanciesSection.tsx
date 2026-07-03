@@ -103,7 +103,7 @@ export default function VacanciesSection() {
                     {job.title}
                   </h3>
                   {job.showSalary && (
-                    <div className="shrink-0 inline-flex items-center px-3.5 py-1.5 rounded-full bg-primary/10 text-primary text-base font-bold whitespace-nowrap">
+                    <div className="shrink-0 inline-flex items-center text-primary text-base font-bold whitespace-nowrap">
                       {job.salaryDisplay || "面議"}
                     </div>
                   )}
@@ -136,9 +136,9 @@ export default function VacanciesSection() {
                   )}
 
                   {(job.workingHours || job.welfare?.length > 0) && (
-                    <div className="grid gap-5 sm:grid-cols-2 items-start">
+                    <div className="flex flex-col sm:flex-row gap-5 items-start">
                       {job.workingHours && (
-                        <div>
+                        <div className="flex-1">
                           <div className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-2">
                             {t.vacancies.workingHours}
                           </div>
@@ -148,7 +148,7 @@ export default function VacanciesSection() {
                         </div>
                       )}
                       {job.welfare?.length > 0 && (
-                        <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-5">
+                        <div className="shrink-0 w-fit sm:ml-auto bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-5">
                           <div className="flex items-center gap-2 text-sm font-semibold text-primary uppercase tracking-wider mb-2">
                             <Gift className="w-4 h-4" />
                             {t.vacancies.welfare}
