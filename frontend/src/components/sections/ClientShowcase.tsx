@@ -30,7 +30,7 @@ interface GuardingSite {
 
 type SiteFilter = "featured" | "commercial" | "residential" | "other";
 type DistrictSubFilter = "all" | "香港" | "九龍" | "新界";
-type OtherSubFilter = "all" | "hotel" | "serviced_apartment" | "large_event" | "retail_shop" | "government_infrastructure";
+type OtherSubFilter = "all" | "hotel" | "serviced_apartment" | "large_event" | "retail_shop" | "government_infrastructure" | "youth_dormitory";
 
 
 export default function ClientShowcase() {
@@ -59,7 +59,7 @@ export default function ClientShowcase() {
     if (districtFilter && ["香港", "九龍", "新界"].includes(districtFilter)) {
       setDistrictSubFilter(districtFilter);
     }
-    if (subFilter && ["hotel", "serviced_apartment", "large_event", "retail_shop", "government_infrastructure"].includes(subFilter)) {
+    if (subFilter && ["hotel", "serviced_apartment", "large_event", "retail_shop", "government_infrastructure", "youth_dormitory"].includes(subFilter)) {
       setOtherSubFilter(subFilter);
     }
   }, []);
@@ -114,14 +114,7 @@ export default function ClientShowcase() {
     { id: "新界", label: t.clientShowcase.districtNT },
   ];
 
-  const otherSubFilters: { id: OtherSubFilter; label: string }[] = [
-    { id: "all", label: t.clientShowcase.tabAll },
-    { id: "hotel", label: t.clientShowcase.tabHotel },
-    { id: "serviced_apartment", label: t.clientShowcase.tabServicedApartment },
-    { id: "large_event", label: t.clientShowcase.tabLargeEvent },
-    { id: "retail_shop", label: t.clientShowcase.tabRetailShop },
-    { id: "government_infrastructure", label: t.clientShowcase.tabGovernmentInfrastructure },
-  ];
+  // Sub-filters for "other" category removed — all projects are shown with type tags instead.
 
   const filteredCommercialSites =
     siteFilter === "commercial" && districtSubFilter !== "all"
@@ -133,22 +126,43 @@ export default function ClientShowcase() {
       ? sites.filter((s) => s.district === districtSubFilter)
       : sites;
 
-  const filteredOtherSites =
-    siteFilter === "other" && otherSubFilter !== "all"
-      ? sites.filter((s) => s.subCategory === otherSubFilter)
-      : sites;
+  const filteredOtherSites = sites;
 
-  const renderSiteCard = (site: GuardingSite, compact = false) => (
+  const getSiteTypeLabel = (site: GuardingSite) => {
+    switch (site.subCategory) {
+      case "hotel":
+        return t.clientShowcase.tabHotel;
+      case "serviced_apartment":
+        return t.clientShowcase.tabServicedApartment;
+      case "large_event":
+        return t.clientShowcase.tabLargeEvent;
+      case "retail_shop":
+        return t.clientShowcase.tabRetailShop;
+      case "government_infrastructure":
+        return t.clientShowcase.tabGovernmentInfrastructure;
+      case "youth_dormitory":
+        return t.clientShowcase.tabYouthDormitory;
+      default:
+        return null;
+    }
+  };
+
+  const renderSiteCard = (site: GuardingSite, compact = false, showTypeTag = false) => (
     <div
       key={site.id}
       className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
     >
-      <div className={`overflow-hidden ${compact ? "aspect-[16/10]" : "aspect-[16/10]"}`}>
+      <div className={`overflow-hidden relative ${compact ? "aspect-[16/10]" : "aspect-[16/10]"}`}>
         <img
           src={site.imageUrl || "/images/placeholder.jpg"}
           alt={site.name}
           className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
         />
+        {showTypeTag && getSiteTypeLabel(site) && (
+          <span className="absolute top-3 left-3 inline-flex items-center px-2.5 py-1 rounded-full bg-primary/90 text-white text-xs font-semibold shadow-sm">
+            {getSiteTypeLabel(site)}
+          </span>
+        )}
       </div>
       <div className={compact ? "p-4" : "p-6"}>
         <h3 className={`font-bold text-dark mb-1 ${compact ? "text-base" : "text-lg"}`}>
@@ -162,19 +176,19 @@ export default function ClientShowcase() {
     </div>
   );
 
-  const renderSitesGrid = (sitesToRender: GuardingSite[]) => {
+  const renderSitesGrid = (sitesToRender: GuardingSite[], showTypeTags = false) => {
     const featured = sitesToRender.filter((s) => s.isFeatured);
     const nonFeatured = sitesToRender.filter((s) => !s.isFeatured);
     return (
       <div className="space-y-10">
         {featured.length > 0 && (
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {featured.map((site) => renderSiteCard(site))}
+            {featured.map((site) => renderSiteCard(site, false, showTypeTags))}
           </div>
         )}
         {nonFeatured.length > 0 && (
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-            {nonFeatured.map((site) => renderSiteCard(site, true))}
+            {nonFeatured.map((site) => renderSiteCard(site, true, showTypeTags))}
           </div>
         )}
       </div>
@@ -362,37 +376,16 @@ export default function ClientShowcase() {
                   </div>
                 )}
 
-                {/* Other — sidebar + grid */}
+                {/* Other — full width grid with type tags */}
                 {siteFilter === "other" && (
-                  <div className="flex flex-col lg:flex-row gap-8">
-                    {/* Left sidebar */}
-                    <div className="lg:w-56 shrink-0">
-                      <div className="bg-white rounded-xl border border-gray-200 shadow-sm overflow-hidden">
-                        {otherSubFilters.map((sub) => (
-                          <button
-                            key={sub.id}
-                            onClick={() => setOtherSubFilter(sub.id)}
-                            className={`w-full text-left px-5 py-3.5 text-sm font-medium transition-all duration-200 border-b border-gray-100 last:border-0 ${
-                              otherSubFilter === sub.id
-                                ? "bg-primary text-white"
-                                : "text-gray-700 hover:bg-gray-50"
-                            }`}
-                          >
-                            {sub.label}
-                          </button>
-                        ))}
+                  <div>
+                    {filteredOtherSites.length > 0 ? (
+                      renderSitesGrid(filteredOtherSites, true)
+                    ) : (
+                      <div className="text-center py-20">
+                        <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
                       </div>
-                    </div>
-                    {/* Right content */}
-                    <div className="flex-1 min-w-0">
-                      {filteredOtherSites.length > 0 ? (
-                        renderSitesGrid(filteredOtherSites)
-                      ) : (
-                        <div className="text-center py-20">
-                          <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
-                        </div>
-                      )}
-                    </div>
+                    )}
                   </div>
                 )}
               </div>

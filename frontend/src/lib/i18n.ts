@@ -92,7 +92,8 @@ export const translations = {
         large_event: "大型活動",
         retail_shop: "零售店舖",
         government_infrastructure: "政府基建",
-        other: "其他",
+        youth_dormitory: "青年宿舍",
+        other: "其他"
       },
     },
     clientShowcase: {
@@ -110,6 +111,7 @@ export const translations = {
       tabServicedApartment: "服務式住宅",
       tabLargeEvent: "大型活動",
       tabRetailShop: "零售店",
+      tabYouthDormitory: "青年宿舍",
       tabOthers: "其他",
       districtHK: "香港",
       districtKLN: "九龍",
@@ -356,7 +358,8 @@ export const translations = {
         large_event: "大型活动",
         retail_shop: "零售店舖",
         government_infrastructure: "政府基建",
-        other: "其他",
+        youth_dormitory: "青年宿舍",
+        other: "其他"
       },
     },
     clientShowcase: {
@@ -374,6 +377,7 @@ export const translations = {
       tabServicedApartment: "服务式住宅",
       tabLargeEvent: "大型活动",
       tabRetailShop: "零售店",
+      tabYouthDormitory: "青年宿舍",
       tabOthers: "其他",
       districtHK: "香港",
       districtKLN: "九龍",
@@ -636,6 +640,7 @@ export const translations = {
         large_event: "Large Event",
         retail_shop: "Retail Shop",
         government_infrastructure: "Government Infrastructure",
+        youth_dormitory: "Youth Dormitory",
         other: "Others",
       },
     },
@@ -654,6 +659,7 @@ export const translations = {
       tabServicedApartment: "Serviced Apartment",
       tabLargeEvent: "Large Event",
       tabRetailShop: "Retail Shop",
+      tabYouthDormitory: "Youth Dormitory",
       tabOthers: "Others",
       districtHK: "Hong Kong",
       districtKLN: "Kowloon",

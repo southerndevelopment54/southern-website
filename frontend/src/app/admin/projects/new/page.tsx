@@ -148,6 +148,7 @@ export default function NewProjectPage() {
                 <SelectItem value="large_event">大型活動</SelectItem>
                 <SelectItem value="retail_shop">零售店</SelectItem>
                 <SelectItem value="government_infrastructure">政府基建</SelectItem>
+                <SelectItem value="youth_dormitory">青年宿舍</SelectItem>
               </SelectContent>
             </Select>
           </div>
