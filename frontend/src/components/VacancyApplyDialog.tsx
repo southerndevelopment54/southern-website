@@ -136,15 +136,6 @@ export default function VacancyApplyDialog({
       });
       return;
     }
-    if (!form.licenseNumber.trim()) {
-      toast({
-        title: t.submitFailed,
-        description: t.licenseNumberRequired || "請輸入牌照號碼。",
-        variant: "destructive",
-      });
-      return;
-    }
-
     setSubmitting(true);
     try {
       await api.post("/submissions", {
@@ -290,15 +281,12 @@ export default function VacancyApplyDialog({
 
           {/* Security License */}
           <div className="space-y-1.5">
-            <Label htmlFor="licenseNumber">
-              {t.licenseNumber} <span className="text-red-500">*</span>
-            </Label>
+            <Label htmlFor="licenseNumber">{t.licenseNumber}</Label>
             <Input
               id="licenseNumber"
               value={form.licenseNumber}
               onChange={(e) => handleChange("licenseNumber", e.target.value)}
               placeholder={t.licenseNumberPlaceholder}
-              required
             />
           </div>
 

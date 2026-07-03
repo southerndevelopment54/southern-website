@@ -223,7 +223,7 @@ export default function AdminVacancyInquiriesPage() {
                     <InfoRow icon={Clock} label="年資">
                       {selected.yearsOfExperience != null ? `${selected.yearsOfExperience} 年` : "—"}
                     </InfoRow>
-                    <InfoRow icon={Award} label="牌照號碼">
+                    <InfoRow icon={Award} label="保安牌照號碼">
                       {selected.licenseNumber || "—"}
                     </InfoRow>
                     <InfoRow icon={Wrench} label="服務類型">
