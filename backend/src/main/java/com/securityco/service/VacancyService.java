@@ -157,7 +157,14 @@ public class VacancyService {
             case "yearly" -> " / 年";
             default -> "";
         };
-        return "$" + min.stripTrailingZeros().toPlainString() + " - $" + max.stripTrailingZeros().toPlainString() + periodLabel;
+        return "$" + formatSalaryAmount(min) + " - $" + formatSalaryAmount(max) + periodLabel;
+    }
+
+    private String formatSalaryAmount(BigDecimal amount) {
+        java.text.NumberFormat formatter = java.text.NumberFormat.getInstance(java.util.Locale.US);
+        formatter.setMaximumFractionDigits(0);
+        formatter.setRoundingMode(java.math.RoundingMode.HALF_UP);
+        return formatter.format(amount);
     }
 
     private String computeJobType(String employmentType) {
@@ -179,7 +186,9 @@ public class VacancyService {
         response.setStartDate(vacancy.getStartDate());
         response.setSalaryMin(vacancy.getSalaryMin());
         response.setSalaryMax(vacancy.getSalaryMax());
-        response.setSalaryDisplay(vacancy.getSalaryDisplay());
+        response.setSalaryDisplay(Boolean.TRUE.equals(vacancy.getShowSalary())
+                ? computeSalaryDisplay(vacancy.getSalaryMin(), vacancy.getSalaryMax(), vacancy.getSalaryPeriod())
+                : null);
         response.setSalaryPeriod(vacancy.getSalaryPeriod());
         response.setShowSalary(vacancy.getShowSalary());
         response.setEmploymentType(vacancy.getEmploymentType());
