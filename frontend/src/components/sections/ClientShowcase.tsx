@@ -124,8 +124,6 @@ export default function ClientShowcase() {
       ? sites.filter((s) => s.district === districtSubFilter)
       : sites;
 
-  const filteredOtherSites = sites;
-
   const getSiteTypeLabel = (site: GuardingSite) => {
     if (site.category === "residential") return t.clientShowcase.tabResidential;
     if (site.category === "commercial") return t.clientShowcase.tabCommercial;
@@ -154,6 +152,15 @@ export default function ClientShowcase() {
       : locale === "cn" && site.nameCn
       ? site.nameCn
       : site.name;
+
+  const sortLocale = locale === "cn" ? "zh" : locale;
+  const filteredOtherSites = [...sites].sort((a, b) => {
+    const labelA = getSiteTypeLabel(a) || "";
+    const labelB = getSiteTypeLabel(b) || "";
+    const labelCmp = labelA.localeCompare(labelB, sortLocale);
+    if (labelCmp !== 0) return labelCmp;
+    return getSiteDisplayName(a).localeCompare(getSiteDisplayName(b), sortLocale);
+  });
 
   const renderSiteCard = (site: GuardingSite, compact = false, showTypeTag = false) => {
     const displayName = getSiteDisplayName(site);
@@ -213,47 +220,6 @@ export default function ClientShowcase() {
             {nonFeatured.map((site) => renderSiteCard(site, true, showTypeTags))}
           </div>
         )}
-      </div>
-    );
-  };
-
-  const renderOtherSitesGrouped = () => {
-    if (filteredOtherSites.length === 0) {
-      return (
-        <div className="text-center py-20">
-          <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
-        </div>
-      );
-    }
-
-    const sortLocale = locale === "cn" ? "zh" : locale;
-    const groups = new Map<string, GuardingSite[]>();
-
-    filteredOtherSites.forEach((site) => {
-      const label = getSiteTypeLabel(site) || t.clientShowcase.tabOthers;
-      if (!groups.has(label)) groups.set(label, []);
-      groups.get(label)!.push(site);
-    });
-
-    const sortedGroups = Array.from(groups.entries()).sort((a, b) =>
-      a[0].localeCompare(b[0], sortLocale)
-    );
-
-    return (
-      <div className="space-y-12">
-        {sortedGroups.map(([label, groupSites]) => {
-          const sortedSites = [...groupSites].sort((a, b) =>
-            getSiteDisplayName(a).localeCompare(getSiteDisplayName(b), sortLocale)
-          );
-          return (
-            <div key={label}>
-              <h3 className="text-xl font-bold text-dark mb-5 border-l-4 border-primary pl-3">
-                {label}
-              </h3>
-              {renderSitesGrid(sortedSites, true)}
-            </div>
-          );
-        })}
       </div>
     );
   };
@@ -439,8 +405,18 @@ export default function ClientShowcase() {
                   </div>
                 )}
 
-                {/* Other — grouped by type */}
-                {siteFilter === "other" && renderOtherSitesGrouped()}
+                {/* Other — sorted by type, then name */}
+                {siteFilter === "other" && (
+                  <div>
+                    {filteredOtherSites.length > 0 ? (
+                      renderSitesGrid(filteredOtherSites, true)
+                    ) : (
+                      <div className="text-center py-20">
+                        <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             ) : (
               <div className="text-center py-20">
