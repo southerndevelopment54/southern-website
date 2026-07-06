@@ -114,8 +114,6 @@ export default function ClientShowcase() {
     { id: "新界", label: t.clientShowcase.districtNT },
   ];
 
-  // Sub-filters for "other" category removed — all projects are shown with type tags instead.
-
   const filteredCommercialSites =
     siteFilter === "commercial" && districtSubFilter !== "all"
       ? sites.filter((s) => s.district === districtSubFilter)
@@ -128,15 +126,10 @@ export default function ClientShowcase() {
 
   const filteredOtherSites = sites;
 
-  const getDisplayName = (site: GuardingSite) => {
-    return locale === "en" && site.nameEn
-      ? site.nameEn
-      : locale === "cn" && site.nameCn
-      ? site.nameCn
-      : site.name;
-  };
-
   const getSiteTypeLabel = (site: GuardingSite) => {
+    if (site.category === "residential") return t.clientShowcase.tabResidential;
+    if (site.category === "commercial") return t.clientShowcase.tabCommercial;
+
     switch (site.subCategory) {
       case "hotel":
         return t.clientShowcase.tabHotel;
@@ -155,34 +148,52 @@ export default function ClientShowcase() {
     }
   };
 
-  const renderSiteCard = (site: GuardingSite, compact = false, showTypeTag = false) => (
-    <div
-      key={site.id}
-      className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
-    >
-      <div className={`overflow-hidden relative ${compact ? "aspect-[16/10]" : "aspect-[16/10]"}`}>
-        <img
-          src={site.imageUrl || "/images/placeholder.jpg"}
-          alt={site.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-        />
-        {showTypeTag && getSiteTypeLabel(site) && (
-          <span className="absolute top-3 left-3 inline-flex items-center px-2.5 py-1 rounded-full bg-primary/90 text-white text-xs font-semibold shadow-sm">
-            {getSiteTypeLabel(site)}
-          </span>
-        )}
+  const renderSiteCard = (site: GuardingSite, compact = false, showTypeTag = false) => {
+    const displayName = locale === "en" && site.nameEn
+      ? site.nameEn
+      : locale === "cn" && site.nameCn
+      ? site.nameCn
+      : site.name;
+    const displayAddress = (locale === "en" && site.addressEn
+      ? site.addressEn
+      : locale === "cn" && site.addressCn
+      ? site.addressCn
+      : site.address) || "-";
+    const typeLabel = showTypeTag ? getSiteTypeLabel(site) : null;
+
+    return (
+      <div
+        key={site.id}
+        className="bg-white rounded-xl overflow-hidden border border-gray-100 hover:border-primary/30 hover:shadow-lg transition-all duration-200 group"
+      >
+        <div className={`overflow-hidden ${compact ? "aspect-[16/10]" : "aspect-[16/10]"}`}>
+          <img
+            src={site.imageUrl || "/images/placeholder.jpg"}
+            alt={site.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+          />
+        </div>
+        <div className={compact ? "p-4" : "p-6"}>
+          <div className="flex items-start justify-between gap-3">
+            <div className="flex-1 min-w-0">
+              <h3 className={`font-bold text-dark mb-1 truncate ${compact ? "text-base" : "text-lg"}`}>
+                {displayName}
+              </h3>
+              <p className="text-sm text-gray-500 flex items-center gap-1.5">
+                <Building2 className={`text-primary shrink-0 ${compact ? "w-3 h-3" : "w-3.5 h-3.5"}`} />
+                <span className="truncate">{displayAddress}</span>
+              </p>
+            </div>
+            {typeLabel && (
+              <span className="shrink-0 inline-flex items-center px-2.5 py-1 rounded bg-primary/10 text-primary text-sm font-medium mt-0.5">
+                {typeLabel}
+              </span>
+            )}
+          </div>
+        </div>
       </div>
-      <div className={compact ? "p-4" : "p-6"}>
-        <h3 className={`font-bold text-dark mb-1 ${compact ? "text-base" : "text-lg"}`}>
-          {locale === "en" && site.nameEn ? site.nameEn : locale === "cn" && site.nameCn ? site.nameCn : site.name}
-        </h3>
-        <p className="text-sm text-gray-500 flex items-center gap-1.5">
-          <Building2 className={`text-primary ${compact ? "w-3 h-3" : "w-3.5 h-3.5"}`} />
-          {(locale === "en" && site.addressEn ? site.addressEn : locale === "cn" && site.addressCn ? site.addressCn : site.address) || "-"}
-        </p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   const renderSitesGrid = (sitesToRender: GuardingSite[], showTypeTags = false) => {
     const featured = sitesToRender.filter((s) => s.isFeatured);
@@ -199,43 +210,6 @@ export default function ClientShowcase() {
             {nonFeatured.map((site) => renderSiteCard(site, true, showTypeTags))}
           </div>
         )}
-      </div>
-    );
-  };
-
-  const renderOtherSitesGrouped = (sitesToRender: GuardingSite[]) => {
-    // Group by subCategory
-    const groups = new Map<string, GuardingSite[]>();
-    sitesToRender.forEach((site) => {
-      const key = site.subCategory || "unknown";
-      if (!groups.has(key)) groups.set(key, []);
-      groups.get(key)!.push(site);
-    });
-
-    // Sort groups by their type label alphabetically
-    const sortedGroups = Array.from(groups.entries()).sort((a, b) => {
-      const labelA = getSiteTypeLabel(a[1][0]) || a[0];
-      const labelB = getSiteTypeLabel(b[1][0]) || b[0];
-      return labelA.localeCompare(labelB, locale === "en" ? "en" : "zh");
-    });
-
-    return (
-      <div className="space-y-10">
-        {sortedGroups.map(([subCategory, groupSites]) => {
-          const sortedSites = [...groupSites].sort((a, b) =>
-            getDisplayName(a).localeCompare(getDisplayName(b), locale === "en" ? "en" : "zh")
-          );
-          return (
-            <div key={subCategory}>
-              <h3 className="text-lg font-bold text-dark mb-4 pb-2 border-b border-gray-200">
-                {getSiteTypeLabel(sortedSites[0]) || subCategory}
-              </h3>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
-                {sortedSites.map((site) => renderSiteCard(site, true, false))}
-              </div>
-            </div>
-          );
-        })}
       </div>
     );
   };
@@ -421,11 +395,11 @@ export default function ClientShowcase() {
                   </div>
                 )}
 
-                {/* Other — grouped by type, sorted alphabetically */}
+                {/* Other — box grid with type tags */}
                 {siteFilter === "other" && (
                   <div>
                     {filteredOtherSites.length > 0 ? (
-                      renderOtherSitesGrouped(filteredOtherSites)
+                      renderSitesGrid(filteredOtherSites, true)
                     ) : (
                       <div className="text-center py-20">
                         <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
