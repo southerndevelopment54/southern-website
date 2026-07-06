@@ -148,12 +148,15 @@ export default function ClientShowcase() {
     }
   };
 
-  const renderSiteCard = (site: GuardingSite, compact = false, showTypeTag = false) => {
-    const displayName = locale === "en" && site.nameEn
+  const getSiteDisplayName = (site: GuardingSite) =>
+    locale === "en" && site.nameEn
       ? site.nameEn
       : locale === "cn" && site.nameCn
       ? site.nameCn
       : site.name;
+
+  const renderSiteCard = (site: GuardingSite, compact = false, showTypeTag = false) => {
+    const displayName = getSiteDisplayName(site);
     const displayAddress = (locale === "en" && site.addressEn
       ? site.addressEn
       : locale === "cn" && site.addressCn
@@ -210,6 +213,47 @@ export default function ClientShowcase() {
             {nonFeatured.map((site) => renderSiteCard(site, true, showTypeTags))}
           </div>
         )}
+      </div>
+    );
+  };
+
+  const renderOtherSitesGrouped = () => {
+    if (filteredOtherSites.length === 0) {
+      return (
+        <div className="text-center py-20">
+          <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
+        </div>
+      );
+    }
+
+    const sortLocale = locale === "cn" ? "zh" : locale;
+    const groups = new Map<string, GuardingSite[]>();
+
+    filteredOtherSites.forEach((site) => {
+      const label = getSiteTypeLabel(site) || t.clientShowcase.tabOthers;
+      if (!groups.has(label)) groups.set(label, []);
+      groups.get(label)!.push(site);
+    });
+
+    const sortedGroups = Array.from(groups.entries()).sort((a, b) =>
+      a[0].localeCompare(b[0], sortLocale)
+    );
+
+    return (
+      <div className="space-y-12">
+        {sortedGroups.map(([label, groupSites]) => {
+          const sortedSites = [...groupSites].sort((a, b) =>
+            getSiteDisplayName(a).localeCompare(getSiteDisplayName(b), sortLocale)
+          );
+          return (
+            <div key={label}>
+              <h3 className="text-xl font-bold text-dark mb-5 border-l-4 border-primary pl-3">
+                {label}
+              </h3>
+              {renderSitesGrid(sortedSites, true)}
+            </div>
+          );
+        })}
       </div>
     );
   };
@@ -395,18 +439,8 @@ export default function ClientShowcase() {
                   </div>
                 )}
 
-                {/* Other — box grid with type tags */}
-                {siteFilter === "other" && (
-                  <div>
-                    {filteredOtherSites.length > 0 ? (
-                      renderSitesGrid(filteredOtherSites, true)
-                    ) : (
-                      <div className="text-center py-20">
-                        <p className="text-gray-400 text-lg">暫無項目 / No projects yet</p>
-                      </div>
-                    )}
-                  </div>
-                )}
+                {/* Other — grouped by type */}
+                {siteFilter === "other" && renderOtherSitesGrouped()}
               </div>
             ) : (
               <div className="text-center py-20">
