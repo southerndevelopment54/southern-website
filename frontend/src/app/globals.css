@@ -63,3 +63,16 @@
   flex: 0 0 100%;
   min-width: 0;
 }
+
+@keyframes client-name-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-client-marquee {
+  animation: client-name-marquee linear infinite;
+}

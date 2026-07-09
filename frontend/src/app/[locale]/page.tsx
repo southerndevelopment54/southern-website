@@ -4,6 +4,7 @@ import {
   AboutSection,
   ServicesSection,
   WhyChooseUs,
+  ClientNameCarousel,
   TrustedCompanies,
   GetInTouch,
   Footer,
@@ -19,6 +20,7 @@ export default function Home() {
       <AboutSection />
       <ServicesSection />
       <WhyChooseUs />
+      <ClientNameCarousel />
       <TrustedCompanies />
       <GetInTouch />
       <Footer />

@@ -121,7 +121,13 @@ public class SubmissionService {
         SubmissionResponse response = new SubmissionResponse();
         response.setId(submission.getId());
         response.setVacancyId(submission.getVacancy().getId());
-        response.setVacancyTitle(submission.getVacancy().getGuardType().getTypeName() + " - " + submission.getVacancy().getDistrict().getDistrictName());
+        Vacancy vacancy = submission.getVacancy();
+        String districtPart = vacancy.getDistrict() != null
+                ? vacancy.getDistrict().getDistrictName()
+                : (vacancy.getLocationDescription() != null && !vacancy.getLocationDescription().isBlank()
+                        ? vacancy.getLocationDescription()
+                        : "其他");
+        response.setVacancyTitle(vacancy.getGuardType().getTypeName() + " - " + districtPart);
         response.setFirstName(submission.getFirstName());
         response.setLastName(submission.getLastName());
         response.setPhoneNumber(submission.getPhoneNumber());

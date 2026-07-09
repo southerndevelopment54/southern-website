@@ -116,7 +116,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
   };
 
   return (
-    <section id="contact" className="py-20 md:py-28 bg-white">
+    <section id="contact" className={`py-20 md:py-28 ${isContactPage ? "bg-white" : "bg-gray-100"}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Section: Image + Contact Details */}
         <div className={`grid lg:grid-cols-2 gap-12 lg:gap-20 items-center ${showForm ? "mb-20" : ""}`}>

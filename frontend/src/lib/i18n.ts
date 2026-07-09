@@ -96,6 +96,10 @@ export const translations = {
         other: "其他"
       },
     },
+    clientCarousel: {
+      title: "合作客戶",
+      subtitle: "深受眾多企業及機構信賴",
+    },
     clientShowcase: {
       badge: "實力見證",
       title: "客戶及合作項目",
@@ -361,6 +365,10 @@ export const translations = {
         youth_dormitory: "青年宿舍",
         other: "其他"
       },
+    },
+    clientCarousel: {
+      title: "合作客户",
+      subtitle: "深受众多企业及机构信赖",
     },
     clientShowcase: {
       badge: "实力見证",
@@ -643,6 +651,10 @@ export const translations = {
         youth_dormitory: "Youth Dormitory",
         other: "Others",
       },
+    },
+    clientCarousel: {
+      title: "Trusted Clients",
+      subtitle: "Trusted by many enterprises and institutions",
     },
     clientShowcase: {
       badge: "Our Track Record",

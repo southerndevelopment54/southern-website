@@ -8,4 +8,5 @@ export { default as GetInTouch } from "./GetInTouch";
 export { default as CareersSection } from "./CareersSection";
 export { default as VacanciesSection } from "./VacanciesSection";
 export { default as ClientShowcase } from "./ClientShowcase";
+export { default as ClientNameCarousel } from "./ClientNameCarousel";
 export { default as Footer } from "./Footer";
