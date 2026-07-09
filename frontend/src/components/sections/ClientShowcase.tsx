@@ -43,6 +43,7 @@ export default function ClientShowcase() {
   const [clients, setClients] = useState<Client[]>([]);
   const [sites, setSites] = useState<GuardingSite[]>([]);
   const [loadingSites, setLoadingSites] = useState(false);
+  const [ribbonStates, setRibbonStates] = useState<Record<number, "idle" | "in" | "out">>({});
 
   // Read URL params once on mount
   useEffect(() => {
@@ -325,17 +326,40 @@ export default function ClientShowcase() {
                       "en"
                     )
                   )
-                  .map((client) => (
-                    <div
-                      key={client.id}
-                      title={client.displayName}
-                      className="relative h-32 sm:h-40 bg-white shadow-[inset_0_0_0_1px_#e5e7eb] flex items-center justify-center px-4 sm:px-6 overflow-hidden"
-                    >
-                      <span className="text-center text-sm sm:text-lg font-semibold text-black leading-snug line-clamp-2 break-keep">
-                        <ClientName name={client.displayName} />
-                      </span>
-                    </div>
-                  ))}
+                  .map((client) => {
+                    const ribbonState = ribbonStates[client.id] || "idle";
+                    const ribbonClass =
+                      ribbonState === "in"
+                        ? "animate-slide-in-top"
+                        : ribbonState === "out"
+                        ? "animate-slide-out-bottom"
+                        : "-translate-y-full opacity-0";
+                    return (
+                      <div
+                        key={client.id}
+                        title={client.displayName}
+                        className="group relative h-32 sm:h-40 bg-white shadow-[inset_0_0_0_1px_#e5e7eb] flex items-center justify-center px-4 sm:px-6 overflow-hidden transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-lg z-0 hover:z-10"
+                        onMouseEnter={() =>
+                          setRibbonStates((prev) => ({ ...prev, [client.id]: "in" }))
+                        }
+                        onMouseLeave={() =>
+                          setRibbonStates((prev) => ({ ...prev, [client.id]: "out" }))
+                        }
+                      >
+                        <div
+                          className={`absolute top-0 left-0 w-0 h-0 border-t-[28px] sm:border-t-[36px] border-r-[28px] sm:border-r-[36px] border-t-primary border-r-transparent ${ribbonClass}`}
+                          onAnimationEnd={() => {
+                            if (ribbonStates[client.id] === "out") {
+                              setRibbonStates((prev) => ({ ...prev, [client.id]: "idle" }));
+                            }
+                          }}
+                        />
+                        <span className="text-center text-sm sm:text-lg font-semibold text-black leading-snug line-clamp-2 break-keep transition-transform duration-300 ease-out group-hover:scale-[1.02]">
+                          <ClientName name={client.displayName} />
+                        </span>
+                      </div>
+                    );
+                  })}
               </div>
             ) : (
               <div className="text-center py-20">
