@@ -33,6 +33,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
     serviceType: "",
     message: "",
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const contactDetails = [
     {
@@ -82,6 +83,7 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
       toast({ title: "錯誤", description: "請填寫所有欄位", variant: "destructive" });
       return;
     }
+    setSubmitting(true);
     try {
       await api.post("/contact", form);
       toast({
@@ -112,6 +114,8 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
           variant: "destructive",
         });
       }
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -288,10 +292,11 @@ export default function GetInTouch({ showForm = false }: { showForm?: boolean })
               <div className="pt-2">
                 <Button
                   type="submit"
-                  className="w-full md:w-auto bg-primary hover:bg-primary-light text-white px-8 py-3 h-auto text-base font-semibold"
+                  disabled={submitting}
+                  className="w-full md:w-auto bg-primary hover:bg-primary-light text-white px-8 py-3 h-auto text-base font-semibold disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   <Send className="w-4 h-4 mr-2" />
-                  {t.contact.submit}
+                  {submitting ? t.contact.submitting : t.contact.submit}
                 </Button>
               </div>
             </form>
