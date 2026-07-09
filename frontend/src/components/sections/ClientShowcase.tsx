@@ -153,6 +153,24 @@ export default function ClientShowcase() {
       ? site.nameCn
       : site.name;
 
+  function ClientName({ name }: { name: string }) {
+    const suffix = "有限公司";
+    const idx = name.indexOf(suffix);
+    if (idx !== -1) {
+      return (
+        <>
+          {name.slice(0, idx)}
+          <br />
+          <span className="whitespace-nowrap">
+            {suffix}
+            {name.slice(idx + suffix.length)}
+          </span>
+        </>
+      );
+    }
+    return <>{name}</>;
+  }
+
   const sortLocale = locale === "cn" ? "zh" : locale;
   const filteredOtherSites = [...sites].sort((a, b) => {
     const labelA = getSiteTypeLabel(a) || "";
@@ -290,7 +308,7 @@ export default function ClientShowcase() {
         {activeTab === "clients" && (
           <div className="max-w-6xl mx-auto">
             {clients.length > 0 ? (
-              <div className="flex flex-wrap justify-center items-center gap-3 md:gap-4">
+              <div className="grid grid-cols-3 gap-2">
                 {[...clients]
                   .map((client) => ({
                     ...client,
@@ -311,9 +329,11 @@ export default function ClientShowcase() {
                     <div
                       key={client.id}
                       title={client.displayName}
-                      className="inline-flex items-center justify-center px-5 py-2.5 md:px-7 md:py-3 rounded-full bg-white border border-gray-200 text-sm md:text-base font-medium text-dark text-center leading-snug shadow-sm hover:bg-primary hover:border-primary hover:text-white hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 cursor-default select-none max-w-[260px] md:max-w-[340px] break-words"
+                      className="relative h-32 sm:h-40 bg-white shadow-[inset_0_0_0_1px_#e5e7eb] flex items-center justify-center px-4 sm:px-6 overflow-hidden"
                     >
-                      {client.displayName}
+                      <span className="text-center text-sm sm:text-lg font-semibold text-black leading-snug line-clamp-2 break-keep">
+                        <ClientName name={client.displayName} />
+                      </span>
                     </div>
                   ))}
               </div>

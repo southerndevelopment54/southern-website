@@ -37,20 +37,15 @@ function ClientName({ name }: { name: string }) {
 
 function ClientCard({
   client,
-  number,
   locale,
 }: {
   client: Client;
-  number: number;
   locale: string;
 }) {
   return (
     <div
       className="relative flex-none w-56 sm:w-64 h-24 sm:h-28 shadow-[inset_0_0_0_1px_#e5e7eb] bg-white flex items-center justify-center px-4 overflow-hidden"
     >
-      <span className="absolute top-2 left-2 text-[10px] sm:text-xs font-bold text-gray-300 tracking-wider">
-        #{String(number).padStart(2, "0")}
-      </span>
       <span className="text-center text-base sm:text-lg font-semibold text-black leading-snug line-clamp-2 break-keep">
         <ClientName name={getDisplayName(client, locale)} />
       </span>
@@ -60,12 +55,10 @@ function ClientCard({
 
 function ScrollingRow({
   clients,
-  startNumber,
   duration,
   locale,
 }: {
   clients: Client[];
-  startNumber: number;
   duration: number;
   locale: string;
 }) {
@@ -81,7 +74,6 @@ function ScrollingRow({
           <ClientCard
             key={`${client.id}-${index}`}
             client={client}
-            number={startNumber + (index % clients.length)}
             locale={locale}
           />
         ))}
@@ -136,7 +128,6 @@ export default function ClientNameCarousel() {
             {row1.length > 0 && (
               <ScrollingRow
                 clients={row1}
-                startNumber={1}
                 duration={duration1}
                 locale={locale}
               />
@@ -144,7 +135,6 @@ export default function ClientNameCarousel() {
             {row2.length > 0 && (
               <ScrollingRow
                 clients={row2}
-                startNumber={mid + 1}
                 duration={duration2}
                 locale={locale}
               />
