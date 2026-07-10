@@ -21,6 +21,7 @@ public class VacancyInquiryService {
 
     private final VacancyInquiryRepository vacancyInquiryRepository;
     private final EducationLevelRepository educationLevelRepository;
+    private final EmailNotificationService emailNotificationService;
 
     private static final Pattern HTML_TAG_PATTERN = Pattern.compile("<[^>]*>");
 
@@ -47,7 +48,9 @@ public class VacancyInquiryService {
             inquiry.setEducationLevel(level);
         }
 
-        return toResponse(vacancyInquiryRepository.save(inquiry));
+        VacancyInquiry saved = vacancyInquiryRepository.save(inquiry);
+        emailNotificationService.notifyNewVacancyInquiry(saved);
+        return toResponse(saved);
     }
 
     @Transactional(readOnly = true)

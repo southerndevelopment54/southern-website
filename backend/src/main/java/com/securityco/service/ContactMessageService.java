@@ -18,6 +18,7 @@ import java.util.regex.Pattern;
 public class ContactMessageService {
 
     private final ContactMessageRepository contactMessageRepository;
+    private final EmailNotificationService emailNotificationService;
 
     private static final Pattern HTML_TAG_PATTERN = Pattern.compile("<[^>]*>");
 
@@ -34,7 +35,9 @@ public class ContactMessageService {
                 .userAgent(userAgent)
                 .isRead(false)
                 .build();
-        return toResponse(contactMessageRepository.save(msg));
+        ContactMessage saved = contactMessageRepository.save(msg);
+        emailNotificationService.notifyNewContactInquiry(saved);
+        return toResponse(saved);
     }
 
     @Transactional(readOnly = true)

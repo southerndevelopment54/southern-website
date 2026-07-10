@@ -53,6 +53,13 @@ services:
       - ADMIN_USERNAME=${ADMIN_USERNAME}
       - ADMIN_PASSWORD_HASH=${ADMIN_PASSWORD_HASH}
       - ADMIN_EMAIL=${ADMIN_EMAIL}
+      - MAIL_HOST=${MAIL_HOST:-}
+      - MAIL_PORT=${MAIL_PORT:-587}
+      - MAIL_USERNAME=${MAIL_USERNAME:-}
+      - MAIL_PASSWORD=${MAIL_PASSWORD:-}
+      - MAIL_SMTP_AUTH=${MAIL_SMTP_AUTH:-true}
+      - MAIL_STARTTLS=${MAIL_STARTTLS:-true}
+      - NOTIFICATION_FROM=${NOTIFICATION_FROM:-noreply@southern-services.example.com}
       - JAVA_OPTS=-Xms512m -Xmx768m
     depends_on:
       postgres:

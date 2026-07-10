@@ -32,6 +32,7 @@ public class SubmissionService {
     private final VacancyRepository vacancyRepository;
     private final EducationLevelRepository educationLevelRepository;
     private final AdminUserRepository adminUserRepository;
+    private final EmailNotificationService emailNotificationService;
 
     @Transactional
     public SubmissionResponse createSubmission(SubmissionRequest request, String ipAddress, String userAgent) {
@@ -59,7 +60,15 @@ public class SubmissionService {
             submission.setEducationLevel(level);
         }
 
-        return toResponse(submissionRepository.save(submission));
+        ApplicantSubmission saved = submissionRepository.save(submission);
+        Vacancy appliedVacancy = saved.getVacancy();
+        emailNotificationService.notifyNewJobApplication(
+                saved,
+                appliedVacancy.getTitle(),
+                resolveVacancyLocation(appliedVacancy),
+                resolveVacancySalary(appliedVacancy)
+        );
+        return toResponse(saved);
     }
 
     @Transactional(readOnly = true)
@@ -115,6 +124,43 @@ public class SubmissionService {
         stats.setSubmissionsByStatus(byStatus);
 
         return stats;
+    }
+
+    private String resolveVacancyLocation(Vacancy vacancy) {
+        if (vacancy.getLocationDisplay() != null && !vacancy.getLocationDisplay().isBlank()) {
+            return vacancy.getLocationDisplay();
+        }
+        if (vacancy.getDistrict() != null) {
+            return vacancy.getDistrict().getDistrictName();
+        }
+        if (vacancy.getLocationDescription() != null && !vacancy.getLocationDescription().isBlank()) {
+            return vacancy.getLocationDescription();
+        }
+        return "不詳";
+    }
+
+    private String resolveVacancySalary(Vacancy vacancy) {
+        if (Boolean.FALSE.equals(vacancy.getShowSalary())) {
+            return "不公開";
+        }
+        if (vacancy.getSalaryDisplay() != null && !vacancy.getSalaryDisplay().isBlank()) {
+            return vacancy.getSalaryDisplay();
+        }
+        if (vacancy.getSalaryMin() != null || vacancy.getSalaryMax() != null) {
+            StringBuilder sb = new StringBuilder("HK$");
+            if (vacancy.getSalaryMin() != null) {
+                sb.append(vacancy.getSalaryMin());
+            }
+            sb.append(" - HK$");
+            if (vacancy.getSalaryMax() != null) {
+                sb.append(vacancy.getSalaryMax());
+            }
+            if (vacancy.getSalaryPeriod() != null && !vacancy.getSalaryPeriod().isBlank()) {
+                sb.append(" / ").append(vacancy.getSalaryPeriod());
+            }
+            return sb.toString();
+        }
+        return "面議";
     }
 
     private SubmissionResponse toResponse(ApplicantSubmission submission) {
