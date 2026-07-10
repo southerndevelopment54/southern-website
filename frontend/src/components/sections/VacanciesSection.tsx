@@ -215,16 +215,26 @@ export default function VacanciesSection() {
 
         {/* Bottom CTA */}
         <div className="mt-12 text-center">
-          <p className="text-gray-500 text-sm mb-4">
-            {t.vacancies.noSuitable}
-          </p>
+          {(() => {
+            const text = t.vacancies.noSuitable;
+            const match = text.match(/[?？]/);
+            const splitIndex = match ? (match.index ?? -1) + 1 : text.length;
+            const lead = text.slice(0, splitIndex);
+            const rest = text.slice(splitIndex);
+            return (
+              <p className="text-base md:text-lg mb-4">
+                <span className="font-bold text-black">{lead}</span>
+                <span className="text-gray-500">{rest}</span>
+              </p>
+            );
+          })()}
           <button
             type="button"
             onClick={() => setInquiryOpen(true)}
-            className="inline-flex items-center gap-2 text-primary font-semibold hover:underline"
+            className="inline-flex items-center gap-2 text-primary text-base md:text-lg font-semibold hover:underline"
           >
             {t.vacancies.contactUs}
-            <ChevronRight className="w-4 h-4" />
+            <ChevronRight className="w-5 h-5" />
           </button>
         </div>
       </div>
